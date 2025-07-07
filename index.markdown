@@ -3,7 +3,7 @@ layout: default
 ---
 
 <div class="page-hero">
-  <div class="hero-content">
+  <div class="hero-content animate-on-scroll">
     <h1 class="page-title">Context Rot</h1>
     <p class="page-subtitle">A Journal of Computational Decay</p>
     <p class="page-description">
@@ -11,7 +11,7 @@ layout: default
       presented with appropriate academic gravitas and tongue-in-cheek commentary.
     </p>
   </div>
-  <div class="hero-visual">
+  <div class="hero-visual animate-on-scroll">
     <img src="{{ '/assets/images/hero-banner.png' | relative_url }}" alt="Context Rot - Computational Decay Visualization" class="hero-image" loading="eager">
   </div>
 </div>

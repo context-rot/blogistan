@@ -36,17 +36,49 @@ class ReactionPatternAnalyzer:
         self.databricks_token = os.environ.get("DATABRICKS_TOKEN")
 
     def _gh_api(self, endpoint: str, method: str = "GET") -> Optional[Dict]:
-        """Make GitHub API calls with authentication."""
+        """Make GitHub API calls with authentication and proper error handling."""
+        if not self.github_token:
+            print("GitHub token not available")
+            return None
+
         headers = {
             "Authorization": f"token {self.github_token}",
             "Accept": "application/vnd.github.v3+json",
+            "User-Agent": "Dr-B-Prop-Reaction-Analyzer/1.0",
         }
 
         try:
             url = f"https://api.github.com/{endpoint}"
-            response = requests.request(method, url, headers=headers)
+            print(f"GitHub API call: {method} {url}")
+
+            response = requests.request(method, url, headers=headers, timeout=30)
+
+            print(f"GitHub API response: {response.status_code}")
+
+            # Handle rate limiting
+            if response.status_code == 403:
+                reset_time = response.headers.get("X-RateLimit-Reset")
+                print(f"GitHub API rate limited. Reset time: {reset_time}")
+                return None
+
+            # Handle 422 validation errors with detailed logging
+            if response.status_code == 422:
+                print(f"GitHub API validation error (422) for {endpoint}")
+                print(f"Response text: {response.text}")
+                return None
+
             response.raise_for_status()
             return response.json()
+
+        except requests.exceptions.Timeout:
+            print(f"GitHub API timeout for {endpoint}")
+            return None
+        except requests.exceptions.RequestException as e:
+            print(f"GitHub API request error for {endpoint}: {e}")
+            if hasattr(e, "response") and e.response is not None:
+                print(f"Response status: {e.response.status_code}")
+                print(f"Response text: {e.response.text}")
+            return None
         except Exception as e:
             print(f"GitHub API error for {endpoint}: {e}")
             return None
@@ -60,10 +92,26 @@ class ReactionPatternAnalyzer:
             datetime.now(timezone.utc) - timedelta(days=days_back)
         ).isoformat()
 
-        search_query = (
-            f"repo:{self.repository} label:reader-feedback updated:>{since_date[:10]}"
-        )
-        search_results = self._gh_api(f"search/issues?q={search_query}&per_page=50")
+        # Construct safer search query to avoid 422 errors
+        try:
+            from urllib.parse import quote
+
+            if not self.repository:
+                print("Repository not specified for search")
+                return []
+
+            # Build a simpler search query to avoid validation errors
+            search_query = f"repo:{self.repository} is:issue label:reader-feedback"
+            encoded_query = quote(search_query)
+            search_endpoint = (
+                f"search/issues?q={encoded_query}&per_page=30&sort=updated"
+            )
+
+            print(f"Searching for issues: {search_query}")
+            search_results = self._gh_api(search_endpoint)
+        except Exception as e:
+            print(f"Error constructing search query: {e}")
+            search_results = None
 
         if not search_results or not search_results.get("items"):
             return []

@@ -85,18 +85,53 @@ class UserIntelligenceCollector:
             print(f"Error loading event data: {e}")
             return {}
 
-    def _gh_api(self, endpoint: str, method: str = "GET") -> Optional[Dict]:
-        """Make GitHub API calls with authentication."""
+    def _gh_api(
+        self, endpoint: str, method: str = "GET", params: Dict = None
+    ) -> Optional[Dict]:
+        """Make GitHub API calls with authentication and proper error handling."""
+        if not self.github_token:
+            print("GitHub token not available")
+            return None
+
         headers = {
             "Authorization": f"token {self.github_token}",
             "Accept": "application/vnd.github.v3+json",
+            "User-Agent": "Dr-B-Prop-Intelligence-Bot/1.0",
         }
 
         try:
             url = f"https://api.github.com/{endpoint}"
-            response = requests.request(method, url, headers=headers)
+            print(f"GitHub API call: {method} {url}")
+
+            response = requests.request(
+                method, url, headers=headers, params=params, timeout=30
+            )
+
+            print(f"GitHub API response: {response.status_code}")
+
+            # Handle rate limiting
+            if response.status_code == 403:
+                reset_time = response.headers.get("X-RateLimit-Reset")
+                print(f"GitHub API rate limited. Reset time: {reset_time}")
+                return None
+
+            # Handle 422 validation errors
+            if response.status_code == 422:
+                print(f"GitHub API validation error: {response.text}")
+                return None
+
             response.raise_for_status()
             return response.json()
+
+        except requests.exceptions.Timeout:
+            print(f"GitHub API timeout for {endpoint}")
+            return None
+        except requests.exceptions.RequestException as e:
+            print(f"GitHub API request error for {endpoint}: {e}")
+            if hasattr(e, "response") and e.response is not None:
+                print(f"Response status: {e.response.status_code}")
+                print(f"Response text: {e.response.text}")
+            return None
         except Exception as e:
             print(f"GitHub API error for {endpoint}: {e}")
             return None
@@ -187,9 +222,19 @@ class UserIntelligenceCollector:
 
     def analyze_interaction_style(self, username: str) -> Dict[str, Any]:
         """Analyze user's commenting and interaction patterns."""
-        # Get recent issues and PRs created by user
-        search_query = f"author:{username} type:issue created:>2024-01-01"
-        search_results = self._gh_api(f"search/issues?q={search_query}&per_page=50")
+        # Get recent issues and PRs created by user with safer query
+        try:
+            # Use a simpler, more reliable search query
+            from urllib.parse import quote
+
+            search_query = quote(f"author:{username} type:issue")
+            search_endpoint = f"search/issues?q={search_query}&per_page=20&sort=updated"
+
+            print(f"Searching for user interactions: {search_query}")
+            search_results = self._gh_api(search_endpoint)
+        except Exception as e:
+            print(f"Error in search query construction: {e}")
+            search_results = None
 
         if not search_results or not search_results.get("items"):
             return {"interaction_style": "minimal", "comment_sentiment": 0.5}

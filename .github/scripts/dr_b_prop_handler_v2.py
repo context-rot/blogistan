@@ -523,38 +523,58 @@ class ContextualDrBProp:
     def _query_perplexity(self, query: str) -> str:
         """Query Perplexity API for research."""
         try:
+            if not self.perplexity_key:
+                print("Perplexity API key not available")
+                return ""
+
             headers = {
                 "Authorization": f"Bearer {self.perplexity_key}",
                 "Content-Type": "application/json",
             }
 
+            # Use correct model name and simplified request
             data = {
-                "model": "llama-3.1-sonar-large-128k-online",
+                "model": "llama-3.1-sonar-small-128k-online",  # Changed to small model to avoid quota issues
                 "messages": [
                     {
                         "role": "system",
-                        "content": "You are an academic research assistant. Provide scholarly, evidence-based responses with citations when possible.",
+                        "content": "You are a research assistant. Provide factual responses with sources.",
                     },
                     {"role": "user", "content": query},
                 ],
-                "max_tokens": 800,
-                "temperature": 0.2,
+                "max_tokens": 400,  # Reduced to avoid quota issues
+                "temperature": 0.1,
             }
+
+            print(f"Perplexity query: {query[:100]}...")  # Debug log
 
             response = requests.post(
                 "https://api.perplexity.ai/chat/completions",
                 headers=headers,
                 json=data,
-                timeout=45,
+                timeout=30,
             )
+
+            print(f"Perplexity response status: {response.status_code}")  # Debug log
 
             if response.status_code == 200:
                 result = response.json()
-                return result["choices"][0]["message"]["content"]
+                if result.get("choices") and len(result["choices"]) > 0:
+                    content = result["choices"][0]["message"]["content"]
+                    print(f"Perplexity success: {len(content)} chars")  # Debug log
+                    return content
+                else:
+                    print("Perplexity API returned empty choices")
+                    return ""
             else:
                 print(f"Perplexity API error: {response.status_code}")
+                if response.text:
+                    print(f"Perplexity error response: {response.text}")
                 return ""
 
+        except requests.exceptions.Timeout:
+            print("Perplexity API timeout")
+            return ""
         except Exception as e:
             print(f"Perplexity query error: {e}")
             return ""
@@ -855,10 +875,8 @@ class ContextualDrBProp:
                         reaction_patterns=user_patterns,
                     )
 
-                    # Enhance with research insights if available
-                    if research.key_insights:
-                        jest_response += f"\n\nBased on current research trends: {'; '.join(research.key_insights[:2])}"
-
+                    # Research insights are already integrated into the jest response by the intelligent engine
+                    # No need to append them separately as debug output
                     return jest_response
 
             except Exception as e:
@@ -1111,41 +1129,47 @@ Make this a sophisticated academic discourse, not generic responses."""
 
     # Core workflow methods
     def check_rate_limit(self, user: str) -> bool:
-        """Check if user has exceeded rate limits."""
+        """Check if user has exceeded rate limits with improved error handling."""
         try:
+            if not user or not self.repository:
+                print("Missing user or repository for rate limit check")
+                return False
+
             date_24h_ago = (datetime.utcnow() - timedelta(hours=24)).strftime(
                 "%Y-%m-%dT%H:%M:%SZ"
             )
 
-            search_query = (
-                f"repo:{self.repository} is:issue author:{user} created:>{date_24h_ago}"
-            )
+            # Use a simpler search approach to avoid GraphQL 422 errors
+            search_query = f"repo:{self.repository} is:issue author:{user}"
 
-            query = """
-            query($searchQuery: String!) {
-                search(query: $searchQuery, type: ISSUE, first: 10) {
-                    issueCount
-                }
-            }
-            """
+            print(f"Rate limit check for user: {user}")
+            print(f"Search query: {search_query}")
 
             cmd = [
                 "gh",
                 "api",
-                "graphql",
-                "-f",
-                f"query={query}",
-                "-f",
-                f"searchQuery={search_query}",
+                f"search/issues?q={search_query}&per_page=10",
+                "--jq",
+                ".total_count",
             ]
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
-            data = json.loads(result.stdout)
 
-            recent_issues = data["data"]["search"]["issueCount"]
-            print(f"Recent issues by {user}: {recent_issues}")
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
 
-            return recent_issues > 5
+            if result.returncode == 0:
+                try:
+                    recent_issues = int(result.stdout.strip())
+                    print(f"Recent issues by {user}: {recent_issues}")
+                    return recent_issues > 5
+                except (ValueError, TypeError):
+                    print("Error parsing issue count")
+                    return False
+            else:
+                print(f"Rate limit check failed: {result.stderr}")
+                return False
 
+        except subprocess.TimeoutExpired:
+            print("Rate limit check timeout")
+            return False
         except Exception as e:
             print(f"Rate limit check error: {e}")
             return False
@@ -1251,15 +1275,48 @@ Make this a sophisticated academic discourse, not generic responses."""
             return False
 
     def add_label(self, issue_number: int, label: str) -> bool:
-        """Add label to issue using gh CLI."""
+        """Add label to issue using gh CLI with error handling."""
         try:
+            # First check if label exists, create if it doesn't
+            try:
+                subprocess.run(
+                    [
+                        "gh",
+                        "label",
+                        "create",
+                        label,
+                        "--description",
+                        "Enhanced Dr. B. Prop response",
+                        "--color",
+                        "0e8a16",
+                    ],
+                    capture_output=True,
+                    text=True,
+                    timeout=30,
+                )
+            except:
+                pass  # Label might already exist
+
+            # Add label to issue
             result = subprocess.run(
                 ["gh", "issue", "edit", str(issue_number), "--add-label", label],
                 capture_output=True,
                 text=True,
-                check=True,
+                timeout=30,
             )
-            return result.returncode == 0
+
+            if result.returncode == 0:
+                print(f"Successfully added label '{label}' to issue #{issue_number}")
+                return True
+            else:
+                print(f"Label adding failed for '{label}' on issue #{issue_number}")
+                print(f"stdout: {result.stdout}")
+                print(f"stderr: {result.stderr}")
+                return False
+
+        except subprocess.TimeoutExpired:
+            print(f"Label adding timeout for '{label}' on issue #{issue_number}")
+            return False
         except Exception as e:
             print(f"Label adding error: {e}")
             return False

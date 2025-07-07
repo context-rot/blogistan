@@ -93,6 +93,7 @@
 </head>
 
 <body class="modern-layout">
+  <div class="page-loader"></div>
   <header class="site-header">
     <div class="wrapper">
       <div class="site-header-content">
@@ -100,6 +101,18 @@
           <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Context Rot" class="site-avatar">
           <span class="site-name">Context Rot</span>
         </a>
+        
+        <nav class="social-nav">
+          <a href="https://github.com/context-rot" target="_blank" rel="noopener" class="social-link" aria-label="GitHub">
+            <img src="{{ '/assets/images/github-icon.svg' | relative_url }}" alt="GitHub" class="social-icon">
+          </a>
+          <a href="https://twitter.com/context_rot" target="_blank" rel="noopener" class="social-link" aria-label="Twitter/X">
+            <img src="{{ '/assets/images/x-icon.svg' | relative_url }}" alt="Twitter/X" class="social-icon">
+          </a>
+          <a href="{{ '/feed.xml' | relative_url }}" class="social-link" aria-label="RSS Feed">
+            <img src="{{ '/assets/images/rss-icon.svg' | relative_url }}" alt="RSS Feed" class="social-icon">
+          </a>
+        </nav>
       </div>
     </div>
   </header>
@@ -114,5 +127,8 @@
 
   <!-- Selection and comment functionality -->
   <script src="{{ '/assets/js/selection-comments.js' | relative_url }}"></script>
+  
+  <!-- Demo animations and micro-interactions -->
+  <script src="{{ '/assets/js/demo-animations.js' | relative_url }}"></script>
 </body>
 </html>
