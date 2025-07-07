@@ -16,13 +16,18 @@ jobs:
     if: contains(github.event.issue.labels.*.name, 'reader-feedback')
     outputs:
       should_respond: ${{ steps.spam_check.outputs.should_respond }}
-      user_rate_limited: ${{ steps.rate_limit.outputs.rate_limited }}
+      user_rate_limited: ${{ steps.spam_check.outputs.user_rate_limited }}
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Setup Node.js
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Setup Node.js  
       uses: actions/setup-node@v4
       with:
         node-version: '18'
@@ -31,120 +36,16 @@ jobs:
       run: |
         npm install -g vibe-tools
         
-    - name: Rate Limit Check
-      id: rate_limit
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        # Debug: Check if gh is available
-        echo "GitHub CLI version:"
-        gh --version || echo "GitHub CLI not found"
-        
-        # Check user's recent issue activity
-        USER="${{ github.event.issue.user.login }}"
-        echo "Checking rate limit for user: $USER"
-        
-        # Get issues created by user in last 24 hours
-        # Calculate date 24 hours ago (using more portable date command)
-        DATE_24H_AGO=$(date -u -d "24 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
-        echo "Date 24h ago: $DATE_24H_AGO"
-        
-        # Build search query
-        SEARCH_QUERY="repo:context-rot/blogistan is:issue author:${USER} created:>${DATE_24H_AGO}"
-        
-        RECENT_ISSUES=$(gh api graphql -f query='
-          query($searchQuery: String!) {
-            search(query: $searchQuery, type: ISSUE, first: 10) {
-              issueCount
-            }
-          }
-        ' -f searchQuery="$SEARCH_QUERY" --jq '.data.search.issueCount')
-        
-        echo "Recent issues by $USER: $RECENT_ISSUES"
-        
-        # Rate limit: max 5 issues per 24 hours per user
-        if [ "$RECENT_ISSUES" -gt 5 ]; then
-          echo "rate_limited=true" >> $GITHUB_OUTPUT
-          echo "User $USER is rate limited ($RECENT_ISSUES issues in 24h)"
-        else
-          echo "rate_limited=false" >> $GITHUB_OUTPUT
-        fi
-        
-    - name: Spam Detection
+    - name: Spam Detection and Rate Limiting
       id: spam_check
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
-        # Use proper quoting to handle special characters in issue content
-        ISSUE_TITLE="${{ github.event.issue.title }}"
-        ISSUE_BODY="${{ github.event.issue.body }}"
-        USER="${{ github.event.issue.user.login }}"
-        
-        # Basic spam checks
-        TITLE_LENGTH=${#ISSUE_TITLE}
-        BODY_LENGTH=${#ISSUE_BODY}
-        
-        # Check for common spam patterns
-        SPAM_SCORE=0
-        
-        # Too short or too long content
-        if [ "$TITLE_LENGTH" -lt 5 ] || [ "$TITLE_LENGTH" -gt 200 ]; then
-          SPAM_SCORE=$((SPAM_SCORE + 2))
-        fi
-        
-        if [ "$BODY_LENGTH" -lt 10 ] || [ "$BODY_LENGTH" -gt 5000 ]; then
-          SPAM_SCORE=$((SPAM_SCORE + 2))
-        fi
-        
-        # Check for spam keywords (case insensitive)
-        COMBINED_TEXT=$(echo "$ISSUE_TITLE $ISSUE_BODY" | tr '[:upper:]' '[:lower:]')
-        
-        if echo "$COMBINED_TEXT" | grep -E "(viagra|casino|lottery|crypto|bitcoin|investment|loan|forex)" > /dev/null; then
-          SPAM_SCORE=$((SPAM_SCORE + 5))
-        fi
-        
-        # Check for excessive repetition
-        if echo "$COMBINED_TEXT" | grep -E "(.)\1{10,}" > /dev/null; then
-          SPAM_SCORE=$((SPAM_SCORE + 3))
-        fi
-        
-        # Check user account age (new accounts are more suspicious)
-        USER_CREATED=$(gh api users/$USER --jq '.created_at')
-        USER_AGE_DAYS=$(( ($(date +%s) - $(date -d "$USER_CREATED" +%s)) / 86400 ))
-        
-        if [ "$USER_AGE_DAYS" -lt 7 ]; then
-          SPAM_SCORE=$((SPAM_SCORE + 2))
-        fi
-        
-        # AI-based content analysis for sophisticated spam
-        if [ "$SPAM_SCORE" -le 3 ]; then
-          AI_SPAM_CHECK=$(vibe-tools ask "
-          Analyze this GitHub issue for spam/inappropriate content on a scale of 0-10 (0=legitimate, 10=obvious spam).
-          Consider: promotional content, nonsensical text, irrelevant content, excessive links, scam attempts.
-          
-          Title: $ISSUE_TITLE
-          Body: $ISSUE_BODY
-          
-          Return only a number 0-10 and brief reason (max 20 words).
-          " --provider openrouter --model anthropic/claude-3-haiku --max-tokens 50 2>/dev/null || echo "5 Could not analyze")
-          
-          AI_SCORE=$(echo "$AI_SPAM_CHECK" | grep -oE '^[0-9]+' | head -1)
-          if [ ! -z "$AI_SCORE" ] && [ "$AI_SCORE" -gt 6 ]; then
-            SPAM_SCORE=$((SPAM_SCORE + AI_SCORE))
-          fi
-        fi
-        
-        echo "Spam score for issue: $SPAM_SCORE"
-        
-        # Threshold: 7+ is considered spam
-        if [ "$SPAM_SCORE" -ge 7 ]; then
-          echo "should_respond=false" >> $GITHUB_OUTPUT
-          echo "Issue flagged as potential spam (score: $SPAM_SCORE)"
-        else
-          echo "should_respond=true" >> $GITHUB_OUTPUT
-        fi
+        chmod +x .github/scripts/dr_b_prop_handler.py
+        python3 .github/scripts/dr_b_prop_handler.py spam-detection
         
   dr-b-prop-response:
     runs-on: ubuntu-latest
@@ -155,6 +56,11 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
@@ -164,34 +70,15 @@ jobs:
       run: |
         npm install -g vibe-tools
         
-    - name: Dr. B. Prop Response
+    - name: Generate and Post Dr. B. Prop Response
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
-        # Get issue details using proper quoting
-        ISSUE_TITLE="${{ github.event.issue.title }}"
-        ISSUE_BODY="${{ github.event.issue.body }}"
-        ISSUE_NUMBER="${{ github.event.issue.number }}"
-        
-        # Create Dr. B. Prop's response using AI
-        PROMPT="You are Dr. B. Prop, Principal Investigator at the Context Decay Research Institute. You've received reader feedback on one of your papers published at Context Rot blog. Respond in character as a slightly pompous but ultimately well-meaning academic researcher. Be witty, acknowledge valid points, defend your research where appropriate, and maintain the satirical but scholarly tone of the blog. Issue Title: ${ISSUE_TITLE} Issue Body: ${ISSUE_BODY} Provide a thoughtful, in-character response that: 1. Acknowledges the reader's feedback 2. Addresses any technical points raised 3. Maintains academic humor and tone 4. Thanks them for engaging with the research 5. Potentially suggests follow-up research directions Keep it concise (2-3 paragraphs max) but substantive."
-        
-        RESPONSE=$(vibe-tools ask "$PROMPT" --provider anthropic --model claude-3-5-sonnet-20241022 --max-tokens 500)
-        
-        # Post response as Dr. B. Prop  
-        printf "**Dr. B. Prop responds:**\n\n%s\n\n---\n*This response was generated by Dr. B. Prop's automated research assistant. For urgent matters, please contact the Context Decay Research Institute directly.*\n\n*🤖 Automated response system powered by the same technology that's slowly consuming all human context.*" "$RESPONSE" > /tmp/comment_body.txt
-        
-        gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
-          --method POST \
-          --field body="@/tmp/comment_body.txt"
-        
-    - name: Add research-reviewed label
-      run: |
-        gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
-          --method POST \
-          --field labels='["research-reviewed"]'
+        chmod +x .github/scripts/dr_b_prop_handler.py
+        python3 .github/scripts/dr_b_prop_handler.py response-generation
         
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
