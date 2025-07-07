@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="commentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0066cc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004499;stop-opacity:0.7" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Comment bubble -->
+  <path d="M6 8C6 6.9 6.9 6 8 6H24C25.1 6 26 6.9 26 8V18C26 19.1 25.1 20 24 20H12L8 24V8Z" 
+        fill="url(#commentGradient)" opacity="0.1"/>
+  <path d="M6 8C6 6.9 6.9 6 8 6H24C25.1 6 26 6.9 26 8V18C26 19.1 25.1 20 24 20H12L8 24V8Z" 
+        fill="none" stroke="url(#commentGradient)" stroke-width="1.5"/>
+  
+  <!-- Text cursor/selection indicator -->
+  <rect x="11" y="11" width="6" height="1.5" rx="0.75" fill="url(#commentGradient)" opacity="0.8"/>
+  <rect x="11" y="14" width="8" height="1.5" rx="0.75" fill="url(#commentGradient)" opacity="0.6"/>
+  
+  <!-- Plus/add indicator -->
+  <circle cx="24" cy="8" r="4" fill="url(#commentGradient)" opacity="0.9"/>
+  <path d="M22 8H26M24 6V10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+</svg>

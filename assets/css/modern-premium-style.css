@@ -715,7 +715,6 @@ p {
 }
 
 .step-icon {
-  font-size: var(--text-4xl);
   width: 64px;
   height: 64px;
   display: flex;
@@ -724,6 +723,13 @@ p {
   background: var(--color-gray-50);
   border-radius: var(--radius-xl);
   flex-shrink: 0;
+  border: 1px solid var(--color-gray-200);
+}
+
+.step-icon-img {
+  width: 32px;
+  height: 32px;
+  opacity: 0.9;
 }
 
 .step-content h3 {

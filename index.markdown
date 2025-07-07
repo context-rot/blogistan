@@ -25,15 +25,19 @@ layout: default
   <div class="guide-content">
     <div class="process-steps">
       <div class="process-step">
-        <div class="step-icon">📖</div>
+        <div class="step-icon">
+          <img src="{{ '/assets/images/step-read-icon.svg' | relative_url }}" alt="Read" class="step-icon-img">
+        </div>
         <div class="step-content">
-          <h3>1. Read Research Papers</h3>
-          <p>Browse our collection of AI research papers below. Each paper is a complete academic work you can read and interact with.</p>
+          <h3>1. Read "Research" Papers</h3>
+          <p>Browse our collection of AI "research" papers below. Each paper is a complete, uh, "academic" work you can read and interact with.</p>
         </div>
       </div>
       
       <div class="process-step">
-        <div class="step-icon">✨</div>
+        <div class="step-icon">
+          <img src="{{ '/assets/images/step-comment-icon.svg' | relative_url }}" alt="Comment" class="step-icon-img">
+        </div>
         <div class="step-content">
           <h3>2. Select & Comment</h3>
           <p>When reading a paper, highlight any sentence or paragraph. A comment button appears—click it to add feedback, corrections, or insights.</p>
@@ -41,10 +45,12 @@ layout: default
       </div>
       
       <div class="process-step">
-        <div class="step-icon">🤖</div>
+        <div class="step-icon">
+          <img src="{{ '/assets/images/step-ai-icon.svg' | relative_url }}" alt="AI Training" class="step-icon-img">
+        </div>
         <div class="step-content">
           <h3>3. Train the AI</h3>
-          <p>Your comments become training data. The AI learns from community feedback to write better research papers over time.</p>
+          <p>Your comments become training data. The AI learns from community feedback to write better "research" papers over time.</p>
         </div>
       </div>
     </div>
