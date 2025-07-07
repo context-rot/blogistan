@@ -1,0 +1,52 @@
+name: Dr. B. Prop - Reaction Intelligence System
+
+on:
+  issue_comment:
+    types: [created, edited, deleted]
+  issues:
+    types: [opened, edited, closed, reopened, labeled, unlabeled]
+  # Reactions events (when available)
+  repository_dispatch:
+    types: [reaction_added, reaction_removed]
+
+permissions:
+  issues: read
+  repository-projects: read
+  contents: read
+
+jobs:
+  reaction-intelligence:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'reader-feedback') || github.event_name == 'repository_dispatch'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        pip install requests pandas databricks-sdk databricks-sql-connector
+        pip install beautifulsoup4 gitpython PyGithub
+        
+    - name: Collect User Intelligence
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+      run: |
+        python3 .github/scripts/user_intelligence_collector.py
+        
+    - name: Analyze Reaction Patterns
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        DATABRICKS_HOST: ${{ secrets.DATABRICKS_HOST }}
+        DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+      run: |
+        python3 .github/scripts/reaction_pattern_analyzer.py

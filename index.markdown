@@ -2,6 +2,16 @@
 layout: default
 ---
 
+<div class="hero-section">
+  <img src="{{ '/assets/images/hero-banner.png' | relative_url }}" alt="Context Rot - Computational Decay Visualization" class="hero-image" loading="eager">
+  <div class="hero-overlay">
+    <div class="hero-content">
+      <h1 class="hero-title">Context Rot</h1>
+      <p class="hero-subtitle">A Journal of Computational Decay</p>
+    </div>
+  </div>
+</div>
+
 <div class="home-intro">
   <h2>Welcome to Context Rot</h2>
   <p class="lead">
@@ -11,7 +21,10 @@ layout: default
   </p>
   
   <div class="interaction-guide">
-    <h3>§ How to Play</h3>
+    <div class="guide-header">
+      <img src="{{ '/assets/images/context-icon.svg' | relative_url }}" alt="Context Icon" class="guide-icon">
+      <h3>§ How to Play</h3>
+    </div>
     <p>
       This isn't your typical blog. Or maybe it is. It's probably something worse. The AI I used to slop this together tried to tell me it's an <strong>interactive research environment</strong>. Uh. Yeah. "Research". Let's go with that. It's a relative term these days, anyway.
 
@@ -34,7 +47,10 @@ I will build this in the open. Just getting started now. I'll OSS the stuff as I
 </div>
 
 <section class="recent-papers">
-  <h2>Recent Publications</h2>
+  <div class="section-header">
+    <img src="{{ '/assets/images/research-icon.svg' | relative_url }}" alt="Research Icon" class="section-icon">
+    <h2>Recent Publications</h2>
+  </div>
   
   {% if site.posts.size > 0 %}
     <ul class="post-list">
@@ -82,7 +98,10 @@ I will build this in the open. Just getting started now. I'll OSS the stuff as I
             {% endif %}
             
             <footer class="paper-actions">
-              <a href="{{ post.url | relative_url }}" class="read-paper">Read Full Paper →</a>
+              <a href="{{ post.url | relative_url }}" class="read-paper">
+                Read Full Paper 
+                <img src="{{ '/assets/images/arrow-elegant.svg' | relative_url }}" alt="Arrow" class="button-arrow">
+              </a>
             </footer>
           </article>
         </li>
