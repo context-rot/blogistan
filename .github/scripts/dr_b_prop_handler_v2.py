@@ -153,7 +153,7 @@ class ContextualDrBProp:
         if self.openrouter_key:
             try:
                 lm = dspy.LM(
-                    model="openai/gpt-4o-2024-11-20",
+                    model="openai/gpt-4.1-turbo",
                     api_key=self.openrouter_key,
                     api_base="https://openrouter.ai/api/v1",
                 )
