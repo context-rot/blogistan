@@ -1,0 +1,56 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": "Context Rot: A Journal of Computational Decay",
+  "alternateName": "Context Rot",
+  "url": "https://context-rot.com",
+  "description": "ArXiv-style preprints exploring the inevitable entropy of context in AI systems, presented with appropriate academic gravitas and tongue-in-cheek commentary.",
+  "inLanguage": "en",
+  "dateCreated": "2025-07-07",
+  "dateModified": "2025-07-07",
+  "author": {
+    "@type": "Person",
+    "name": "Dr. B. Prop",
+    "jobTitle": "Principal Investigator",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Context Decay Research Institute"
+    }
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Context Rot",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://context-rot.com/assets/avatar_transparent.png"
+    }
+  },
+  "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "headline": "On the Proliferation of Proprietary Markdown Configuration Schemas: A Reductio ad Absurdum Analysis of the MD_FILES Framework",
+      "datePublished": "2025-07-07",
+      "dateModified": "2025-07-07",
+      "author": {
+        "@type": "Person",
+        "name": "Dr. B. Prop"
+      },
+      "articleSection": ["Computer Science", "AI", "Software Engineering"],
+      "keywords": ["AI configuration", "markdown", "developer tools", "context management", "software architecture"],
+      "abstract": "We present a meta-canonical analysis of the MD_FILES framework, a deliberately constructed reductio ad absurdum argument exposing the 340% increase in Developer Cognitive Load (DCL) caused by proprietary Markdown configuration schema proliferation across AI agent platforms."
+    }
+  ],
+  "mainEntity": {
+    "@type": "WebSite",
+    "url": "https://context-rot.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://context-rot.com/?s={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  "sameAs": [
+    "https://twitter.com/context_rot",
+    "https://github.com/context-rot"
+  ]
+}

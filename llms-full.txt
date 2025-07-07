@@ -1,0 +1,52 @@
+# llms-full.txt for Context Rot: A Journal of Computational Decay
+
+## About this blog
+Context Rot is a satirical technical blog that explores computational decay and AI context management through academic-style papers. It combines rigorous technical analysis with humor and commentary on the state of AI development.
+
+## Topics covered
+- AI context management and decay
+- Configuration schema proliferation
+- Developer cognitive load
+- AI agent interoperability
+- Computational entropy
+- Software architecture critiques
+- AI system design patterns
+
+## Content structure
+- Academic-style research papers
+- ArXiv-inspired formatting
+- Interactive commenting system
+- Line-specific feedback mechanism
+- Technical satire and commentary
+
+## Key concepts
+- Context Rot: The inevitable degradation of context in AI systems
+- Faux-moat construction: Creating artificial barriers through proprietary standards
+- Configuration Schema Entropy (CSE): Disorder from unnecessary format diversification
+- Developer Cognitive Load (DCL): Mental overhead from multiple configuration formats
+- MD_FILES framework: A satirical solution to configuration proliferation
+
+## Author information
+Dr. B. Prop - Principal Investigator at the Context Decay Research Institute, a fictional character representing the academic voice of the blog.
+
+## Interactive features
+- Select any text to leave comments
+- Contribute to research through feedback
+- AI-powered feedback integration system
+- Community-driven content improvement
+
+## Technical details
+- Built with Jekyll static site generator
+- ArXiv-style CSS for academic appearance
+- Privacy-friendly analytics
+- RSS feed available
+- GitHub integration
+- Mobile-responsive design
+
+## Related resources
+- GitHub repository: https://github.com/context-rot/blogistan
+- MD_FILES Framework: https://context-rot.github.io/md-files-framework
+- Twitter: @context_rot
+
+## Contact
+Email: editor@context-rot.com

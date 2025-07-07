@@ -2,19 +2,23 @@
 layout: default
 ---
 
-<article class="arxiv-paper">
+<article class="arxiv-paper" itemscope itemtype="https://schema.org/BlogPosting">
   <header class="paper-header">
-    <h1 class="paper-title">{{ page.title }}</h1>
+    <h1 class="paper-title" itemprop="headline">{{ page.title }}</h1>
     
     <div class="paper-meta">
       <div class="author-section">
         <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="author-avatar">
         <div class="authors">
-          {% if page.authors %}
-            {{ page.authors | join: ', ' }}
-          {% else %}
-            {{ site.author.name | default: "Dr. B. Prop" }}
-          {% endif %}
+          <span itemprop="author" itemscope itemtype="https://schema.org/Person">
+            <span itemprop="name">
+            {% if page.authors %}
+              {{ page.authors | join: ', ' }}
+            {% else %}
+              {{ site.author.name | default: "Dr. B. Prop" }}
+            {% endif %}
+            </span>
+          </span>
         </div>
       </div>
       
@@ -24,7 +28,9 @@ layout: default
       
       <div class="paper-info">
         <span class="arxiv-id">contextrot:{{ page.date | date: '%Y%m%d' }}.{{ page.slug }}</span>
-        <span class="date">{{ page.date | date: '%B %d, %Y' }}</span>
+        <span class="date">
+          <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: '%B %d, %Y' }}</time>
+        </span>
       </div>
       
       {% if page.categories %}
@@ -45,7 +51,7 @@ layout: default
   </section>
   {% endif %}
 
-  <section class="paper-content" id="paper-content" itemprop="articleBody">
+  <section class="paper-content" id="paper-content" itemprop="articleBody" data-llm-context="main-content">
     {{ content }}
   </section>
 

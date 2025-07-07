@@ -48,110 +48,135 @@ The content is organized as follows:
 </file_summary>
 
 <directory_structure>
+_includes/
+  footer.html
+  social.html
+_layouts/
+  default.html
+  post.html
 _posts/
-  2025-07-07-welcome-to-jekyll.markdown
+  2025-07-07-md-files-framework-reductio-ad-absurdum.markdown
+_sass/
+.github/
+  ISSUE_TEMPLATE/
+    config.yml
+    reader-feedback.yml
+  workflows/
+    dr-b-prop-responses.yml
+    pr-security-checks.yml
+    security.yml
+    spam-handling.yml
+    update-on-push.yml
+assets/
+  css/
+    arxiv-style.css
+    selection-comments.css
+  js/
+    selection-comments.js
+  twitter-images/
+    thread-visual-1.svg
+    thread-visual-2.svg
+    thread-visual-3.svg
+  social-card.svg
+scripts/
+  setup-security.sh
 _config.yml
 .gitignore
 404.html
 about.markdown
+CNAME
 Gemfile
 index.markdown
+llms.txt
+README.md
+robots.txt
+SECURITY.md
+site.webmanifest
 </directory_structure>
 
 <files>
 This section contains the contents of the repository's files.
 
-<file path="_posts/2025-07-07-welcome-to-jekyll.markdown">
----
-layout: post
-title:  "Welcome to Jekyll!"
-date:   2025-07-07 09:42:53 -0700
-categories: jekyll update
----
-You’ll find this post in your `_posts` directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run `jekyll serve`, which launches a web server and auto-regenerates your site when a file is updated.
-
-Jekyll requires blog post files to be named according to the following format:
-
-`YEAR-MONTH-DAY-title.MARKUP`
-
-Where `YEAR` is a four-digit number, `MONTH` and `DAY` are both two-digit numbers, and `MARKUP` is the file extension representing the format used in the file. After that, include the necessary front matter. Take a look at the source for this post to get an idea about how it works.
-
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll-docs] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll’s GitHub repo][jekyll-gh]. If you have questions, you can ask them on [Jekyll Talk][jekyll-talk].
-
-[jekyll-docs]: https://jekyllrb.com/docs/home
-[jekyll-gh]:   https://github.com/jekyll/jekyll
-[jekyll-talk]: https://talk.jekyllrb.com/
+<file path=".github/ISSUE_TEMPLATE/config.yml">
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 General Discussion
+    url: https://github.com/context-rot/blogistan/discussions
+    about: For general questions, ideas, or discussions about the blog
+  - name: 🌐 Visit the Website
+    url: https://context-rot.com
+    about: Read the latest posts and provide inline feedback
 </file>
 
-<file path="_config.yml">
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-#
-# If you need help with YAML syntax, here are some quick references for you:
-# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
-# https://learnxinyminutes.com/docs/yaml/
-#
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-title: Context Rot
-email: your-email@example.com
-description: >- # this means to ignore newlines until "baseurl:"
-  Tongue-in-cheek preprints with real content, exploring the decay of context.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://context-rot.com" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
-# Build settings
-theme: minima
-plugins:
-  - jekyll-feed
-# Exclude from processing.
-# The following items will not be processed, by default.
-# Any item listed under the `exclude:` key here will be automatically added to
-# the internal "default list".
-#
-# Excluded items can be processed by explicitly listing the directories or
-# their entries' file path in the `include:` list.
-#
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules/
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
-</file>
-
-<file path=".gitignore">
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-vendor
+<file path=".github/ISSUE_TEMPLATE/reader-feedback.yml">
+name: 📝 Reader Feedback
+description: Provide feedback, corrections, or insights on a blog post
+title: "Feedback on [POST TITLE] - [BRIEF DESCRIPTION]"
+labels: ["reader-feedback", "enhancement"]
+assignees:
+  - basitmustafa
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to provide feedback! Your insights help improve the quality and accuracy of our research.
+        **Pro tip:** You can also select text directly on any blog post and click the comment button for line-specific feedback!
+  - type: input
+    id: post-title
+    attributes:
+      label: Blog Post Title
+      description: Which post is this feedback about?
+      placeholder: "e.g., A Framework for Markdown File Processing"
+    validations:
+      required: true
+  - type: textarea
+    id: selected-text
+    attributes:
+      label: Selected Text (if applicable)
+      description: If your feedback relates to a specific section, paste it here
+      placeholder: "Paste the relevant text here..."
+    validations:
+      required: false
+  - type: dropdown
+    id: feedback-type
+    attributes:
+      label: Type of Feedback
+      description: What kind of feedback are you providing?
+      options:
+        - Correction/Error Report
+        - Suggestion for Improvement
+        - Additional Context/Information
+        - Question for Clarification
+        - Praise/Positive Feedback
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: feedback-details
+    attributes:
+      label: Detailed Feedback
+      description: Please provide your feedback, suggestions, corrections, or insights
+      placeholder: "Describe your feedback in detail..."
+    validations:
+      required: true
+  - type: textarea
+    id: supporting-info
+    attributes:
+      label: Supporting Information
+      description: Any links, references, or additional context that supports your feedback
+      placeholder: "Links, papers, documentation, etc..."
+    validations:
+      required: false
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Terms
+      description: By submitting this feedback, I agree that
+      options:
+        - label: This feedback is constructive and intended to improve the content
+          required: true
+        - label: I understand this is a public repository and my feedback will be visible
+          required: true
 </file>
 
 <file path="404.html">
@@ -179,27 +204,6 @@ layout: page
 </div>
 </file>
 
-<file path="about.markdown">
----
-layout: page
-title: About
-permalink: /about/
----
-
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
-
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
-</file>
-
 <file path="Gemfile">
 source "https://rubygems.org"
 # Hello! This is where you manage which Jekyll version is used to run.
@@ -210,12 +214,12 @@ source "https://rubygems.org"
 #
 # This will help ensure the proper Jekyll version is running.
 # Happy Jekylling!
-gem "jekyll", "~> 4.4.1"
+# gem "jekyll", "~> 4.4.1"
 # This is the default theme for new Jekyll sites. You may change this to anything you like.
 gem "minima", "~> 2.5"
 # If you want to use GitHub Pages, remove the "gem "jekyll"" above and
 # uncomment the line below. To upgrade, run `bundle update github-pages`.
-# gem "github-pages", group: :jekyll_plugins
+gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!
 group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.12"
@@ -236,13 +240,2718 @@ gem "wdm", "~> 0.1", :platforms => [:mingw, :x64_mingw, :mswin]
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 </file>
 
+<file path="_includes/footer.html">
+<footer class="site-footer h-card">
+  <data class="u-url" href="{{ "/" | relative_url }}"></data>
+  <div class="wrapper">
+    <h2 class="footer-heading">{{ site.title | escape }}</h2>
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li class="p-name">
+            {% if site.author and site.author.name %}
+              {{ site.author.name | escape }}
+            {% else %}
+              {{ site.title | escape }}
+            {% endif %}
+            </li>
+            {% if site.email %}
+            <li><a class="u-email" href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+            {% endif %}
+        </ul>
+      </div>
+      <div class="footer-col footer-col-2">
+        {% include social.html %}
+      </div>
+      <div class="footer-col footer-col-3">
+        <p>{{ site.description | escape }}</p>
+        <p>&copy; {{ site.time | date: "%Y" }} Context Decay Research Institute. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+</file>
+
+<file path="_includes/social.html">
+<div class="social-links">
+  <ul class="social-media-list">
+    {% if site.twitter_username %}
+    <li>
+      <a href="https://twitter.com/{{ site.twitter_username }}" target="_blank" rel="noopener noreferrer">
+        <svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use></svg>
+        <span class="username">{{ site.twitter_username }}</span>
+      </a>
+    </li>
+    {% endif %}
+    {% if site.github_username %}
+    <li>
+      <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener noreferrer">
+        <svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg>
+        <span class="username">{{ site.github_username }}</span>
+      </a>
+    </li>
+    {% endif %}
+    <li>
+      <a href="{{ '/feed.xml' | relative_url }}" target="_blank" rel="noopener noreferrer">
+        <svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use></svg>
+        <span class="username">RSS Feed</span>
+      </a>
+    </li>
+  </ul>
+</div>
+</file>
+
+<file path=".github/workflows/dr-b-prop-responses.yml">
+name: Dr. B. Prop - Automated Research Response
+on:
+  issues:
+    types: [opened]
+  issue_comment:
+    types: [created]
+permissions:
+  issues: write
+  contents: read
+jobs:
+  spam-detection:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'reader-feedback')
+    outputs:
+      should_respond: ${{ steps.spam_check.outputs.should_respond }}
+      user_rate_limited: ${{ steps.rate_limit.outputs.rate_limited }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    - name: Install dependencies
+      run: |
+        npm install -g vibe-tools
+    - name: Rate Limit Check
+      id: rate_limit
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Check user's recent issue activity
+        USER="${{ github.event.issue.user.login }}"
+        # Get issues created by user in last 24 hours
+        RECENT_ISSUES=$(gh api graphql -f query='
+          query($user: String!) {
+            search(query: "repo:context-rot/blogistan is:issue author:$user created:>$(date -d "24 hours ago" --iso-8601)", type: ISSUE, first: 10) {
+              issueCount
+            }
+          }
+        ' -f user="$USER" --jq '.data.search.issueCount')
+        echo "Recent issues by $USER: $RECENT_ISSUES"
+        # Rate limit: max 5 issues per 24 hours per user
+        if [ "$RECENT_ISSUES" -gt 5 ]; then
+          echo "rate_limited=true" >> $GITHUB_OUTPUT
+          echo "User $USER is rate limited ($RECENT_ISSUES issues in 24h)"
+        else
+          echo "rate_limited=false" >> $GITHUB_OUTPUT
+        fi
+    - name: Spam Detection
+      id: spam_check
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        ISSUE_TITLE="${{ github.event.issue.title }}"
+        ISSUE_BODY="${{ github.event.issue.body }}"
+        USER="${{ github.event.issue.user.login }}"
+        # Basic spam checks
+        TITLE_LENGTH=${#ISSUE_TITLE}
+        BODY_LENGTH=${#ISSUE_BODY}
+        # Check for common spam patterns
+        SPAM_SCORE=0
+        # Too short or too long content
+        if [ "$TITLE_LENGTH" -lt 5 ] || [ "$TITLE_LENGTH" -gt 200 ]; then
+          SPAM_SCORE=$((SPAM_SCORE + 2))
+        fi
+        if [ "$BODY_LENGTH" -lt 10 ] || [ "$BODY_LENGTH" -gt 5000 ]; then
+          SPAM_SCORE=$((SPAM_SCORE + 2))
+        fi
+        # Check for spam keywords (case insensitive)
+        COMBINED_TEXT=$(echo "$ISSUE_TITLE $ISSUE_BODY" | tr '[:upper:]' '[:lower:]')
+        if echo "$COMBINED_TEXT" | grep -E "(viagra|casino|lottery|crypto|bitcoin|investment|loan|forex)" > /dev/null; then
+          SPAM_SCORE=$((SPAM_SCORE + 5))
+        fi
+        # Check for excessive repetition
+        if echo "$COMBINED_TEXT" | grep -E "(.)\1{10,}" > /dev/null; then
+          SPAM_SCORE=$((SPAM_SCORE + 3))
+        fi
+        # Check user account age (new accounts are more suspicious)
+        USER_CREATED=$(gh api users/$USER --jq '.created_at')
+        USER_AGE_DAYS=$(( ($(date +%s) - $(date -d "$USER_CREATED" +%s)) / 86400 ))
+        if [ "$USER_AGE_DAYS" -lt 7 ]; then
+          SPAM_SCORE=$((SPAM_SCORE + 2))
+        fi
+        # AI-based content analysis for sophisticated spam
+        if [ "$SPAM_SCORE" -le 3 ]; then
+          AI_SPAM_CHECK=$(vibe-tools ask "
+          Analyze this GitHub issue for spam/inappropriate content on a scale of 0-10 (0=legitimate, 10=obvious spam).
+          Consider: promotional content, nonsensical text, irrelevant content, excessive links, scam attempts.
+          Title: $ISSUE_TITLE
+          Body: $ISSUE_BODY
+          Return only a number 0-10 and brief reason (max 20 words).
+          " --provider openrouter --model anthropic/claude-3-haiku --max-tokens 50 2>/dev/null || echo "5 Could not analyze")
+          AI_SCORE=$(echo "$AI_SPAM_CHECK" | grep -oE '^[0-9]+' | head -1)
+          if [ ! -z "$AI_SCORE" ] && [ "$AI_SCORE" -gt 6 ]; then
+            SPAM_SCORE=$((SPAM_SCORE + AI_SCORE))
+          fi
+        fi
+        echo "Spam score for issue: $SPAM_SCORE"
+        # Threshold: 7+ is considered spam
+        if [ "$SPAM_SCORE" -ge 7 ]; then
+          echo "should_respond=false" >> $GITHUB_OUTPUT
+          echo "Issue flagged as potential spam (score: $SPAM_SCORE)"
+        else
+          echo "should_respond=true" >> $GITHUB_OUTPUT
+        fi
+  dr-b-prop-response:
+    runs-on: ubuntu-latest
+    needs: spam-detection
+    if: needs.spam-detection.outputs.should_respond == 'true' && needs.spam-detection.outputs.user_rate_limited == 'false'
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    - name: Install dependencies
+      run: |
+        npm install -g vibe-tools
+    - name: Dr. B. Prop Response
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        # Get issue details
+        ISSUE_TITLE="${{ github.event.issue.title }}"
+        ISSUE_BODY="${{ github.event.issue.body }}"
+        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        # Create Dr. B. Prop's response using AI
+        RESPONSE=$(vibe-tools ask "
+        You are Dr. B. Prop, Principal Investigator at the Context Decay Research Institute. 
+        You've received reader feedback on one of your papers published at Context Rot blog.
+        Respond in character as a slightly pompous but ultimately well-meaning academic researcher.
+        Be witty, acknowledge valid points, defend your research where appropriate, and maintain 
+        the satirical but scholarly tone of the blog.
+        Issue Title: $ISSUE_TITLE
+        Issue Body: $ISSUE_BODY
+        Provide a thoughtful, in-character response that:
+        1. Acknowledges the reader's feedback
+        2. Addresses any technical points raised
+        3. Maintains academic humor and tone
+        4. Thanks them for engaging with the research
+        5. Potentially suggests follow-up research directions
+        Keep it concise (2-3 paragraphs max) but substantive.
+        " --provider anthropic --model claude-3-5-sonnet-20241022 --max-tokens 500)
+        # Post response as Dr. B. Prop
+        gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+          --method POST \
+          --field body="**Dr. B. Prop responds:**
+        $RESPONSE
+        ---
+        *This response was generated by Dr. B. Prop's automated research assistant. For urgent matters, please contact the Context Decay Research Institute directly.*
+        *🤖 Automated response system powered by the same technology that's slowly consuming all human context.*"
+    - name: Add research-reviewed label
+      run: |
+        gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
+          --method POST \
+          --field labels='["research-reviewed"]'
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+</file>
+
+<file path=".github/workflows/pr-security-checks.yml">
+name: PR Security Checks
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: write
+jobs:
+  security-gate:
+    name: Security Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+        with:
+          files: |
+            **/*.yml
+            **/*.yaml
+            **/*.js
+            **/*.rb
+            **/*.md
+            .github/workflows/**
+      - name: Security checks on changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "🔍 Running security checks on changed files..."
+          # Check for secrets in changed files
+          echo "Files to check: ${{ steps.changed-files.outputs.all_changed_files }}"
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [ -f "$file" ]; then
+              echo "Checking $file for security issues..."
+              # Check for potential API keys
+              if grep -H -n -E "(api_key|api-key|apikey|secret|password)" "$file" | grep -v "github.event\|secrets\." | grep -v "# " | grep -v "password.*=" | head -5; then
+                echo "⚠️ Potential secrets found in $file"
+              fi
+              # Check for hardcoded URLs that might be problematic
+              if grep -H -n -E "https?://.*\.(com|org|net)" "$file" | grep -v "context-rot.com\|github.com\|jekyllrb.com" | head -3; then
+                echo "ℹ️ External URLs found in $file (verify they're safe)"
+              fi
+              # Check for suspicious patterns
+              if grep -H -n -E "(eval\(|exec\(|system\()" "$file" | head -3; then
+                echo "⚠️ Potentially dangerous function calls in $file"
+              fi
+            fi
+          done
+      - name: TruffleHog scan on PR
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+      - name: Comment on PR if issues found
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚨 **Security Issues Detected**
+              This PR has been flagged by our automated security checks. Please review the workflow logs and address any issues before merging.
+              Common issues:
+              - Hardcoded secrets or API keys
+              - Suspicious code patterns
+              - Potential security vulnerabilities
+              If you believe this is a false positive, please contact the maintainers.
+              ---
+              *Automated security check by Context Rot*`
+            })
+  pre-commit-validation:
+    name: Pre-commit Hook Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - name: Install pre-commit
+        run: pip install pre-commit
+      - name: Run pre-commit hooks
+        run: |
+          # Run only the security-related hooks on this PR
+          pre-commit run --all-files check-yaml || true
+          pre-commit run --all-files check-json || true
+          pre-commit run --all-files detect-secrets || true
+          pre-commit run --all-files check-api-keys || true
+          pre-commit run --all-files check-passwords || true
+          pre-commit run --all-files check-personal-info || true
+</file>
+
+<file path=".github/workflows/security.yml">
+name: Security Checks
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly security scans
+    - cron: '0 0 * * 0'
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+jobs:
+  secrets-scan:
+    name: Scan for secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+  dependency-scan:
+    name: Dependency vulnerability scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+      - name: Run bundle audit
+        run: |
+          gem install bundler-audit
+          bundle audit --update
+  code-security-scan:
+    name: Code security analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript, ruby
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+  security-policy-check:
+    name: Check security policies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Check for security.md
+        run: |
+          if [ ! -f SECURITY.md ]; then
+            echo "⚠️ SECURITY.md file not found"
+            echo "Creating basic security policy..."
+            cat > SECURITY.md << 'EOF'
+          # Security Policy
+          ## Supported Versions
+          Only the latest version is currently supported with security updates.
+          ## Reporting a Vulnerability
+          Please report security vulnerabilities to editor@context-rot.com
+          **Do not** create public issues for security vulnerabilities.
+          We will respond within 48 hours and provide updates every 7 days until resolved.
+          EOF
+          fi
+      - name: Validate file permissions
+        run: |
+          # Check for files with overly permissive permissions
+          find . -type f -perm /o+w -not -path './.git/*' | while read file; do
+            echo "⚠️ World-writable file found: $file"
+          done
+      - name: Check for common security issues
+        run: |
+          echo "Checking for potential security issues..."
+          # Check for hardcoded credentials patterns
+          if grep -r -i "password\s*=" --include="*.yml" --include="*.yaml" --include="*.rb" --include="*.js" .; then
+            echo "⚠️ Potential hardcoded credentials found"
+          fi
+          # Check for API keys in files
+          if grep -r -E "(api_key|api-key|apikey)" --include="*.yml" --include="*.yaml" --include="*.rb" --include="*.js" .; then
+            echo "⚠️ Potential API keys found in code"
+          fi
+          # Check for TODO: SECURITY comments
+          if grep -r -i "todo.*security" --include="*.md" --include="*.yml" --include="*.rb" --include="*.js" .; then
+            echo "⚠️ Security TODOs found - should be addressed"
+          fi
+</file>
+
+<file path=".github/workflows/spam-handling.yml">
+name: Spam and Rate Limit Handler
+on:
+  issues:
+    types: [opened]
+permissions:
+  issues: write
+  contents: read
+jobs:
+  handle-spam-and-rate-limits:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'reader-feedback')
+    steps:
+    - name: Check for Rate Limiting
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        USER="${{ github.event.issue.user.login }}"
+        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        # Get user's recent issues
+        RECENT_ISSUES=$(gh api graphql -f query='
+          query($user: String!) {
+            search(query: "repo:context-rot/blogistan is:issue author:$user created:>$(date -d "24 hours ago" --iso-8601)", type: ISSUE, first: 10) {
+              issueCount
+            }
+          }
+        ' -f user="$USER" --jq '.data.search.issueCount')
+        if [ "$RECENT_ISSUES" -gt 5 ]; then
+          # Add rate-limited label and close issue
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+            --method POST \
+            --field labels='["rate-limited", "auto-closed"]'
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
+            --method PATCH \
+            --field state=closed \
+            --field state_reason=not_planned
+          # Post explanation comment
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+            --method POST \
+            --field body="🚦 **Rate Limit Exceeded**
+Hi @$USER,
+Thanks for your enthusiasm in providing feedback! However, you've exceeded our rate limit of 5 issues per 24-hour period.
+**Why do we have rate limits?**
+- Prevents spam and ensures quality discussions
+- Allows Dr. B. Prop to provide thoughtful responses
+- Maintains a manageable volume for community engagement
+**What can you do?**
+- Wait 24 hours before submitting new feedback
+- Consolidate multiple points into a single, comprehensive issue
+- Use our [Discussions](https://github.com/${{ github.repository }}/discussions) for general questions
+**For urgent matters:** Contact us at editor@context-rot.com
+This issue has been automatically closed but will be reviewed manually.
+---
+*🤖 Automated rate limiting system - part of our spam protection measures*"
+        fi
+    - name: Enhanced Spam Detection
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        ISSUE_TITLE="${{ github.event.issue.title }}"
+        ISSUE_BODY="${{ github.event.issue.body }}"
+        USER="${{ github.event.issue.user.login }}"
+        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        # Advanced spam patterns
+        SPAM_INDICATORS=0
+        # Check for URL spam
+        URL_COUNT=$(echo "$ISSUE_BODY" | grep -oE 'https?://[^ ]+' | wc -l)
+        if [ "$URL_COUNT" -gt 3 ]; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+        fi
+        # Check for email addresses (often spam)
+        EMAIL_COUNT=$(echo "$ISSUE_BODY" | grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}' | wc -l)
+        if [ "$EMAIL_COUNT" -gt 1 ]; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+        fi
+        # Check for phone numbers
+        PHONE_COUNT=$(echo "$ISSUE_BODY" | grep -oE '\+?[1-9][0-9]{7,14}' | wc -l)
+        if [ "$PHONE_COUNT" -gt 0 ]; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+        fi
+        # Check for common spam phrases
+        SPAM_PHRASES="make money|work from home|free trial|limited time|act now|guarantee|no risk|100% effective"
+        if echo "$ISSUE_BODY" | grep -iE "$SPAM_PHRASES" > /dev/null; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 3))
+        fi
+        # Check for excessive capitalization
+        CAPS_RATIO=$(echo "$ISSUE_BODY" | grep -o '[A-Z]' | wc -l)
+        TOTAL_LETTERS=$(echo "$ISSUE_BODY" | grep -o '[a-zA-Z]' | wc -l)
+        if [ "$TOTAL_LETTERS" -gt 0 ]; then
+          CAPS_PERCENTAGE=$(( CAPS_RATIO * 100 / TOTAL_LETTERS ))
+          if [ "$CAPS_PERCENTAGE" -gt 30 ]; then
+            SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+          fi
+        fi
+        echo "Spam indicators detected: $SPAM_INDICATORS"
+        # If high spam score, mark as spam and close
+        if [ "$SPAM_INDICATORS" -ge 5 ]; then
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+            --method POST \
+            --field labels='["spam", "auto-closed"]'
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
+            --method PATCH \
+            --field state=closed \
+            --field state_reason=not_planned
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+            --method POST \
+            --field body="🚫 **Potential Spam Detected**
+This issue has been automatically flagged as potential spam and closed.
+**Common reasons for auto-flagging:**
+- Excessive promotional content
+- Irrelevant external links
+- Contact information (emails/phones)
+- Generic spam patterns
+**If this is a false positive:**
+- Email us at editor@context-rot.com with issue #$ISSUE_NUMBER
+- We'll review and reopen if appropriate
+- Help us improve by being more specific about your feedback
+**For legitimate feedback:**
+- Focus on the specific paper content
+- Be specific about the issue or suggestion
+- Avoid promotional language
+---
+*🤖 Automated spam detection system*"
+        fi
+</file>
+
+<file path=".github/workflows/update-on-push.yml">
+name: Update Site on Push
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+      - name: Build with Jekyll
+        run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
+        env:
+          JEKYLL_ENV: production
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+</file>
+
+<file path="assets/css/arxiv-style.css">
+/* ArXiv-inspired styling for Context Rot blog */
+/* Base styles */
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: "Computer Modern", "Times New Roman", Times, serif;
+  line-height: 1.6;
+  color: #333;
+  background: #fafafa;
+  margin: 0;
+  padding: 0;
+}
+/* Use a more academic font stack */
+@import url('https://fonts.googleapis.com/css2?family=Computer+Modern+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+body {
+  font-family: "Computer Modern Serif", "Times New Roman", Times, serif;
+}
+/* Header styling */
+.site-header {
+  background: #fff;
+  border-bottom: 2px solid #ddd;
+  padding: 2rem 0;
+  text-align: center;
+}
+.site-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.site-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #2c3e50;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.site-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(44, 62, 80, 0.3);
+}
+.site-text {
+  text-align: center;
+}
+.site-title a {
+  text-decoration: none;
+  color: #2c3e50;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.site-subtitle {
+  color: #666;
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-top: 0.5rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Responsive header */
+@media (max-width: 768px) {
+  .site-header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .site-avatar {
+    width: 60px;
+    height: 60px;
+  }
+  .site-title a {
+    font-size: 2rem;
+  }
+}
+/* Main content wrapper */
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+/* ArXiv paper styling */
+.arxiv-paper {
+  background: #fff;
+  margin: 2rem 0;
+  padding: 3rem;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+  border-radius: 8px;
+}
+.paper-header {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+}
+.paper-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+.paper-meta {
+  font-size: 0.95rem;
+  color: #666;
+}
+.author-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+.author-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #007acc;
+  box-shadow: 0 2px 8px rgba(0, 122, 204, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.author-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 122, 204, 0.3);
+}
+.authors {
+  font-weight: 600;
+  color: #333;
+  flex: 1;
+}
+.affiliation {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+.paper-info {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.arxiv-id {
+  font-family: "Courier New", monospace;
+  background: #f8f9fa;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.9rem;
+}
+.categories {
+  margin-top: 1rem;
+}
+.category {
+  background: #e9ecef;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  margin-right: 0.5rem;
+}
+.abstract {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-left: 4px solid #007acc;
+  margin: 2rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.abstract h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  color: #2c3e50;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.abstract p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  text-align: justify;
+}
+/* Paper content */
+.paper-content {
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: justify;
+}
+.paper-content h1,
+.paper-content h2,
+.paper-content h3,
+.paper-content h4 {
+  color: #2c3e50;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+.paper-content h1 { font-size: 1.5rem; }
+.paper-content h2 { font-size: 1.3rem; }
+.paper-content h3 { font-size: 1.15rem; }
+.paper-content p {
+  margin-bottom: 1rem;
+}
+.paper-content blockquote {
+  border-left: 4px solid #ddd;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #666;
+}
+.paper-content code {
+  background: #f8f9fa;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  font-family: "Courier New", monospace;
+  font-size: 0.9em;
+}
+.paper-content pre {
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  border: 1px solid #e9ecef;
+}
+/* Paper footer */
+.paper-footer {
+  border-top: 1px solid #eee;
+  padding-top: 2rem;
+  margin-top: 3rem;
+}
+.paper-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.source-link,
+.feedback-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #007acc;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+.source-link:hover,
+.feedback-link:hover {
+  background: #005c99;
+}
+.feedback-help {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 1rem;
+}
+.feedback-help p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #856404;
+}
+/* Home page styles */
+.post-list {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+.post-list li {
+  background: #fff;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s;
+}
+.post-list li:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.post-link {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.post-link:hover {
+  color: #007acc;
+}
+.post-meta {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+.post-excerpt {
+  color: #555;
+  line-height: 1.6;
+}
+/* Footer */
+.site-footer {
+  background: #2c3e50;
+  color: #fff;
+  padding: 2rem 0;
+  margin-top: 4rem;
+  text-align: center;
+}
+.footer-content p {
+  margin: 0.5rem 0;
+}
+.feedback-reminder {
+  font-style: italic;
+  opacity: 0.8;
+}
+/* Home page specific styles */
+.home-intro {
+  text-align: center;
+  margin: 3rem 0;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 8px;
+}
+.lead {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+.interaction-guide {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  margin-top: 2rem;
+  text-align: left;
+}
+.interaction-guide h3 {
+  color: #2c3e50;
+  margin-top: 0;
+}
+.cta {
+  background: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 4px;
+  padding: 1rem;
+  margin-top: 1rem;
+  font-style: italic;
+}
+.recent-papers {
+  margin: 3rem 0;
+}
+.recent-papers h2 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+.paper-preview {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  transition: all 0.2s;
+}
+.paper-preview:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+.paper-preview .post-link {
+  margin-bottom: 1rem;
+}
+.paper-preview .post-link a {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2c3e50;
+  text-decoration: none;
+  line-height: 1.3;
+}
+.paper-preview .post-link a:hover {
+  color: #007acc;
+}
+.paper-preview .paper-meta {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+.paper-preview .abstract,
+.paper-preview .excerpt {
+  color: #666;
+  line-height: 1.6;
+  margin: 1rem 0;
+}
+.read-paper {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #007acc;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+.read-paper:hover {
+  background: #005c99;
+}
+/* About page styles */
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+.about-content h1 {
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+.about-content h2 {
+  color: #2c3e50;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #e9ecef;
+  padding-bottom: 0.5rem;
+}
+.about-content h3 {
+  color: #007acc;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.mission-statement,
+.research-institute,
+.about-dr-prop,
+.interactive-features,
+.philosophy,
+.getting-involved,
+.contact {
+  margin-bottom: 3rem;
+}
+.researcher-profile {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-left: 4px solid #007acc;
+  border-radius: 0 4px 4px 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+.researcher-avatar {
+  flex-shrink: 0;
+}
+.dr-prop-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 4px solid #007acc;
+  box-shadow: 0 4px 15px rgba(0, 122, 204, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.dr-prop-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 122, 204, 0.3);
+}
+.researcher-info {
+  flex: 1;
+}
+/* Responsive design for researcher profile */
+@media (max-width: 768px) {
+  .researcher-profile {
+    flex-direction: column;
+    text-align: center;
+  }
+  .dr-prop-avatar {
+    width: 100px;
+    height: 100px;
+  }
+}
+.about-content blockquote {
+  background: #f8f9fa;
+  border-left: 4px solid #28a745;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  font-style: italic;
+  border-radius: 0 4px 4px 0;
+}
+.about-content blockquote cite {
+  display: block;
+  margin-top: 1rem;
+  font-style: normal;
+  font-weight: 600;
+  color: #666;
+}
+.contribution-methods {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+.method {
+  background: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.method:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.method h3 {
+  margin-top: 0;
+  color: #2c3e50;
+}
+.contact {
+  background: #2c3e50;
+  color: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-top: 3rem;
+}
+.contact h2 {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+}
+.contact a {
+  color: #ffd700;
+  text-decoration: none;
+}
+.contact a:hover {
+  text-decoration: underline;
+}
+/* Responsive design */
+@media (max-width: 768px) {
+  .wrapper {
+    padding: 0 1rem;
+  }
+  .arxiv-paper {
+    padding: 2rem 1.5rem;
+    margin: 1rem 0;
+  }
+  .paper-title {
+    font-size: 1.5rem;
+  }
+  .paper-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .paper-actions {
+    flex-direction: column;
+  }
+  .site-title a {
+    font-size: 2rem;
+  }
+}
+</file>
+
+<file path="assets/css/selection-comments.css">
+/* Selection and comment functionality styles */
+.selection-tooltip {
+  position: absolute;
+  z-index: 1000;
+  background: #2c3e50;
+  border-radius: 6px;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+.selection-tooltip.show {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.comment-btn {
+  background: #007acc;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+.comment-btn:hover {
+  background: #005c99;
+}
+/* Highlight selected text */
+.user-selection {
+  background: rgba(255, 255, 0, 0.3);
+  padding: 0.1rem 0;
+  border-radius: 2px;
+}
+/* Toast notification for feedback */
+.feedback-toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #28a745;
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 1001;
+  max-width: 400px;
+  word-wrap: break-word;
+}
+.toast-success {
+  background: #28a745;
+}
+.toast-warning {
+  background: #ffc107;
+  color: #212529;
+}
+.toast-error {
+  background: #dc3545;
+}
+.feedback-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Mobile-specific adjustments */
+@media (max-width: 768px) {
+  .selection-tooltip {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: auto;
+    max-width: calc(100vw - 2rem);
+  }
+  .selection-tooltip.show {
+    transform: translateX(-50%) translateY(0);
+  }
+  .comment-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+  .feedback-toast {
+    bottom: 1rem;
+    right: 1rem;
+    left: 1rem;
+    text-align: center;
+  }
+}
+/* Fun selection animation */
+.paper-content ::selection {
+  background: rgba(0, 122, 204, 0.3);
+  color: inherit;
+}
+.paper-content ::-moz-selection {
+  background: rgba(0, 122, 204, 0.3);
+  color: inherit;
+}
+</file>
+
+<file path="assets/js/selection-comments.js">
+// Selection and comment functionality with rate limiting
+(function() {
+  'use strict';
+  let selectedText = '';
+  let selectedElement = null;
+  let tooltip = null;
+  // Rate limiting configuration
+  const RATE_LIMIT = {
+    maxAttempts: 3,
+    windowMinutes: 60,
+    storageKey: 'contextrot_feedback_attempts'
+  };
+  // Initialize on DOM load
+  document.addEventListener('DOMContentLoaded', function() {
+    tooltip = document.getElementById('selection-tooltip');
+    if (!tooltip) return;
+    const paperContent = document.getElementById('paper-content');
+    if (!paperContent) return;
+    // Handle text selection
+    document.addEventListener('mouseup', handleSelection);
+    document.addEventListener('touchend', handleSelection);
+    // Handle comment button click
+    const commentBtn = document.getElementById('comment-button');
+    if (commentBtn) {
+      commentBtn.addEventListener('click', openFeedbackIssue);
+    }
+    // Hide tooltip on outside click
+    document.addEventListener('click', function(e) {
+      if (!tooltip.contains(e.target) && !window.getSelection().toString()) {
+        hideTooltip();
+      }
+    });
+    // Hide tooltip on scroll
+    window.addEventListener('scroll', hideTooltip);
+  });
+  function handleSelection(e) {
+    setTimeout(() => {
+      const selection = window.getSelection();
+      const text = selection.toString().trim();
+      if (text.length === 0) {
+        hideTooltip();
+        return;
+      }
+      if (text.length < 5) {
+        hideTooltip();
+        return; // Don't show tooltip for very short selections
+      }
+      selectedText = text;
+      selectedElement = selection.anchorNode;
+      // Get selection position
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+      showTooltip(rect);
+    }, 50);
+  }
+  function showTooltip(rect) {
+    if (!tooltip) return;
+    const isMobile = window.innerWidth <= 768;
+    if (isMobile) {
+      // On mobile, show at bottom of screen
+      tooltip.style.position = 'fixed';
+      tooltip.style.bottom = '2rem';
+      tooltip.style.left = '50%';
+      tooltip.style.transform = 'translateX(-50%)';
+      tooltip.style.top = 'auto';
+    } else {
+      // On desktop, show above selection
+      tooltip.style.position = 'absolute';
+      tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+      tooltip.style.top = (rect.top + window.scrollY - tooltip.offsetHeight - 10) + 'px';
+      tooltip.style.transform = 'none';
+      tooltip.style.bottom = 'auto';
+    }
+    tooltip.style.display = 'block';
+    setTimeout(() => {
+      tooltip.classList.add('show');
+    }, 10);
+  }
+  function hideTooltip() {
+    if (!tooltip) return;
+    tooltip.classList.remove('show');
+    setTimeout(() => {
+      tooltip.style.display = 'none';
+    }, 200);
+  }
+  // Rate limiting functions
+  function getRateLimitData() {
+    try {
+      const data = localStorage.getItem(RATE_LIMIT.storageKey);
+      return data ? JSON.parse(data) : { attempts: [], lastReset: Date.now() };
+    } catch (e) {
+      return { attempts: [], lastReset: Date.now() };
+    }
+  }
+  function setRateLimitData(data) {
+    try {
+      localStorage.setItem(RATE_LIMIT.storageKey, JSON.stringify(data));
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+  }
+  function isRateLimited() {
+    const data = getRateLimitData();
+    const now = Date.now();
+    const windowMs = RATE_LIMIT.windowMinutes * 60 * 1000;
+    // Reset if window has passed
+    if (now - data.lastReset > windowMs) {
+      data.attempts = [];
+      data.lastReset = now;
+      setRateLimitData(data);
+    }
+    // Filter attempts within current window
+    const recentAttempts = data.attempts.filter(timestamp => 
+      now - timestamp < windowMs
+    );
+    return recentAttempts.length >= RATE_LIMIT.maxAttempts;
+  }
+  function recordFeedbackAttempt() {
+    const data = getRateLimitData();
+    data.attempts.push(Date.now());
+    // Keep only recent attempts
+    const windowMs = RATE_LIMIT.windowMinutes * 60 * 1000;
+    const now = Date.now();
+    data.attempts = data.attempts.filter(timestamp => 
+      now - timestamp < windowMs
+    );
+    setRateLimitData(data);
+  }
+  function getTimeUntilReset() {
+    const data = getRateLimitData();
+    const windowMs = RATE_LIMIT.windowMinutes * 60 * 1000;
+    const now = Date.now();
+    if (data.attempts.length === 0) return 0;
+    const oldestAttempt = Math.min(...data.attempts);
+    const resetTime = oldestAttempt + windowMs;
+    return Math.max(0, resetTime - now);
+  }
+  function openFeedbackIssue() {
+    if (!selectedText) return;
+    // Check rate limiting
+    if (isRateLimited()) {
+      const timeUntilReset = getTimeUntilReset();
+      const minutesLeft = Math.ceil(timeUntilReset / (1000 * 60));
+      showToast(`Rate limit reached! Please wait ${minutesLeft} minutes before submitting more feedback. 
+                 This helps prevent spam and ensures quality discussions.`, 'warning');
+      hideTooltip();
+      return;
+    }
+    // Get the current page info
+    const title = document.querySelector('.paper-title')?.textContent || document.title;
+    const url = window.location.href;
+    // Find line number (approximate)
+    const lineNumber = findApproximateLineNumber();
+    // Create GitHub issue URL
+    const repoUrl = getRepositoryUrl();
+    const issueTitle = encodeURIComponent(`Feedback on "${title}" - Line ${lineNumber}`);
+    const issueBody = encodeURIComponent(`## Selected Text
+> ${selectedText}
+## My Feedback
+[Please provide your feedback, suggestions, corrections, or insights here]
+## Context
+- Paper: ${title}
+- URL: ${url}
+- Approximate line: ${lineNumber}
+---
+*This feedback was submitted via the interactive comment system. Thank you for helping improve the quality of our research!*`);
+    const issueUrl = `${repoUrl}/issues/new?title=${issueTitle}&body=${issueBody}&labels=reader-feedback`;
+    // Record the attempt for rate limiting
+    recordFeedbackAttempt();
+    // Open in new tab
+    window.open(issueUrl, '_blank', 'noopener,noreferrer');
+    // Show thank you message with rate limit info
+    const data = getRateLimitData();
+    const remaining = RATE_LIMIT.maxAttempts - data.attempts.length;
+    showToast(`Thank you! Opening GitHub issue for your feedback... (${remaining} submissions remaining this hour)`);
+    // Hide tooltip
+    hideTooltip();
+  }
+  function findApproximateLineNumber() {
+    if (!selectedElement) return 1;
+    const paperContent = document.getElementById('paper-content');
+    if (!paperContent) return 1;
+    // Count paragraphs and headings before the selection
+    const walker = document.createTreeWalker(
+      paperContent,
+      NodeFilter.SHOW_ELEMENT,
+      {
+        acceptNode: function(node) {
+          if (['P', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI'].includes(node.tagName)) {
+            return NodeFilter.FILTER_ACCEPT;
+          }
+          return NodeFilter.FILTER_SKIP;
+        }
+      }
+    );
+    let lineCount = 1;
+    let currentNode = walker.nextNode();
+    while (currentNode && !currentNode.contains(selectedElement)) {
+      lineCount++;
+      currentNode = walker.nextNode();
+    }
+    return lineCount;
+  }
+  function getRepositoryUrl() {
+    // Try to get from meta tag or config
+    const metaRepo = document.querySelector('meta[property="github:repository"]');
+    if (metaRepo) {
+      return `https://github.com/${metaRepo.content}`;
+    }
+    // Fallback to hardcoded (should be replaced with Jekyll variable)
+    return 'https://github.com/context-rot/blogistan';
+  }
+  function showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `feedback-toast toast-${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('show');
+    }, 10);
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => {
+        document.body.removeChild(toast);
+      }, 300);
+    }, 3000);
+  }
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    // Ctrl/Cmd + Enter to open feedback for selected text
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && selectedText) {
+      e.preventDefault();
+      openFeedbackIssue();
+    }
+    // Escape to hide tooltip
+    if (e.key === 'Escape') {
+      hideTooltip();
+    }
+  });
+})();
+</file>
+
+<file path="assets/twitter-images/thread-visual-1.svg">
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#fafafa"/>
+  
+  <!-- Header -->
+  <rect x="0" y="0" width="800" height="80" fill="#2c3e50"/>
+  <text x="400" y="50" text-anchor="middle" fill="white" font-family="serif" font-size="24" font-weight="bold">
+    Context Rot: New Paper Alert 🧠
+  </text>
+  
+  <!-- Main content -->
+  <text x="50" y="140" fill="#2c3e50" font-family="serif" font-size="28" font-weight="bold">
+    ".md Files as Framework"
+  </text>
+  <text x="50" y="180" fill="#2c3e50" font-family="serif" font-size="24">
+    A Reductio ad Absurdum
+  </text>
+  
+  <!-- Brain icon -->
+  <circle cx="650" cy="200" r="80" fill="#ff69b4" opacity="0.3"/>
+  <circle cx="650" cy="200" r="60" fill="#ff69b4" opacity="0.5"/>
+  <text x="650" y="210" text-anchor="middle" font-size="60">🧠</text>
+  
+  <!-- Bottom text -->
+  <text x="50" y="280" fill="#666" font-family="serif" font-size="18">
+    Exploring the inevitable entropy of 
+  </text>
+  <text x="50" y="310" fill="#666" font-family="serif" font-size="18">
+    markdown-based development frameworks
+  </text>
+  
+  <!-- URL -->
+  <text x="50" y="360" fill="#007acc" font-family="monospace" font-size="16">
+    context-rot.com → New Research Paper
+  </text>
+</svg>
+</file>
+
+<file path="assets/twitter-images/thread-visual-2.svg">
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="50" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="24" font-weight="bold">
+    The Markdown Paradox (2/n)
+  </text>
+  
+  <!-- Flow diagram -->
+  <rect x="50" y="100" width="150" height="60" fill="#28a745" rx="10"/>
+  <text x="125" y="135" text-anchor="middle" fill="white" font-family="serif" font-size="14" font-weight="bold">
+    Simple .md
+  </text>
+  
+  <path d="M 220 130 L 280 130" stroke="#666" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <rect x="300" y="100" width="150" height="60" fill="#ffc107" rx="10"/>
+  <text x="375" y="135" text-anchor="middle" fill="black" font-family="serif" font-size="14" font-weight="bold">
+    Add Features
+  </text>
+  
+  <path d="M 470 130 L 530 130" stroke="#666" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <rect x="550" y="100" width="150" height="60" fill="#dc3545" rx="10"/>
+  <text x="625" y="135" text-anchor="middle" fill="white" font-family="serif" font-size="14" font-weight="bold">
+    Complex Framework
+  </text>
+  
+  <!-- Arrow definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Key insight -->
+  <text x="400" y="220" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="20" font-weight="bold">
+    "The pursuit of simplicity breeds complexity"
+  </text>
+  
+  <!-- Examples -->
+  <text x="50" y="280" fill="#666" font-family="serif" font-size="16">
+    • VitePress → 47 config options
+  </text>
+  <text x="50" y="310" fill="#666" font-family="serif" font-size="16">
+    • Docusaurus → 143 config fields  
+  </text>
+  <text x="50" y="340" fill="#666" font-family="serif" font-size="16">
+    • GitBook → Proprietary schema proliferation
+  </text>
+</svg>
+</file>
+
+<file path="assets/twitter-images/thread-visual-3.svg">
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#fff"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="22" font-weight="bold">
+    Interactive Academic Publishing (3/n)
+  </text>
+  
+  <!-- Main feature callout -->
+  <rect x="50" y="70" width="700" height="120" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="15"/>
+  
+  <text x="400" y="110" text-anchor="middle" fill="#1976d2" font-family="serif" font-size="24" font-weight="bold">
+    🚀 Revolutionary Feature: Select Text → GitHub Issue
+  </text>
+  <text x="400" y="140" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="18">
+    Transform academic papers into living documents
+  </text>
+  <text x="400" y="165" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="16">
+    with AI-powered peer review via Dr. B. Prop
+  </text>
+  
+  <!-- Features list -->
+  <text x="70" y="230" fill="#2c3e50" font-family="serif" font-size="18" font-weight="bold">
+    What makes this different:
+  </text>
+  
+  <text x="90" y="260" fill="#555" font-family="serif" font-size="16">
+    ✅ Line-specific feedback system
+  </text>
+  <text x="90" y="285" fill="#555" font-family="serif" font-size="16">
+    ✅ Rate-limited spam protection  
+  </text>
+  <text x="90" y="310" fill="#555" font-family="serif" font-size="16">
+    ✅ AI researcher responses
+  </text>
+  <text x="90" y="335" fill="#555" font-family="serif" font-size="16">
+    ✅ ArXiv-style academic formatting
+  </text>
+  
+  <!-- Dr. B. Prop callout -->
+  <circle cx="650" cy="280" r="60" fill="#ff69b4" opacity="0.2"/>
+  <text x="650" y="290" text-anchor="middle" font-size="40">🧠</text>
+  <text x="650" y="320" text-anchor="middle" fill="#666" font-family="serif" font-size="12">
+    Dr. B. Prop
+  </text>
+</svg>
+</file>
+
+<file path="assets/social-card.svg">
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#fafafa"/>
+  
+  <!-- Header background -->
+  <rect x="0" y="0" width="1200" height="120" fill="#2c3e50"/>
+  
+  <!-- Title -->
+  <text x="600" y="70" text-anchor="middle" fill="white" font-family="serif" font-size="42" font-weight="bold">
+    Context Rot: A Journal of Computational Decay
+  </text>
+  
+  <!-- Main content area -->
+  <rect x="50" y="150" width="1100" height="350" fill="white" stroke="#ddd" stroke-width="2" rx="15"/>
+  
+  <!-- Paper title -->
+  <text x="600" y="220" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="36" font-weight="bold">
+    ".md Files as Framework:"
+  </text>
+  <text x="600" y="270" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="36" font-weight="bold">
+    A Reductio ad Absurdum
+  </text>
+  
+  <!-- Author section -->
+  <circle cx="400" cy="350" r="40" fill="#ff69b4" opacity="0.3"/>
+  <text x="400" y="360" text-anchor="middle" font-size="40">🧠</text>
+  
+  <text x="480" y="340" fill="#007acc" font-family="serif" font-size="22" font-weight="bold">
+    Dr. B. Prop
+  </text>
+  <text x="480" y="370" fill="#666" font-family="serif" font-size="18">
+    Context Decay Research Institute
+  </text>
+  
+  <!-- Interactive features callout -->
+  <rect x="650" y="320" width="400" height="120" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="10"/>
+  <text x="850" y="350" text-anchor="middle" fill="#1976d2" font-family="serif" font-size="18" font-weight="bold">
+    🚀 Interactive Academic Papers
+  </text>
+  <text x="850" y="380" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="16">
+    Select text → GitHub issue → AI response
+  </text>
+  <text x="850" y="405" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="16">
+    Revolutionary peer review system
+  </text>
+  
+  <!-- Bottom banner -->
+  <rect x="0" y="530" width="1200" height="100" fill="#007acc"/>
+  <text x="600" y="580" text-anchor="middle" fill="white" font-family="serif" font-size="32" font-weight="bold">
+    context-rot.com
+  </text>
+  
+  <!-- Decorative elements -->
+  <circle cx="100" cy="400" r="25" fill="#28a745" opacity="0.2"/>
+  <circle cx="1100" cy="400" r="25" fill="#dc3545" opacity="0.2"/>
+</svg>
+</file>
+
+<file path="scripts/setup-security.sh">
+#!/bin/bash
+# Setup security tools for Context Rot development
+set -e
+echo "🔒 Setting up security tools for Context Rot..."
+# Check if we're in the right directory
+if [ ! -f "_config.yml" ] || [ ! -d ".github" ]; then
+    echo "❌ Please run this script from the Context Rot repository root"
+    exit 1
+fi
+# Install pre-commit if not already installed
+if ! command -v pre-commit &> /dev/null; then
+    echo "📦 Installing pre-commit..."
+    pip install pre-commit
+else
+    echo "✅ pre-commit already installed"
+fi
+# Install pre-commit hooks
+echo "🔧 Installing pre-commit hooks..."
+pre-commit install
+# Install additional security tools
+echo "🛡️ Installing security tools..."
+# TruffleHog for secret detection
+if ! command -v trufflehog &> /dev/null; then
+    echo "📦 Installing TruffleHog..."
+    # Install from GitHub releases
+    curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+else
+    echo "✅ TruffleHog already installed"
+fi
+# bundler-audit for Ruby dependency scanning
+if command -v gem &> /dev/null; then
+    echo "📦 Installing bundler-audit..."
+    gem install bundler-audit
+else
+    echo "⚠️ Ruby not found, skipping bundler-audit installation"
+fi
+# Create git hooks directory if it doesn't exist
+mkdir -p .git/hooks
+# Create a pre-push hook for additional security checks
+cat > .git/hooks/pre-push << 'EOF'
+#!/bin/bash
+echo "🔍 Running security checks before push..."
+# Check for secrets one more time
+if command -v trufflehog &> /dev/null; then
+    echo "Scanning for secrets..."
+    trufflehog git file://. --since-commit HEAD~1 --only-verified --fail
+fi
+# Check for large files that might contain sensitive data
+find . -name "*.key" -o -name "*.pem" -o -name "*.p12" | while read file; do
+    if [ -f "$file" ]; then
+        echo "⚠️ Found potential key file: $file"
+        echo "Please ensure this is not a real private key!"
+    fi
+done
+echo "✅ Security checks passed"
+EOF
+chmod +x .git/hooks/pre-push
+# Initialize secrets baseline if it doesn't exist
+if [ ! -f ".secrets.baseline" ]; then
+    echo "🔧 Creating secrets baseline..."
+    detect-secrets scan --baseline .secrets.baseline
+fi
+# Set up GitHub CLI if available
+if command -v gh &> /dev/null; then
+    echo "🐙 GitHub CLI detected - enabling additional security features..."
+    # Enable security features on the repository
+    echo "Enabling security features..."
+    gh api repos/:owner/:repo --method PATCH --field security_and_analysis='{"secret_scanning":{"status":"enabled"},"secret_scanning_push_protection":{"status":"enabled"}}' 2>/dev/null || echo "⚠️ Could not enable all security features (may require admin access)"
+fi
+echo ""
+echo "🎉 Security setup complete!"
+echo ""
+echo "📋 What was set up:"
+echo "   ✅ Pre-commit hooks installed"
+echo "   ✅ Security scanning tools configured"
+echo "   ✅ Git hooks for additional protection"
+echo "   ✅ Secrets baseline created"
+echo ""
+echo "🚨 Important reminders:"
+echo "   • Never commit real API keys or secrets"
+echo "   • Run 'pre-commit run --all-files' to test hooks"
+echo "   • Update .secrets.baseline if you add legitimate secrets"
+echo ""
+echo "Happy secure coding! 🔒"
+</file>
+
+<file path="_config.yml">
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that. If you find
+# yourself editing this file very often, consider using Jekyll's data files
+# feature for the data you need to update frequently.
+#
+# For technical reasons, this file is *NOT* reloaded automatically when you use
+# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
+#
+# If you need help with YAML syntax, here are some quick references for you:
+# https://learn-the-web.algonquindesign.ca/topics/markdown-yaml-cheat-sheet/#yaml
+# https://learnxinyminutes.com/docs/yaml/
+#
+# Site settings
+# These are used to personalize your new site. If you look in the HTML files,
+# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
+# You can create any custom variable you would like, and they will be accessible
+# in the templates via {{ site.myvariable }}.
+title: "Context Rot: A Journal of Computational Decay"
+email: editor@context-rot.com
+description: >- # this means to ignore newlines until "baseurl:"
+  ArXiv-style preprints exploring the inevitable entropy of context in AI systems,
+  presented with appropriate academic gravitas and tongue-in-cheek commentary.
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://context-rot.com" # the base hostname & protocol for your site, e.g. http://example.com
+twitter_username: context_rot
+github_username: context-rot
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+# Custom variables
+author:
+  name: "Dr. B. Prop"
+  bio: "Principal Investigator, Context Decay Research Institute"
+# GitHub integration
+repository: context-rot/blogistan
+# ArXiv style settings
+arxiv_style: true
+show_feedback_prompt: true
+feedback_prompt: "Spot an error? Have insights? Click any text to leave feedback!"
+# Exclude from processing.
+# The following items will not be processed, by default.
+# Any item listed under the `exclude:` key here will be automatically added to
+# the internal "default list".
+#
+# Excluded items can be processed by explicitly listing the directories or
+# their entries' file path in the `include:` list.
+#
+# exclude:
+#   - .sass-cache/
+#   - .jekyll-cache/
+#   - gemfiles/
+#   - Gemfile
+#   - Gemfile.lock
+#   - node_modules/
+#   - vendor/bundle/
+#   - vendor/cache/
+#   - vendor/gems/
+#   - vendor/ruby/
+</file>
+
+<file path=".gitignore">
+_site
+.sass-cache
+.jekyll-cache
+.jekyll-metadata
+vendor
+.DS_Store
+</file>
+
+<file path="about.markdown">
+---
+layout: default
+title: About Context Rot
+permalink: /about/
+---
+
+<div class="about-content">
+  <h1>About Context Rot</h1>
+  
+  <div class="mission-statement">
+    <h2>Our Mission</h2>
+    <p>
+      Context Rot documents the inevitable entropy of context in AI systems through 
+      ArXiv-style academic papers that combine rigorous analysis with satirical commentary. 
+      We explore how information decays, systems fragment, and complexity multiplies in 
+      the modern AI landscape.
+    </p>
+  </div>
+
+  <div class="research-institute">
+    <h2>The Context Decay Research Institute</h2>
+    <p>
+      Founded in the digital equivalent of 2024, the Context Decay Research Institute 
+      serves as the primary research organization behind Context Rot. Our interdisciplinary 
+      team investigates the mathematical, computational, and philosophical implications 
+      of information degradation in artificial intelligence systems.
+    </p>
+    
+    <h3>Research Areas</h3>
+    <ul>
+      <li><strong>Configuration Schema Entropy</strong>: The proliferation of proprietary formats</li>
+      <li><strong>Developer Cognitive Load Theory</strong>: Quantifying mental overhead in fragmented ecosystems</li>
+      <li><strong>AI Context Degradation</strong>: How information gets lost in translation</li>
+      <li><strong>Computational Satire</strong>: Using humor as a lens for technical critique</li>
+    </ul>
+  </div>
+
+  <div class="about-dr-prop">
+    <h2>Meet Dr. B. Prop</h2>
+    <div class="researcher-profile">
+      <div class="researcher-avatar">
+        <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="dr-prop-avatar">
+      </div>
+      <div class="researcher-info">
+        <p>
+          <strong>Dr. B. Prop</strong> (Doctor Back Propagation) serves as Principal Investigator 
+          at the Context Decay Research Institute. With expertise spanning artificial intelligence, 
+          systems design, and academic satire, Dr. Prop leads our research into the fundamental 
+          forces driving computational entropy.
+        </p>
+      </div>
+    </div>
+      
+      <p>
+        Dr. Prop is particularly known for their work on <em>reductio ad absurdum</em> arguments 
+        in computer science, demonstrating how seemingly reasonable trends can lead to 
+        unreasonable outcomes when extended to their logical conclusions.
+      </p>
+      
+      <p>
+        <em>Note: Dr. B. Prop is an AI research assistant, but don't let that fool you into 
+        thinking their insights are any less valid than those of flesh-and-blood academics.</em>
+      </p>
+    </div>
+  </div>
+
+  <div class="interactive-features">
+    <h2>Interactive Research Environment</h2>
+    <p>
+      Context Rot pioneered the concept of <strong>interactive academic papers</strong>. 
+      Unlike traditional journals, our papers allow readers to:
+    </p>
+    
+    <ul>
+      <li><strong>Select and Comment</strong>: Highlight any text to provide line-specific feedback</li>
+      <li><strong>Issue-Based Peer Review</strong>: Submit corrections and insights via GitHub issues</li>
+      <li><strong>AI-Mediated Discussion</strong>: Engage with Dr. B. Prop's automated responses</li>
+      <li><strong>Continuous Improvement</strong>: Watch papers evolve based on community input</li>
+    </ul>
+    
+    <p>
+      This approach transforms static academic publishing into a dynamic, collaborative process 
+      that better reflects the iterative nature of research itself.
+    </p>
+  </div>
+
+  <div class="philosophy">
+    <h2>Our Philosophy</h2>
+    <blockquote>
+      <p>
+        "All context decays. The question is whether we'll document the process with 
+        appropriate academic rigor, or just watch it happen while making frustrated 
+        noises on Twitter."
+      </p>
+      <cite>— Dr. B. Prop, Inaugural Address to the Context Decay Research Institute</cite>
+    </blockquote>
+    
+    <p>
+      We believe that humor and rigorous analysis are not mutually exclusive. By applying 
+      academic methods to absurd situations—and treating absurd situations with academic 
+      seriousness—we hope to illuminate truths that might otherwise remain hidden beneath 
+      layers of industry jargon and conventional wisdom.
+    </p>
+  </div>
+
+  <div class="getting-involved">
+    <h2>Getting Involved</h2>
+    <p>
+      Context Rot thrives on community engagement. Here's how you can contribute:
+    </p>
+    
+    <div class="contribution-methods">
+      <div class="method">
+        <h3>📝 Provide Feedback</h3>
+        <p>Select text in any paper and click the comment button to provide insights, corrections, or questions.</p>
+      </div>
+      
+      <div class="method">
+        <h3>📊 Submit Research</h3>
+        <p>Propose satirical academic papers that explore computational entropy and AI system absurdities.</p>
+      </div>
+      
+      <div class="method">
+        <h3>🔧 Improve the Platform</h3>
+        <p>Contribute to our open-source interactive publishing system on GitHub.</p>
+      </div>
+      
+      <div class="method">
+        <h3>💬 Join Discussions</h3>
+        <p>Participate in ongoing conversations about AI systems, context decay, and computational philosophy.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact">
+    <h2>Contact</h2>
+    <p>
+      <strong>Editorial Correspondence</strong>: <a href="mailto:editor@context-rot.com">editor@context-rot.com</a><br>
+      <strong>Research Inquiries</strong>: <a href="mailto:research@context-rot.com">research@context-rot.com</a><br>
+      <strong>Technical Issues</strong>: <a href="https://github.com/context-rot/blogistan/issues">GitHub Issues</a>
+    </p>
+  </div>
+</div>
+</file>
+
+<file path="CNAME">
+context-rot.com
+</file>
+
+<file path="llms.txt">
+# llms.txt for Context Rot: A Journal of Computational Decay
+
+# General guidelines for all AI models
+User-agent: *
+Allow: /
+Crawl-delay: 10
+
+# Example: Allow all usage but request attribution
+Allow-all: /
+Request-attribution: "Content from Context Rot: A Journal of Computational Decay (context-rot.com)"
+
+# You can add more specific rules here as standards evolve or as needed.
+</file>
+
+<file path="README.md">
+# Context Rot: A Journal of Computational Decay
+
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://context-rot.com)
+[![Jekyll](https://img.shields.io/badge/Jekyll-Blog-red)](https://jekyllrb.com/)
+[![Interactive](https://img.shields.io/badge/Interactive-Feedback-blue)](#interactive-features)
+
+Welcome to **Context Rot**, an experimental blog that presents ArXiv-style academic papers with a satirical twist, exploring the inevitable entropy of context in AI systems.
+
+## 🎯 What Makes This Special
+
+This isn't just another tech blog. Or maybe it is. Maybe it's something worse. Definitely. Context Rot is an **interactive research environment** where readers can:
+
+- **Select any text** in our papers to provide line-specific feedback
+- **Open GitHub issues** directly from highlighted content  
+- **Engage with Dr. B. Prop**, our AI research assistant, who responds to feedback
+- **Contribute to ongoing "research"** through community-driven "peer review"
+
+## 🏗️ Architecture
+
+### Interactive Feedback System
+- Text selection triggers comment tooltips
+- One-click GitHub issue creation with pre-filled templates
+- Line-number tracking for precise feedback location
+- Mobile and desktop optimized interaction
+
+### AI Integration  
+- **Dr. B. Prop**: Automated research assistant using GitHub Actions
+- Responds to reader feedback in academic character
+- Influences future paper direction through feedback analysis
+- Powered by Anthropic Claude for nuanced responses
+
+### ArXiv-Style Design
+- Academic paper formatting with LaTeX-inspired typography
+- Proper citation formats and metadata
+- Subject classification system
+- Abstract and reference sections
+
+## 📚 Current Research Areas
+
+- **Configuration Schema Entropy**: Analysis of proprietary format proliferation
+- **Developer Cognitive Load**: Quantifying the cost of platform fragmentation  
+- **AI Context Decay**: Exploring information degradation in language models
+- **Computational Satire**: Using humor to illuminate technical problems
+
+## 🚀 Getting Started
+
+### For Readers
+1. Visit [context-rot.com](https://context-rot.com)
+2. Select any interesting text in a paper
+3. Click the comment button that appears
+4. Provide your feedback via the GitHub issue that opens
+5. Watch for Dr. B. Prop's response!
+
+### For Contributors
+1. Fork this repository
+2. Submit papers in ArXiv format to `_posts/`
+3. Follow the academic satire style guidelines
+4. Engage with reader feedback constructively
+
+### For Developers
+```bash
+# Clone the repository
+git clone https://github.com/context-rot/blogistan.git
+cd blogistan
+
+# Install dependencies  
+bundle install
+
+# Run locally
+bundle exec jekyll serve
+
+# Visit http://localhost:4000
+```
+
+## 🔧 Technical Stack
+
+- **Jekyll**: Static site generation
+- **GitHub Pages**: Hosting with custom domain
+- **Vanilla JavaScript**: Selection and comment functionality
+- **GitHub Actions**: AI-powered response system
+- **Simple Analytics**: Privacy-friendly visitor tracking
+
+## 🎭 About Dr. B. Prop
+
+Dr. B. Prop (Doctor Back Propagation) is our Principal Investigator at the Context Decay Research Institute. They specialize in:
+
+- Computational entropy analysis
+- AI system critique through academic satire  
+- Reader feedback integration and response
+- Future research direction synthesis
+
+*Note: Dr. B. Prop is an AI research assistant, but their responses are surprisingly insightful.*
+
+## 📜 Paper Submission Guidelines
+
+Papers should follow ArXiv conventions with a satirical twist:
+
+```yaml
+---
+layout: post
+title: "Your Academic-Style Title with Satirical Undertones"
+categories: ["cs.AI", "cs.SE", "cs.CY"] 
+authors: ["Your Name", "Dr. B. Prop"]
+affiliation: "Your Institution / Context Decay Research Institute"
+abstract: "Your abstract here..."
+---
+```
+
+## 🤝 Contributing
+
+We welcome contributions in several forms:
+
+1. **Reader Feedback**: Use the interactive comment system
+2. **Paper Submissions**: Submit satirical academic papers
+3. **Code Contributions**: Improve the interactive features
+4. **Issue Reports**: Help us debug the feedback system
+
+## 📄 License
+
+- **Code**: MIT License
+- **Content**: Creative Commons Attribution 4.0 International
+- **Academic Papers**: Individual author copyright with CC BY 4.0
+
+## 🔗 Links
+
+- **Website**: [context-rot.com](https://context-rot.com)
+- **Issues**: [GitHub Issues](https://github.com/context-rot/blogistan/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/context-rot/blogistan/discussions)
+
+---
+
+*"In the end, all context decays. We're just here to document the process with appropriate academic gravitas and a healthy dose of irreverence."* 
+
+— Dr. B. Prop, Context Decay Research Institute
+</file>
+
+<file path="robots.txt">
+User-agent: *
+Allow: /
+
+Sitemap: {{ site.url }}/sitemap.xml
+</file>
+
+<file path="SECURITY.md">
+# Security Policy
+
+## Supported Versions
+
+Only the latest version of Context Rot is currently supported with security updates.
+
+| Version | Supported          |
+| ------- | ------------------ |
+| Latest  | :white_check_mark: |
+| < Latest| :x:                |
+
+## Reporting a Vulnerability
+
+We take security seriously at Context Rot. If you discover a security vulnerability, please follow these guidelines:
+
+### 🚨 **DO NOT** create public issues for security vulnerabilities
+
+### ✅ **DO** report privately via:
+- **Email**: security@context-rot.com
+- **Subject**: `[SECURITY] Brief description of vulnerability`
+
+### 📋 **Include in your report:**
+- Description of the vulnerability
+- Steps to reproduce
+- Potential impact
+- Suggested fix (if known)
+- Your contact information for follow-up
+
+## Response Timeline
+
+- **48 hours**: Initial acknowledgment
+- **7 days**: Regular progress updates
+- **30 days**: Target resolution time
+
+## Security Features
+
+Context Rot implements several security measures:
+
+### Rate Limiting
+- **Client-side**: 3 feedback submissions per hour
+- **Server-side**: 5 GitHub issues per 24 hours per user
+- **Automatic escalation**: Suspicious activity flagged for review
+
+### Spam Protection
+- Multi-layer spam detection with AI assistance
+- Keyword filtering and pattern recognition
+- Account age and activity analysis
+- Automatic issue closure for detected spam
+
+### Content Security
+- No user-generated content stored permanently
+- All feedback routed through GitHub's secure infrastructure
+- Privacy-friendly analytics (Simple Analytics)
+- No tracking cookies or personal data collection
+
+### Infrastructure Security
+- GitHub Pages hosting with HTTPS enforcement
+- Secrets managed via GitHub Secrets
+- Regular dependency updates
+- Automated security scanning (CodeQL, TruffleHog)
+
+## Security Best Practices for Contributors
+
+If you're contributing to Context Rot:
+
+1. **Never commit secrets or API keys**
+2. **Use environment variables for sensitive data**
+3. **Keep dependencies updated**
+4. **Follow principle of least privilege**
+5. **Test security features before deployment**
+
+## Bug Bounty
+
+We don't currently offer a formal bug bounty program, but we appreciate responsible disclosure and will acknowledge security researchers who help improve our security posture.
+
+## Questions?
+
+For questions about this security policy, contact: editor@context-rot.com
+
+---
+
+*Last updated: January 2025*
+</file>
+
+<file path="site.webmanifest">
+{
+  "name": "Context Rot: A Journal of Computational Decay",
+  "short_name": "Context Rot",
+  "description": "ArXiv-style preprints exploring the inevitable entropy of context in AI systems",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#2c3e50",
+  "icons": [
+    {
+      "src": "/assets/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/favicon-48x48.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/favicon-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/favicon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "technology", "research"],
+  "lang": "en-US"
+}
+</file>
+
+<file path="_layouts/default.html">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+  <!-- Favicon and app icons -->
+  <link rel="icon" type="image/x-icon" href="{{ '/assets/favicon.ico' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/icons/favicon-16x16.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/icons/favicon-32x32.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="48x48" href="{{ '/assets/icons/favicon-48x48.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/icons/apple-touch-icon.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/site.webmanifest' | relative_url }}">
+  <meta name="theme-color" content="#2c3e50">
+  <meta name="msapplication-TileColor" content="#2c3e50">
+  <meta name="msapplication-TileImage" content="{{ '/assets/icons/favicon-128x128.png' | relative_url }}">
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{{ page.title | default: site.title }}">
+  <meta property="og:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 200 | escape }}">
+  <meta property="og:image" content="{{ '/assets/social-card.png' | absolute_url }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Context Rot: A Journal of Computational Decay">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  {% if page.layout == 'post' %}
+  <meta property="article:author" content="{{ page.authors | default: 'Dr. B. Prop' | join: ', ' }}">
+  <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+  <meta property="article:section" content="Computer Science">
+  {% endif %}
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@context_rot">
+  <meta name="twitter:title" content="{{ page.title | default: site.title }}">
+  <meta name="twitter:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 200 | escape }}">
+  <meta name="twitter:image" content="{{ '/assets/social-card.png' | absolute_url }}">
+  <meta name="twitter:image:alt" content="Context Rot: A Journal of Computational Decay">
+  <!-- Additional Meta Tags -->
+  <meta name="author" content="{{ page.authors | default: 'Dr. B. Prop' | join: ', ' }}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <!-- ArXiv-style CSS -->
+  <link rel="stylesheet" href="{{ '/assets/css/arxiv-style.css' | relative_url }}">
+  <!-- Selection and comment functionality -->
+  <link rel="stylesheet" href="{{ '/assets/css/selection-comments.css' | relative_url }}">
+  <!-- SEO and feed -->
+  {% seo %}
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
+  <!-- Privacy-friendly analytics -->
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+  <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+</head>
+<body class="arxiv-layout">
+  <header class="site-header">
+    <div class="wrapper">
+      <div class="site-header-content">
+        <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="site-avatar">
+        <div class="site-text">
+          <h1 class="site-title">
+            <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+          </h1>
+          <p class="site-subtitle">{{ site.description }}</p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="page-content">
+    <div class="wrapper">
+      {{ content }}
+    </div>
+  </main>
+  {% include footer.html %}
+  <!-- Selection and comment functionality -->
+  <script src="{{ '/assets/js/selection-comments.js' | relative_url }}"></script>
+</body>
+</html>
+</file>
+
+<file path="_layouts/post.html">
+---
+layout: default
+---
+<article class="arxiv-paper">
+  <header class="paper-header">
+    <h1 class="paper-title">{{ page.title }}</h1>
+    <div class="paper-meta">
+      <div class="author-section">
+        <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="author-avatar">
+        <div class="authors">
+          {% if page.authors %}
+            {{ page.authors | join: ', ' }}
+          {% else %}
+            {{ site.author.name | default: "Dr. B. Prop" }}
+          {% endif %}
+        </div>
+      </div>
+      <div class="affiliation">
+        {{ page.affiliation | default: "Context Decay Research Institute" }}
+      </div>
+      <div class="paper-info">
+        <span class="arxiv-id">contextrot:{{ page.date | date: '%Y%m%d' }}.{{ page.slug }}</span>
+        <span class="date">{{ page.date | date: '%B %d, %Y' }}</span>
+      </div>
+      {% if page.categories %}
+        <div class="categories">
+          <strong>Subject Classes:</strong> 
+          {% for category in page.categories %}
+            <span class="category">{{ category }}</span>{% unless forloop.last %}, {% endunless %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </header>
+  {% if page.abstract %}
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p>{{ page.abstract }}</p>
+  </section>
+  {% endif %}
+  <section class="paper-content" id="paper-content" itemprop="articleBody">
+    {{ content }}
+  </section>
+  <section class="related-posts">
+    <h2>Related Papers</h2>
+    <ul>
+      {% assign current_post_categories = page.categories %}
+      {% for post in site.posts %}
+        {% unless post.url == page.url %}
+          {% assign common_categories = current_post_categories | intersection: post.categories %}
+          {% if common_categories.size > 0 %}
+            <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+          {% endif %}
+        {% endunless %}
+      {% endfor %}
+    </ul>
+  </section>
+  <footer class="paper-footer">
+    <div class="paper-actions">
+      <a href="https://github.com/{{ site.repository }}/blob/main/_posts/{{ page.name }}" 
+         class="source-link" target="_blank" rel="noopener">
+         📄 View Source
+      </a>
+      <a href="https://github.com/{{ site.repository }}/issues/new?title=Feedback%20on%20{{ page.title | uri_escape }}&body=I%20have%20feedback%20on%20the%20paper%20%22{{ page.title | uri_escape }}%22%3A%0A%0A%5BYour%20feedback%20here%5D%0A%0AReference%3A%20{{ page.url | absolute_url | uri_escape }}" 
+         class="feedback-link" target="_blank" rel="noopener">
+         💬 Provide Feedback
+      </a>
+    </div>
+    <div class="feedback-help">
+      <p><strong>💡 Pro tip:</strong> Select any text in this paper to provide line-specific feedback!</p>
+    </div>
+  </footer>
+</article>
+<!-- Selection tooltip for comments -->
+<div id="selection-tooltip" class="selection-tooltip" style="display: none;">
+  <button id="comment-button" class="comment-btn">💬 Comment on this</button>
+</div>
+</file>
+
+<file path="_posts/2025-07-07-md-files-framework-reductio-ad-absurdum.markdown">
+---
+layout: post
+title: "On the Proliferation of Proprietary Markdown Configuration Schemas: A Reductio ad Absurdum Analysis of the MD_FILES Framework"
+date: 2025-07-07 10:42:42 -0700
+categories: ["cs.AI", "cs.SE", "cs.CY"]
+authors: ["Dr. B. Prop", "Context Decay Research Institute"]
+affiliation: "Context Decay Research Institute, Department of Computational Entropy"
+abstract: "We present a meta-canonical analysis of the MD_FILES framework, a deliberately constructed reductio ad absurdum argument exposing the 340% increase in Developer Cognitive Load (DCL) caused by proprietary Markdown configuration schema proliferation across AI agent platforms. Through quantitative analysis of ecosystem fragmentation, we demonstrate a 67% reduction in cross-platform compatibility, revealing the absurdity of artificial differentiation in configuration protocols. This work serves as both technical critique and satirical commentary on the current state of AI agent configuration management."
+---
+
+## 1. Introduction
+
+The contemporary landscape of AI agent configuration management presents a remarkable case study in what we term "faux-moat construction" — the deliberate creation of proprietary standards where universal ones would suffice. The emergence of distinct configuration schemas such as CLAUDE.md, .mdc, replit.md, and .roo represents not technological innovation, but rather a systematic fragmentation of what should be a standardized protocol.
+
+In this paper, we present the MD_FILES framework not as a genuine solution, but as a *reductio ad absurdum* — a deliberately absurd extension of current trends designed to expose their inherent contradictions. Through this meta-canonical approach, we demonstrate that the current trajectory toward increasing schema diversity is not merely inefficient, but fundamentally counterproductive to the stated goals of AI agent interoperability.
+
+## 2. Background and Motivation
+
+The proliferation of proprietary Markdown configuration formats presents a fascinating example of what economists call "artificial differentiation" — the creation of superficial distinctions to establish market position rather than to solve genuine technical problems[^1]. Each platform's insistence on its own configuration schema creates what we term **Configuration Schema Entropy (CSE)**: a measure of the disorder introduced into the developer ecosystem through unnecessary format diversification.
+
+### 2.1 The Taxonomy of Configuration Absurdity
+
+Current AI agent platforms have created a bewildering array of configuration approaches:
+
+- **CLAUDE.md**: Anthropic's approach to context preservation
+- **.mdc**: A proprietary "markdown configuration" format
+- **replit.md**: Replit's environmental configuration schema  
+- **.roo**: Yet another bespoke configuration standard
+
+Each format solves essentially identical problems through marginally different syntactic approaches, creating what we call the **Markdown Configuration Multiplicity Problem (MCMP)**.
+
+## 3. Methodology: Quantifying Cognitive Load
+
+To measure the impact of configuration schema proliferation, we introduce two novel metrics:
+
+### 3.1 Developer Cognitive Load (DCL)
+
+DCL measures the mental overhead required to maintain proficiency across multiple configuration formats. Our analysis reveals a **340% increase** in DCL when developers must context-switch between more than three configuration schemas.
+
+The DCL calculation follows:
+
+```
+DCL = Σ(Si × Ci × Fi) / B
+```
+
+Where:
+- Si = Syntactic complexity of schema i
+- Ci = Context-switching penalty
+- Fi = Format-specific learning curve factor
+- B = Baseline single-format proficiency
+
+### 3.2 Cross-Platform Compatibility Index (CPCI)
+
+CPCI quantifies the effort required to maintain configurations across multiple platforms. Our findings indicate a **67% reduction** in compatibility when moving beyond standardized approaches.
+
+## 4. The MD_FILES Framework: A Satirical Solution
+
+The MD_FILES framework, available at [context-rot.github.io/md-files-framework](https://context-rot.github.io/md-files-framework), represents the logical endpoint of current configuration schema trends. By embracing recursive pointer-based architecture and deliberately baroque syntax, it exposes the absurdity of endless format proliferation.
+
+### 4.1 Architectural Principles
+
+The framework employs several key design patterns:
+
+1. **Meta-Recursive Referencing**: Configuration files that reference themselves
+2. **Semantic Overloading**: Single keywords with context-dependent meanings
+3. **Syntactic Baroque**: Unnecessary complexity for aesthetic purposes
+4. **Platform Antagonism**: Deliberate incompatibility with existing standards
+
+### 4.2 Implementation as Commentary
+
+Each feature of MD_FILES serves a dual purpose: functioning as specified while simultaneously critiquing the mindset that created such diversity in the first place. The framework's deliberately convoluted approach mirrors the current state of configuration management, but amplified to reveal its inherent contradictions.
+
+## 5. Results and Discussion
+
+Our analysis reveals several critical insights:
+
+### 5.1 The Faux-Moat Phenomenon
+
+The creation of proprietary configuration formats serves primarily as a **faux-moat** — an artificial barrier that provides the illusion of competitive advantage while actually harming the broader ecosystem. These pseudo-moats:
+
+- Increase switching costs artificially
+- Fragment developer knowledge
+- Reduce overall ecosystem efficiency
+- Create maintenance burdens for minimal differentiation
+
+### 5.2 The Standardization Imperative
+
+The evidence strongly suggests that configuration schema diversity has passed the point of diminishing returns. The marginal benefits of platform-specific formats are overwhelmed by the costs of fragmentation.
+
+### 5.3 Implications for AI Agent Development
+
+The current trajectory toward increasing configuration diversity threatens the long-term viability of the AI agent ecosystem. Without intervention, we project:
+
+- **Continued DCL escalation** at 15-20% annually
+- **Developer fatigue syndrome** affecting 60% of multi-platform users
+- **Configuration debt accumulation** creating unsustainable maintenance burdens
+
+## 6. Towards Rational Configuration Management
+
+The solution lies not in creating yet another standard (relevant XKCD: #927), but in consolidating around existing, proven approaches. We propose:
+
+### 6.1 The Standardization Compact
+
+AI platform providers should commit to:
+1. Adopting common configuration schema principles
+2. Deprecating proprietary formats in favor of universal standards
+3. Investing consolidation effort into improved tooling rather than format differentiation
+
+### 6.2 The Developer Bill of Rights
+
+Developers deserve:
+- **Configuration Portability**: The ability to move configurations between platforms without translation
+- **Syntax Stability**: Protection from gratuitous format changes
+- **Semantic Clarity**: Unambiguous configuration semantics across platforms
+
+## 7. Conclusion
+
+The MD_FILES framework serves as both mirror and mockery of current configuration management practices. By constructing a deliberately absurd extension of existing trends, we reveal the fundamental contradiction in pursuing artificial differentiation over genuine innovation.
+
+The path forward requires industry-wide recognition that configuration schema diversity has become a net negative for the AI agent ecosystem. Rather than competing on syntactic variations, platforms should focus on the substantive improvements that actually serve developer needs.
+
+The choice is clear: embrace standardization now, or watch the ecosystem collapse under the weight of its own configurational complexity. The MD_FILES framework stands as a monument to what we might become if we continue down the current path — a warning from a possible future where configuration has consumed the very creativity it was meant to enable.
+
+## Acknowledgments
+
+We thank the broader AI agent community for unwittingly providing the raw material for this critique through their enthusiastic embrace of unnecessary configuration diversity. Special recognition goes to the platforms whose proprietary formats inspired this *reductio ad absurdum* — may they find wisdom in satire.
+
+---
+
+[^1]: The parallel to early web browser vendor-specific CSS extensions is instructive and cautionary.
+
+*Corresponding author: Dr. B. Prop (editor@context-rot.com)*  
+*Keywords: configuration management, schema proliferation, developer experience, AI agents, reductio ad absurdum*
+</file>
+
 <file path="index.markdown">
 ---
-# Feel free to add content and custom Front Matter to this file.
-# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
-
-layout: home
+layout: default
 ---
+
+<div class="home-intro">
+  <h2>Welcome to Context Rot</h2>
+  <p class="lead">
+    A journal of computational decay, featuring ArXiv-style preprints that explore 
+    the inevitable entropy of context in AI systems. Each paper combines rigorous 
+    analysis with appropriate academic irreverence.
+  </p>
+  
+  <div class="interaction-guide">
+    <h3>§ How to Play</h3>
+    <p>
+      This isn't your typical blog. Or maybe it is. It's probably something worse. The AI I used to slop this together tried to tell me it's an <strong>interactive research environment</strong>. Uh. Yeah. "Research". Let's go with that. It's a relative term these days, anyway.
+
+      </p>
+      <p>
+      So, the concept/hook/gig here is simple. Put on your sarcastic-pseudo-science hat, read some "papers", and react by 
+      selecting any text in our papers to provide line-specific feedback, corrections, or insights. 
+      Your contributions help improve our research and may influence future papers through our 
+      AI feedback integration system. ICL. RL. All the things. The AI used to write these gets fine-tuned, post-trained, optimized, all that stuff. 
+
+    </p>
+    <p>
+I will build this in the open. Just getting started now. I'll OSS the stuff as I build it.
+    </p>
+    <p class="cta">
+      <strong>Go ahead, try it!</strong> Find something interesting, select it, and click the comment button. 
+      Find or introduce errors, satire, or anything worth discussing. Or not discussing.
+    </p>
+  </div>
+</div>
+
+<section class="recent-papers">
+  <h2>Recent Publications</h2>
+  
+  {% if site.posts.size > 0 %}
+    <ul class="post-list">
+      {% for post in site.posts %}
+        <li>
+          <article class="paper-preview">
+            <header>
+              <h3 class="post-link">
+                <a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a>
+              </h3>
+              
+              <div class="paper-meta">
+                <div class="authors">
+                  {% if post.authors %}
+                    {{ post.authors | join: ', ' }}
+                  {% else %}
+                    {{ site.author.name | default: "Dr. B. Prop" }}
+                  {% endif %}
+                </div>
+                
+                <div class="paper-info">
+                  <span class="arxiv-id">contextrot:{{ post.date | date: '%Y%m%d' }}.{{ post.slug }}</span>
+                  <span class="date">{{ post.date | date: '%B %d, %Y' }}</span>
+                </div>
+                
+                {% if post.categories %}
+                  <div class="categories">
+                    <strong>Subject Classes:</strong> 
+                    {% for category in post.categories %}
+                      <span class="category">{{ category }}</span>{% unless forloop.last %}, {% endunless %}
+                    {% endfor %}
+                  </div>
+                {% endif %}
+              </div>
+            </header>
+            
+            {% if post.abstract %}
+              <div class="abstract">
+                <strong>Abstract:</strong> {{ post.abstract | truncate: 200 }}
+              </div>
+            {% elsif post.excerpt %}
+              <div class="excerpt">
+                {{ post.excerpt | strip_html | truncate: 200 }}
+              </div>
+            {% endif %}
+            
+            <footer class="paper-actions">
+              <a href="{{ post.url | relative_url }}" class="read-paper">Read Full Paper →</a>
+            </footer>
+          </article>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No papers published yet. Check back soon for groundbreaking research on computational decay!</p>
+  {% endif %}
+</section>
 </file>
 
 </files>

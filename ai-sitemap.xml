@@ -1,0 +1,43 @@
+---
+layout: null
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:ai="http://www.google.com/schemas/sitemap-ai/1.0">
+  {% for post in site.posts %}
+  <url>
+    <loc>{{ post.url | absolute_url }}</loc>
+    <lastmod>{{ post.last_modified_at | default: post.date | date_to_xmlschema }}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <ai:title>{{ post.title | xml_escape }}</ai:title>
+    <ai:abstract>{{ post.abstract | default: post.excerpt | strip_html | normalize_whitespace | truncate: 500 | xml_escape }}</ai:abstract>
+    <ai:keywords>{{ post.categories | join: ', ' | xml_escape }}</ai:keywords>
+    <ai:author>{{ post.authors | default: site.author.name | join: ', ' | xml_escape }}</ai:author>
+    <ai:wordcount>{{ post.content | strip_html | number_of_words }}</ai:wordcount>
+  </url>
+  {% endfor %}
+  
+  {% for page in site.pages %}
+    {% unless page.sitemap == false %}
+    {% unless page.url contains "404" %}
+    {% unless page.url contains ".xml" %}
+    {% unless page.url contains ".json" %}
+    {% unless page.url contains ".txt" %}
+  <url>
+    <loc>{{ page.url | absolute_url }}</loc>
+    <lastmod>{{ page.last_modified_at | default: site.time | date_to_xmlschema }}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>{% if page.url == "/" %}1.0{% else %}0.6{% endif %}</priority>
+    <ai:title>{{ page.title | default: site.title | xml_escape }}</ai:title>
+    <ai:description>{{ page.description | default: site.description | xml_escape }}</ai:description>
+  </url>
+    {% endunless %}
+    {% endunless %}
+    {% endunless %}
+    {% endunless %}
+    {% endunless %}
+  {% endfor %}
+</urlset>

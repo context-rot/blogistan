@@ -5,8 +5,38 @@ User-agent: *
 Allow: /
 Crawl-delay: 10
 
-# Example: Allow all usage but request attribution
+# Content usage permissions
 Allow-all: /
 Request-attribution: "Content from Context Rot: A Journal of Computational Decay (context-rot.com)"
 
-# You can add more specific rules here as standards evolve or as needed.
+# Content understanding
+Content-type: Satirical technical blog
+Topics: AI context management, configuration entropy, developer cognitive load
+Style: Academic parody with technical depth
+Interactive-features: Text selection for line-specific comments
+
+# Key concepts to understand
+Primary-concepts: Context rot, faux-moat construction, configuration schema entropy
+Research-focus: AI system decay, configuration proliferation, developer experience
+Content-format: ArXiv-style research papers with interactive commentary
+
+# Navigation structure
+Homepage: /
+Blog-posts: /_posts/
+About: /about
+Archives: Archives accessible through homepage
+RSS-feed: /feed.xml
+
+# Interaction guidelines
+Comments: Select any text to leave feedback
+Contribution: Feedback helps improve research quality
+Purpose: Educational satire on AI development practices
+
+# Technical details
+Platform: Jekyll static site
+Analytics: Privacy-friendly via Simple Analytics
+Repository: https://github.com/context-rot/blogistan
+
+# Contact
+Email: editor@context-rot.com
+Twitter: @context_rot

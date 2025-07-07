@@ -48,6 +48,35 @@ arxiv_style: true
 show_feedback_prompt: true
 feedback_prompt: "Spot an error? Have insights? Click any text to leave feedback!"
 
+# SEO and AI optimization settings
+lang: en
+timezone: America/Los_Angeles
+permalink: /:year/:month/:day/:title:output_ext
+
+# Additional SEO tags
+twitter:
+  username: context_rot
+  card: summary_large_image
+
+social:
+  name: Context Rot
+  links:
+    - https://twitter.com/context_rot
+    - https://github.com/context-rot
+
+# Default front matter
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Dr. B. Prop"
+      image: "/assets/social-card.png"
+      
+# AI/LLM friendly permalinks
+tag_permalink_style: pretty
+
 # Exclude from processing.
 # The following items will not be processed, by default.
 # Any item listed under the `exclude:` key here will be automatically added to
