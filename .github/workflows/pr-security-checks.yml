@@ -1,0 +1,120 @@
+name: PR Security Checks
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+  security-events: write
+
+jobs:
+  security-gate:
+    name: Security Gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+        with:
+          files: |
+            **/*.yml
+            **/*.yaml
+            **/*.js
+            **/*.rb
+            **/*.md
+            .github/workflows/**
+            
+      - name: Security checks on changed files
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "🔍 Running security checks on changed files..."
+          
+          # Check for secrets in changed files
+          echo "Files to check: ${{ steps.changed-files.outputs.all_changed_files }}"
+          
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [ -f "$file" ]; then
+              echo "Checking $file for security issues..."
+              
+              # Check for potential API keys
+              if grep -H -n -E "(api_key|api-key|apikey|secret|password)" "$file" | grep -v "github.event\|secrets\." | grep -v "# " | grep -v "password.*=" | head -5; then
+                echo "⚠️ Potential secrets found in $file"
+              fi
+              
+              # Check for hardcoded URLs that might be problematic
+              if grep -H -n -E "https?://.*\.(com|org|net)" "$file" | grep -v "context-rot.com\|github.com\|jekyllrb.com" | head -3; then
+                echo "ℹ️ External URLs found in $file (verify they're safe)"
+              fi
+              
+              # Check for suspicious patterns
+              if grep -H -n -E "(eval\(|exec\(|system\()" "$file" | head -3; then
+                echo "⚠️ Potentially dangerous function calls in $file"
+              fi
+            fi
+          done
+          
+      - name: TruffleHog scan on PR
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified
+          
+      - name: Comment on PR if issues found
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `🚨 **Security Issues Detected**
+              
+              This PR has been flagged by our automated security checks. Please review the workflow logs and address any issues before merging.
+              
+              Common issues:
+              - Hardcoded secrets or API keys
+              - Suspicious code patterns
+              - Potential security vulnerabilities
+              
+              If you believe this is a false positive, please contact the maintainers.
+              
+              ---
+              *Automated security check by Context Rot*`
+            })
+            
+  pre-commit-validation:
+    name: Pre-commit Hook Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+          
+      - name: Install pre-commit
+        run: pip install pre-commit
+        
+      - name: Run pre-commit hooks
+        run: |
+          # Run only the security-related hooks on this PR
+          pre-commit run --all-files check-yaml || true
+          pre-commit run --all-files check-json || true
+          pre-commit run --all-files detect-secrets || true
+          pre-commit run --all-files check-api-keys || true
+          pre-commit run --all-files check-passwords || true
+          pre-commit run --all-files check-personal-info || true

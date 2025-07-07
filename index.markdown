@@ -13,7 +13,11 @@ layout: default
   <div class="interaction-guide">
     <h3>§ How to Play</h3>
     <p>
-      This isn't your typical blog. Or maybe it is. It's probably something worse — it's an <strong>interactive research environment</strong>. 
+      This isn't your typical blog. Or maybe it is. It's probably something worse. The AI I used to slop this together tried to tell me it's an <strong>interactive research environment</strong>. Uh. Yeah. "Research". Let's go with that. It's a relative term these days, anyway.
+
+      </p>
+      <p>
+      So, the concept/hook/gig here is simple. Put on your sarcastic-pseudo-science hat
       Select any text in our papers to provide line-specific feedback, corrections, or insights. 
       Your contributions help improve our research and may influence future papers through our 
       AI feedback integration system. ICL. RL. All the things.
