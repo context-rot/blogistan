@@ -79,13 +79,13 @@ jobs:
       run: |
         # Use proper quoting to handle special characters in issue content
         ISSUE_TITLE=$(cat <<'EOF'
-        ${{ github.event.issue.title }}
-        EOF
-        )
+${{ github.event.issue.title }}
+EOF
+)
         ISSUE_BODY=$(cat <<'EOF'
-        ${{ github.event.issue.body }}
-        EOF
-        )
+${{ github.event.issue.body }}
+EOF
+)
         USER="${{ github.event.issue.user.login }}"
         
         # Basic spam checks
@@ -178,13 +178,13 @@ jobs:
       run: |
         # Get issue details using proper quoting
         ISSUE_TITLE=$(cat <<'EOF'
-        ${{ github.event.issue.title }}
-        EOF
-        )
+${{ github.event.issue.title }}
+EOF
+)
         ISSUE_BODY=$(cat <<'EOF'
-        ${{ github.event.issue.body }}
-        EOF
-        )
+${{ github.event.issue.body }}
+EOF
+)
         ISSUE_NUMBER="${{ github.event.issue.number }}"
         
         # Create Dr. B. Prop's response using AI
