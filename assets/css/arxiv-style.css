@@ -349,16 +349,137 @@ body {
   color: #fff;
   padding: 2rem 0;
   margin-top: 4rem;
-  text-align: center;
 }
 
-.footer-content p {
+.site-footer .wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.footer-heading {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.footer-col-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-col-1 {
+  justify-self: start;
+}
+
+.footer-col-2 {
+  justify-self: center;
+}
+
+.footer-col-3 {
+  justify-self: end;
+  text-align: right;
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-list li {
+  margin-bottom: 0.5rem;
+}
+
+.contact-list a {
+  color: #ecf0f1;
+  text-decoration: none;
+}
+
+.contact-list a:hover {
+  color: #3498db;
+  text-decoration: underline;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+}
+
+.social-media-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.social-media-list li {
+  display: flex;
+  align-items: center;
+}
+
+.social-media-list a {
+  color: #ecf0f1;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.social-media-list a:hover {
+  background-color: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+}
+
+.social-media-list .svg-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.social-media-list .username {
+  font-size: 0.9rem;
+}
+
+.footer-col-3 p {
   margin: 0.5rem 0;
+  line-height: 1.5;
 }
 
 .feedback-reminder {
   font-style: italic;
   opacity: 0.8;
+}
+
+/* Responsive footer */
+@media (max-width: 768px) {
+  .footer-col-wrapper {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    text-align: center;
+  }
+  
+  .footer-col-3 {
+    justify-self: center;
+    text-align: center;
+  }
+  
+  .social-media-list {
+    justify-content: center;
+  }
 }
 
 /* Home page specific styles */

@@ -78,14 +78,8 @@ jobs:
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
       run: |
         # Use proper quoting to handle special characters in issue content
-        ISSUE_TITLE=$(cat <<'EOF'
-${{ github.event.issue.title }}
-EOF
-)
-        ISSUE_BODY=$(cat <<'EOF'
-${{ github.event.issue.body }}
-EOF
-)
+        ISSUE_TITLE="${{ github.event.issue.title }}"
+        ISSUE_BODY="${{ github.event.issue.body }}"
         USER="${{ github.event.issue.user.login }}"
         
         # Basic spam checks
