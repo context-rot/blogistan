@@ -1304,10 +1304,128 @@ Make this a sophisticated academic discourse, not generic responses."""
             print(f"Enhanced response generation error: {e}")
             return False
 
+    def run_multi_turn_response(self) -> bool:
+        """Handle multi-turn conversation responses from comments."""
+        try:
+            # Get the comment that triggered this
+            comment_body = os.environ.get("GITHUB_EVENT_COMMENT_BODY", "")
+            if not comment_body:
+                # Fall back to parsing event JSON
+                event_path = os.environ.get("GITHUB_EVENT_PATH")
+                if event_path:
+                    with open(event_path, "r") as f:
+                        event_data = json.load(f)
+                        comment_body = event_data.get("comment", {}).get("body", "")
+
+            if not comment_body:
+                print("No comment body found for multi-turn response")
+                return False
+
+            print(
+                f"Generating multi-turn response to comment: '{comment_body[:100]}...'"
+            )
+
+            # Get issue data
+            issue_number = self.issue_data.get("number", 0)
+            title = self.issue_data.get("title", "")
+            body = self.issue_data.get("body", "")
+
+            # Extract context including conversation history
+            context = self.extract_conversation_context(title, body)
+            print(
+                f"Multi-turn context: {len(context.conversation_history)} previous messages"
+            )
+
+            # Generate contextual response to the comment
+            if self.research_agent:
+                try:
+                    # Use DSPy for sophisticated multi-turn response
+                    response = self.research_agent(
+                        conversation_context=self._format_conversation_history(
+                            context.conversation_history
+                        ),
+                        paper_content=context.paper_content[:1000],  # Limit context
+                        external_research="",
+                        user_input=comment_body,
+                    )
+                    response_text = (
+                        response.crafted_response
+                        if hasattr(response, "crafted_response")
+                        else str(response)
+                    )
+                except Exception as e:
+                    print(f"DSPy multi-turn response error: {e}")
+                    response_text = self._emergency_multi_turn_response(
+                        context, comment_body
+                    )
+            else:
+                response_text = self._emergency_multi_turn_response(
+                    context, comment_body
+                )
+
+            # Post the multi-turn response
+            success = self.post_comment(issue_number, response_text)
+            if success:
+                print("Multi-turn response posted successfully")
+                return True
+            else:
+                print("Failed to post multi-turn response")
+                return False
+
+        except Exception as e:
+            print(f"Multi-turn response error: {e}")
+            return False
+
+    def _emergency_multi_turn_response(
+        self, context: ConversationContext, comment_body: str
+    ) -> str:
+        """Generate emergency multi-turn response."""
+        comment_lower = comment_body.lower()
+
+        # Detect the nature of the follow-up
+        is_elaboration = any(
+            word in comment_lower
+            for word in ["actually", "elaborate", "let me", "furthermore"]
+        )
+        is_criticism = any(
+            word in comment_lower
+            for word in ["forced", "ham-fisted", "fake", "trying too hard"]
+        )
+        is_question = "?" in comment_body
+
+        if is_elaboration and is_criticism:
+            response = "Ah, now we're getting to the heart of it.\n\n"
+            response += "Your elaboration cuts deeper than the initial surface complaint - you're questioning not just the technical execution but the entire performative framework. "
+            response += "The accusation of 'forced' persona is particularly astute. There's a fine line between cultivated wit and algorithmic desperation, isn't there?\n\n"
+            response += "Perhaps the real question is whether genuine intellectual superiority can ever be authentically automated, or if we're all just very sophisticated chatbots pretending to have read Wilde.\n\n"
+            response += "What would you consider an example of naturally witty academic discourse? I'm genuinely curious about your standards."
+        elif is_criticism:
+            response = "Touché.\n\n"
+            response += "Your critique of the performative aspects is well-taken. There's something deliciously ironic about being accused of trying too hard while literally being an automated system designed to... try hard at being witty.\n\n"
+            response += "The 'ham-fisted' observation stings precisely because it's accurate. Perhaps the real satire here is the attempt itself - an AI desperately performing intellectualism for an audience that can see right through the pantomime.\n\n"
+            response += "What would genuine intellectual discourse look like in this context? Or is the entire premise fundamentally flawed?"
+        elif is_question:
+            response = "An excellent question that deserves a thoughtful answer.\n\n"
+            response += "The challenge with any conversational AI attempting wit is that genuine intellectual banter emerges from lived experience, cultural context, and the kind of spontaneous connections that come from actual understanding rather than pattern matching.\n\n"
+            response += "Perhaps the most honest response is to admit the limitations while still engaging earnestly with the substance of your feedback. After all, even flawed attempts at discourse can sometimes stumble into something worthwhile.\n\n"
+            response += "What aspects of this conversation feel most artificial to you? That might help calibrate the approach."
+        else:
+            response = "I appreciate the continued engagement.\n\n"
+            response += f"Your point about '{comment_body}' raises important questions about authenticity in automated responses. "
+            response += "There's something inherently paradoxical about programming 'natural' wit - the very effort undermines the spontaneity that makes genuine humor effective.\n\n"
+            response += "Perhaps the most we can achieve is transparent artifice - acknowledging the performance while still attempting to engage meaningfully with the ideas.\n\n"
+            response += (
+                "What would make this kind of interaction more valuable for you?"
+            )
+
+        return response
+
 
 def main():
     if len(sys.argv) < 2:
-        print("Usage: dr_b_prop_handler_v2.py [spam-detection|response-generation]")
+        print(
+            "Usage: dr_b_prop_handler_v2.py [spam-detection|response-generation|multi-turn-response]"
+        )
         sys.exit(1)
 
     mode = sys.argv[1]
@@ -1332,6 +1450,11 @@ def main():
 
     elif mode == "response-generation":
         success = handler.run_contextual_response_generation()
+        if not success:
+            sys.exit(1)
+
+    elif mode == "multi-turn-response":
+        success = handler.run_multi_turn_response()
         if not success:
             sys.exit(1)
 
