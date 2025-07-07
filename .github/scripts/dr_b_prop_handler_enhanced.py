@@ -174,7 +174,7 @@ class GitHubIssueHandler:
                     "--provider",
                     "gemini",
                     "--model",
-                    "gemini-2.5-flash-exp",
+                    "gemini-2.5-flash",
                     "--max-tokens",
                     "400",
                     "--web",
