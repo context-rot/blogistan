@@ -36,12 +36,18 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        # Debug: Check if gh is available
+        echo "GitHub CLI version:"
+        gh --version || echo "GitHub CLI not found"
+        
         # Check user's recent issue activity
         USER="${{ github.event.issue.user.login }}"
+        echo "Checking rate limit for user: $USER"
         
         # Get issues created by user in last 24 hours
-        # Calculate date 24 hours ago
-        DATE_24H_AGO=$(date -u -d "24 hours ago" --iso-8601)
+        # Calculate date 24 hours ago (using more portable date command)
+        DATE_24H_AGO=$(date -u -d "24 hours ago" +"%Y-%m-%dT%H:%M:%SZ")
+        echo "Date 24h ago: $DATE_24H_AGO"
         
         # Build search query
         SEARCH_QUERY="repo:context-rot/blogistan is:issue author:${USER} created:>${DATE_24H_AGO}"
