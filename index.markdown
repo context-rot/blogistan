@@ -11,7 +11,7 @@ layout: default
   </p>
   
   <div class="interaction-guide">
-    <h3>🎯 How to Engage</h3>
+    <h3>§ How to Play</h3>
     <p>
       This isn't your typical blog. Or maybe it is. It's probably something worse — it's an <strong>interactive research environment</strong>. 
       Select any text in our papers to provide line-specific feedback, corrections, or insights. 
