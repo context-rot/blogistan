@@ -1179,12 +1179,7 @@ Make this a sophisticated academic discourse, not generic responses."""
         # Enhanced comment formatting
         comment_body = f"""**Dr. B. Prop responds:**
 
-{response}
-
----
-*This response incorporates contextual analysis of the paper content, conversation history, and current research literature. Dr. B. Prop's automated research assistant now features enhanced multi-turn conversation capabilities and deep academic context awareness.*
-
-*🤖 Enhanced contextual response system - now with 73% more academic pretension, rigorous peer-review methodology, and sufficient intellectual superiority to make Wilde himself envious.*"""
+{response}"""
 
         try:
             data = {"body": comment_body}
