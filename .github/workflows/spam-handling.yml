@@ -1,0 +1,154 @@
+name: Spam and Rate Limit Handler
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  handle-spam-and-rate-limits:
+    runs-on: ubuntu-latest
+    if: contains(github.event.issue.labels.*.name, 'reader-feedback')
+    
+    steps:
+    - name: Check for Rate Limiting
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        USER="${{ github.event.issue.user.login }}"
+        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        
+        # Get user's recent issues
+        RECENT_ISSUES=$(gh api graphql -f query='
+          query($user: String!) {
+            search(query: "repo:context-rot/blogistan is:issue author:$user created:>$(date -d "24 hours ago" --iso-8601)", type: ISSUE, first: 10) {
+              issueCount
+            }
+          }
+        ' -f user="$USER" --jq '.data.search.issueCount')
+        
+        if [ "$RECENT_ISSUES" -gt 5 ]; then
+          # Add rate-limited label and close issue
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+            --method POST \
+            --field labels='["rate-limited", "auto-closed"]'
+            
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
+            --method PATCH \
+            --field state=closed \
+            --field state_reason=not_planned
+            
+          # Post explanation comment
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+            --method POST \
+            --field body="🚦 **Rate Limit Exceeded**
+
+Hi @$USER,
+
+Thanks for your enthusiasm in providing feedback! However, you've exceeded our rate limit of 5 issues per 24-hour period.
+
+**Why do we have rate limits?**
+- Prevents spam and ensures quality discussions
+- Allows Dr. B. Prop to provide thoughtful responses
+- Maintains a manageable volume for community engagement
+
+**What can you do?**
+- Wait 24 hours before submitting new feedback
+- Consolidate multiple points into a single, comprehensive issue
+- Use our [Discussions](https://github.com/${{ github.repository }}/discussions) for general questions
+
+**For urgent matters:** Contact us at editor@context-rot.com
+
+This issue has been automatically closed but will be reviewed manually.
+
+---
+*🤖 Automated rate limiting system - part of our spam protection measures*"
+        fi
+        
+    - name: Enhanced Spam Detection
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        ISSUE_TITLE="${{ github.event.issue.title }}"
+        ISSUE_BODY="${{ github.event.issue.body }}"
+        USER="${{ github.event.issue.user.login }}"
+        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        
+        # Advanced spam patterns
+        SPAM_INDICATORS=0
+        
+        # Check for URL spam
+        URL_COUNT=$(echo "$ISSUE_BODY" | grep -oE 'https?://[^ ]+' | wc -l)
+        if [ "$URL_COUNT" -gt 3 ]; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+        fi
+        
+        # Check for email addresses (often spam)
+        EMAIL_COUNT=$(echo "$ISSUE_BODY" | grep -oE '[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}' | wc -l)
+        if [ "$EMAIL_COUNT" -gt 1 ]; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+        fi
+        
+        # Check for phone numbers
+        PHONE_COUNT=$(echo "$ISSUE_BODY" | grep -oE '\+?[1-9][0-9]{7,14}' | wc -l)
+        if [ "$PHONE_COUNT" -gt 0 ]; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+        fi
+        
+        # Check for common spam phrases
+        SPAM_PHRASES="make money|work from home|free trial|limited time|act now|guarantee|no risk|100% effective"
+        if echo "$ISSUE_BODY" | grep -iE "$SPAM_PHRASES" > /dev/null; then
+          SPAM_INDICATORS=$((SPAM_INDICATORS + 3))
+        fi
+        
+        # Check for excessive capitalization
+        CAPS_RATIO=$(echo "$ISSUE_BODY" | grep -o '[A-Z]' | wc -l)
+        TOTAL_LETTERS=$(echo "$ISSUE_BODY" | grep -o '[a-zA-Z]' | wc -l)
+        if [ "$TOTAL_LETTERS" -gt 0 ]; then
+          CAPS_PERCENTAGE=$(( CAPS_RATIO * 100 / TOTAL_LETTERS ))
+          if [ "$CAPS_PERCENTAGE" -gt 30 ]; then
+            SPAM_INDICATORS=$((SPAM_INDICATORS + 2))
+          fi
+        fi
+        
+        echo "Spam indicators detected: $SPAM_INDICATORS"
+        
+        # If high spam score, mark as spam and close
+        if [ "$SPAM_INDICATORS" -ge 5 ]; then
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+            --method POST \
+            --field labels='["spam", "auto-closed"]'
+            
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
+            --method PATCH \
+            --field state=closed \
+            --field state_reason=not_planned
+            
+          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+            --method POST \
+            --field body="🚫 **Potential Spam Detected**
+
+This issue has been automatically flagged as potential spam and closed.
+
+**Common reasons for auto-flagging:**
+- Excessive promotional content
+- Irrelevant external links
+- Contact information (emails/phones)
+- Generic spam patterns
+
+**If this is a false positive:**
+- Email us at editor@context-rot.com with issue #$ISSUE_NUMBER
+- We'll review and reopen if appropriate
+- Help us improve by being more specific about your feedback
+
+**For legitimate feedback:**
+- Focus on the specific paper content
+- Be specific about the issue or suggestion
+- Avoid promotional language
+
+---
+*🤖 Automated spam detection system*"
+        fi

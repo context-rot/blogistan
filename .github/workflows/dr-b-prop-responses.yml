@@ -11,9 +11,132 @@ permissions:
   contents: read
 
 jobs:
-  dr-b-prop-response:
+  spam-detection:
     runs-on: ubuntu-latest
     if: contains(github.event.issue.labels.*.name, 'reader-feedback')
+    outputs:
+      should_respond: ${{ steps.spam_check.outputs.should_respond }}
+      user_rate_limited: ${{ steps.rate_limit.outputs.rate_limited }}
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        npm install -g vibe-tools
+        
+    - name: Rate Limit Check
+      id: rate_limit
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Check user's recent issue activity
+        USER="${{ github.event.issue.user.login }}"
+        
+        # Get issues created by user in last 24 hours
+        RECENT_ISSUES=$(gh api graphql -f query='
+          query($user: String!) {
+            search(query: "repo:context-rot/blogistan is:issue author:$user created:>$(date -d "24 hours ago" --iso-8601)", type: ISSUE, first: 10) {
+              issueCount
+            }
+          }
+        ' -f user="$USER" --jq '.data.search.issueCount')
+        
+        echo "Recent issues by $USER: $RECENT_ISSUES"
+        
+        # Rate limit: max 5 issues per 24 hours per user
+        if [ "$RECENT_ISSUES" -gt 5 ]; then
+          echo "rate_limited=true" >> $GITHUB_OUTPUT
+          echo "User $USER is rate limited ($RECENT_ISSUES issues in 24h)"
+        else
+          echo "rate_limited=false" >> $GITHUB_OUTPUT
+        fi
+        
+    - name: Spam Detection
+      id: spam_check
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        ISSUE_TITLE="${{ github.event.issue.title }}"
+        ISSUE_BODY="${{ github.event.issue.body }}"
+        USER="${{ github.event.issue.user.login }}"
+        
+        # Basic spam checks
+        TITLE_LENGTH=${#ISSUE_TITLE}
+        BODY_LENGTH=${#ISSUE_BODY}
+        
+        # Check for common spam patterns
+        SPAM_SCORE=0
+        
+        # Too short or too long content
+        if [ "$TITLE_LENGTH" -lt 5 ] || [ "$TITLE_LENGTH" -gt 200 ]; then
+          SPAM_SCORE=$((SPAM_SCORE + 2))
+        fi
+        
+        if [ "$BODY_LENGTH" -lt 10 ] || [ "$BODY_LENGTH" -gt 5000 ]; then
+          SPAM_SCORE=$((SPAM_SCORE + 2))
+        fi
+        
+        # Check for spam keywords (case insensitive)
+        COMBINED_TEXT=$(echo "$ISSUE_TITLE $ISSUE_BODY" | tr '[:upper:]' '[:lower:]')
+        
+        if echo "$COMBINED_TEXT" | grep -E "(viagra|casino|lottery|crypto|bitcoin|investment|loan|forex)" > /dev/null; then
+          SPAM_SCORE=$((SPAM_SCORE + 5))
+        fi
+        
+        # Check for excessive repetition
+        if echo "$COMBINED_TEXT" | grep -E "(.)\1{10,}" > /dev/null; then
+          SPAM_SCORE=$((SPAM_SCORE + 3))
+        fi
+        
+        # Check user account age (new accounts are more suspicious)
+        USER_CREATED=$(gh api users/$USER --jq '.created_at')
+        USER_AGE_DAYS=$(( ($(date +%s) - $(date -d "$USER_CREATED" +%s)) / 86400 ))
+        
+        if [ "$USER_AGE_DAYS" -lt 7 ]; then
+          SPAM_SCORE=$((SPAM_SCORE + 2))
+        fi
+        
+        # AI-based content analysis for sophisticated spam
+        if [ "$SPAM_SCORE" -le 3 ]; then
+          AI_SPAM_CHECK=$(vibe-tools ask "
+          Analyze this GitHub issue for spam/inappropriate content on a scale of 0-10 (0=legitimate, 10=obvious spam).
+          Consider: promotional content, nonsensical text, irrelevant content, excessive links, scam attempts.
+          
+          Title: $ISSUE_TITLE
+          Body: $ISSUE_BODY
+          
+          Return only a number 0-10 and brief reason (max 20 words).
+          " --provider openrouter --model anthropic/claude-3-haiku --max-tokens 50 2>/dev/null || echo "5 Could not analyze")
+          
+          AI_SCORE=$(echo "$AI_SPAM_CHECK" | grep -oE '^[0-9]+' | head -1)
+          if [ ! -z "$AI_SCORE" ] && [ "$AI_SCORE" -gt 6 ]; then
+            SPAM_SCORE=$((SPAM_SCORE + AI_SCORE))
+          fi
+        fi
+        
+        echo "Spam score for issue: $SPAM_SCORE"
+        
+        # Threshold: 7+ is considered spam
+        if [ "$SPAM_SCORE" -ge 7 ]; then
+          echo "should_respond=false" >> $GITHUB_OUTPUT
+          echo "Issue flagged as potential spam (score: $SPAM_SCORE)"
+        else
+          echo "should_respond=true" >> $GITHUB_OUTPUT
+        fi
+        
+  dr-b-prop-response:
+    runs-on: ubuntu-latest
+    needs: spam-detection
+    if: needs.spam-detection.outputs.should_respond == 'true' && needs.spam-detection.outputs.user_rate_limited == 'false'
     
     steps:
     - name: Checkout repository

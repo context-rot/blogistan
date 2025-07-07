@@ -1,0 +1,78 @@
+# Pre-commit hooks for Context Rot blog
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+      
+  # Security hooks
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        
+  - repo: https://github.com/trufflesecurity/trufflehog
+    rev: v3.63.2
+    hooks:
+      - id: trufflehog
+        name: TruffleHog
+        description: Detect secrets in your data.
+        entry: bash -c 'trufflehog git file://. --since-commit HEAD --only-verified --fail'
+        language: system
+        stages: ["commit", "push"]
+        
+  # Jekyll/Ruby specific
+  - repo: https://github.com/rubocop/rubocop
+    rev: v1.57.2
+    hooks:
+      - id: rubocop
+        files: \.rb$
+        
+  # JavaScript/CSS
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.53.0
+    hooks:
+      - id: eslint
+        files: \.(js|jsx)$
+        types: [file]
+        
+  # Markdown
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.37.0
+    hooks:
+      - id: markdownlint
+        args: ['--fix']
+        
+  # Custom security checks
+  - repo: local
+    hooks:
+      - id: check-api-keys
+        name: Check for API keys
+        entry: bash -c 'if grep -r -E "(api_key|api-key|apikey)" --include="*.yml" --include="*.yaml" --include="*.rb" --include="*.js" .; then echo "❌ API keys found in code!"; exit 1; fi'
+        language: system
+        
+      - id: check-passwords
+        name: Check for hardcoded passwords
+        entry: bash -c 'if grep -r -i "password\s*=" --include="*.yml" --include="*.yaml" --include="*.rb" --include="*.js" .; then echo "❌ Hardcoded passwords found!"; exit 1; fi'
+        language: system
+        
+      - id: check-personal-info
+        name: Check for personal information
+        entry: bash -c 'if grep -r -E "(ssh-rsa|ssh-ed25519|BEGIN.*PRIVATE.*KEY)" --include="*" .; then echo "❌ Private keys or SSH keys found!"; exit 1; fi'
+        language: system
+        
+      - id: validate-github-workflows
+        name: Validate GitHub workflows
+        entry: bash -c 'for file in .github/workflows/*.yml; do echo "Validating $file"; if ! python -c "import yaml; yaml.safe_load(open(\"$file\"))"; then echo "❌ Invalid YAML in $file"; exit 1; fi; done'
+        language: system
+        files: '^\.github/workflows/.*\.yml$'

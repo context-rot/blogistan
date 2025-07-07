@@ -1,10 +1,17 @@
-// Selection and comment functionality
+// Selection and comment functionality with rate limiting
 (function() {
   'use strict';
   
   let selectedText = '';
   let selectedElement = null;
   let tooltip = null;
+  
+  // Rate limiting configuration
+  const RATE_LIMIT = {
+    maxAttempts: 3,
+    windowMinutes: 60,
+    storageKey: 'contextrot_feedback_attempts'
+  };
   
   // Initialize on DOM load
   document.addEventListener('DOMContentLoaded', function() {
@@ -97,8 +104,84 @@
     }, 200);
   }
   
+  // Rate limiting functions
+  function getRateLimitData() {
+    try {
+      const data = localStorage.getItem(RATE_LIMIT.storageKey);
+      return data ? JSON.parse(data) : { attempts: [], lastReset: Date.now() };
+    } catch (e) {
+      return { attempts: [], lastReset: Date.now() };
+    }
+  }
+  
+  function setRateLimitData(data) {
+    try {
+      localStorage.setItem(RATE_LIMIT.storageKey, JSON.stringify(data));
+    } catch (e) {
+      // Ignore localStorage errors
+    }
+  }
+  
+  function isRateLimited() {
+    const data = getRateLimitData();
+    const now = Date.now();
+    const windowMs = RATE_LIMIT.windowMinutes * 60 * 1000;
+    
+    // Reset if window has passed
+    if (now - data.lastReset > windowMs) {
+      data.attempts = [];
+      data.lastReset = now;
+      setRateLimitData(data);
+    }
+    
+    // Filter attempts within current window
+    const recentAttempts = data.attempts.filter(timestamp => 
+      now - timestamp < windowMs
+    );
+    
+    return recentAttempts.length >= RATE_LIMIT.maxAttempts;
+  }
+  
+  function recordFeedbackAttempt() {
+    const data = getRateLimitData();
+    data.attempts.push(Date.now());
+    
+    // Keep only recent attempts
+    const windowMs = RATE_LIMIT.windowMinutes * 60 * 1000;
+    const now = Date.now();
+    data.attempts = data.attempts.filter(timestamp => 
+      now - timestamp < windowMs
+    );
+    
+    setRateLimitData(data);
+  }
+  
+  function getTimeUntilReset() {
+    const data = getRateLimitData();
+    const windowMs = RATE_LIMIT.windowMinutes * 60 * 1000;
+    const now = Date.now();
+    
+    if (data.attempts.length === 0) return 0;
+    
+    const oldestAttempt = Math.min(...data.attempts);
+    const resetTime = oldestAttempt + windowMs;
+    
+    return Math.max(0, resetTime - now);
+  }
+
   function openFeedbackIssue() {
     if (!selectedText) return;
+    
+    // Check rate limiting
+    if (isRateLimited()) {
+      const timeUntilReset = getTimeUntilReset();
+      const minutesLeft = Math.ceil(timeUntilReset / (1000 * 60));
+      
+      showToast(`Rate limit reached! Please wait ${minutesLeft} minutes before submitting more feedback. 
+                 This helps prevent spam and ensures quality discussions.`, 'warning');
+      hideTooltip();
+      return;
+    }
     
     // Get the current page info
     const title = document.querySelector('.paper-title')?.textContent || document.title;
@@ -126,11 +209,16 @@
     
     const issueUrl = `${repoUrl}/issues/new?title=${issueTitle}&body=${issueBody}&labels=reader-feedback`;
     
+    // Record the attempt for rate limiting
+    recordFeedbackAttempt();
+    
     // Open in new tab
     window.open(issueUrl, '_blank', 'noopener,noreferrer');
     
-    // Show thank you message
-    showToast('Thank you! Opening GitHub issue for your feedback...');
+    // Show thank you message with rate limit info
+    const data = getRateLimitData();
+    const remaining = RATE_LIMIT.maxAttempts - data.attempts.length;
+    showToast(`Thank you! Opening GitHub issue for your feedback... (${remaining} submissions remaining this hour)`);
     
     // Hide tooltip
     hideTooltip();
@@ -178,9 +266,9 @@
     return 'https://github.com/context-rot/blogistan';
   }
   
-  function showToast(message) {
+  function showToast(message, type = 'success') {
     const toast = document.createElement('div');
-    toast.className = 'feedback-toast';
+    toast.className = `feedback-toast toast-${type}`;
     toast.textContent = message;
     
     document.body.appendChild(toast);

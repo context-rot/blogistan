@@ -1,0 +1,124 @@
+name: Security Checks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly security scans
+    - cron: '0 0 * * 0'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  secrets-scan:
+    name: Scan for secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: TruffleHog OSS
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --debug --only-verified
+          
+  dependency-scan:
+    name: Dependency vulnerability scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1'
+          bundler-cache: true
+          
+      - name: Run bundle audit
+        run: |
+          gem install bundler-audit
+          bundle audit --update
+          
+  code-security-scan:
+    name: Code security analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript, ruby
+          
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+        
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        
+  security-policy-check:
+    name: Check security policies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Check for security.md
+        run: |
+          if [ ! -f SECURITY.md ]; then
+            echo "⚠️ SECURITY.md file not found"
+            echo "Creating basic security policy..."
+            cat > SECURITY.md << 'EOF'
+          # Security Policy
+          
+          ## Supported Versions
+          
+          Only the latest version is currently supported with security updates.
+          
+          ## Reporting a Vulnerability
+          
+          Please report security vulnerabilities to editor@context-rot.com
+          
+          **Do not** create public issues for security vulnerabilities.
+          
+          We will respond within 48 hours and provide updates every 7 days until resolved.
+          EOF
+          fi
+          
+      - name: Validate file permissions
+        run: |
+          # Check for files with overly permissive permissions
+          find . -type f -perm /o+w -not -path './.git/*' | while read file; do
+            echo "⚠️ World-writable file found: $file"
+          done
+          
+      - name: Check for common security issues
+        run: |
+          echo "Checking for potential security issues..."
+          
+          # Check for hardcoded credentials patterns
+          if grep -r -i "password\s*=" --include="*.yml" --include="*.yaml" --include="*.rb" --include="*.js" .; then
+            echo "⚠️ Potential hardcoded credentials found"
+          fi
+          
+          # Check for API keys in files
+          if grep -r -E "(api_key|api-key|apikey)" --include="*.yml" --include="*.yaml" --include="*.rb" --include="*.js" .; then
+            echo "⚠️ Potential API keys found in code"
+          fi
+          
+          # Check for TODO: SECURITY comments
+          if grep -r -i "todo.*security" --include="*.md" --include="*.yml" --include="*.rb" --include="*.js" .; then
+            echo "⚠️ Security TODOs found - should be addressed"
+          fi

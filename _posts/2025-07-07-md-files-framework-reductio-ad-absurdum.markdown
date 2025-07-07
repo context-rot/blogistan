@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "On the Proliferation of Proprietary Markdown Configuration Schemas: A Reductio ad Absurdum Analysis of the MD_FILES Framework"
-date: 2025-01-07 12:00:00 -0700
+date: 2025-07-07 10:42:42 -0700
 categories: ["cs.AI", "cs.SE", "cs.CY"]
 authors: ["Dr. B. Prop", "Context Decay Research Institute"]
 affiliation: "Context Decay Research Institute, Department of Computational Entropy"
