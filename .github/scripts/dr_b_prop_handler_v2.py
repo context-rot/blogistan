@@ -23,6 +23,11 @@ import requests
 from bs4 import BeautifulSoup
 import dspy
 from dataclasses import dataclass
+from intelligent_jest_engine import (
+    IntelligentJestEngine,
+    DSPyJestOptimizer,
+    JestContext,
+)
 
 
 @dataclass
@@ -152,16 +157,18 @@ class ContextualDrBProp:
 
         # Initialize DSPy 3.0 with available LM - prioritize OpenRouter with GPT-4
         self.research_agent = None
+        self.jest_engine = None
+
         if self.openrouter_key:
             try:
-                lm = dspy.LM(
-                    model="openai/gpt-4.1-mini",
-                    api_key=self.openrouter_key,
-                    api_base="https://openrouter.ai/api/v1",
-                )
-                dspy.configure(lm=lm)
+                # Configure DSPy for jesting
+                DSPyJestOptimizer.configure_for_jesting(self.openrouter_key)
+
                 self.research_agent = AdvancedResearchAgent()
-                print("DSPy initialized with OpenRouter GPT-4")
+                self.jest_engine = IntelligentJestEngine()
+                print(
+                    "DSPy initialized with OpenRouter GPT-4.1-mini + Intelligent Jest Engine"
+                )
             except Exception as e:
                 print(f"DSPy OpenRouter initialization error: {e}")
         elif self.anthropic_key:
@@ -178,6 +185,21 @@ class ContextualDrBProp:
 
         # Get issue data from environment
         self.issue_data = self._get_issue_data()
+
+        # Load user reaction patterns if available
+        self.user_reaction_patterns = self._load_reaction_patterns()
+
+    def _load_reaction_patterns(self) -> Dict[str, Any]:
+        """Load previously analyzed reaction patterns for intelligent jesting."""
+        try:
+            # Try to load from local file (would normally be from Databricks)
+            if os.path.exists("/tmp/reaction_analysis.json"):
+                with open("/tmp/reaction_analysis.json", "r") as f:
+                    return json.load(f)
+            return {}
+        except Exception as e:
+            print(f"Error loading reaction patterns: {e}")
+            return {}
 
         # Enhanced personality guide
         self.personality_framework = {
@@ -804,7 +826,44 @@ class ContextualDrBProp:
         research: ResearchAnalysis,
         snark_profile: SnarkProfile,
     ) -> str:
-        """Craft the final enhanced response using all available context."""
+        """Craft the final enhanced response using intelligent jesting and all available context."""
+
+        # Try intelligent jesting system first
+        if self.jest_engine:
+            try:
+                username = context.user_profile.get("login", "")
+                if username:
+                    print(f"Using Intelligent Jest Engine for user: {username}")
+
+                    # Get user-specific reaction patterns
+                    user_patterns = self.user_reaction_patterns.get(
+                        "personalized_recommendations", {}
+                    ).get(username, {})
+
+                    # Generate intelligent jest response
+                    jest_response = self.jest_engine.forward(
+                        username=username,
+                        conversation_context=self._summarize_conversation_context(
+                            context
+                        ),
+                        paper_context={
+                            "content": context.paper_content,
+                            "user_feedback": user_feedback,
+                            "selected_text": context.selected_text,
+                            "paper_title": context.paper_title,
+                        },
+                        reaction_patterns=user_patterns,
+                    )
+
+                    # Enhance with research insights if available
+                    if research.key_insights:
+                        jest_response += f"\n\nBased on current research trends: {'; '.join(research.key_insights[:2])}"
+
+                    return jest_response
+
+            except Exception as e:
+                print(f"Intelligent Jest Engine error: {e}")
+                # Fall through to standard DSPy agent
 
         if self.research_agent:
             try:
