@@ -397,15 +397,23 @@ class ContextualDrBProp:
             return []
 
     def get_user_profile(self) -> Dict[str, Any]:
-        """Get user profile and interaction history."""
+        """Get user profile from Databricks lakehouse cache (only fetch from GitHub once per day)."""
         try:
             user = self.issue_data.get("user", {}).get("login", "")
             if not user:
                 return {}
 
+            # Check Databricks cache first
+            cached_profile = self._get_cached_user_profile(user)
+            if cached_profile and self._is_profile_fresh(cached_profile):
+                print(f"✅ Using cached profile for {user} from Databricks lakehouse")
+                return cached_profile
+
+            # Only fetch from GitHub if cache is stale or missing
+            print(f"🔄 Fetching fresh profile for {user} from GitHub API")
             user_data = self._gh_api(f"users/{user}")
             if user_data:
-                return {
+                profile = {
                     "login": user,
                     "account_age_days": (
                         datetime.now(timezone.utc)
@@ -416,11 +424,134 @@ class ContextualDrBProp:
                     "public_repos": user_data.get("public_repos", 0),
                     "followers": user_data.get("followers", 0),
                     "bio": user_data.get("bio", ""),
+                    "last_updated": datetime.now(timezone.utc).isoformat(),
                 }
+
+                # Save to Databricks lakehouse
+                self._save_user_profile_to_lakehouse(profile)
+                return profile
+
             return {"login": user}
         except Exception as e:
             print(f"Error getting user profile: {e}")
             return {}
+
+    def _get_cached_user_profile(self, username: str) -> Dict[str, Any]:
+        """Get user profile from Databricks lakehouse."""
+        try:
+            import os
+
+            databricks_host = os.environ.get("DATABRICKS_HOST")
+            databricks_token = os.environ.get("DATABRICKS_TOKEN")
+
+            if not databricks_host or not databricks_token:
+                print("Databricks credentials not available, skipping cache check")
+                return {}
+
+            from databricks.sdk import WorkspaceClient
+
+            w = WorkspaceClient(host=databricks_host, token=databricks_token)
+
+            # Query Unity Catalog lakehouse table
+            query = f"""
+            SELECT * 
+            FROM main.dr_b_prop.user_profiles 
+            WHERE username = '{username}'
+            ORDER BY last_updated DESC 
+            LIMIT 1
+            """
+
+            # Execute query using Databricks SQL warehouse
+            result = w.statement_execution.execute_statement(
+                warehouse_id=os.environ.get("DATABRICKS_WAREHOUSE_ID"), statement=query
+            )
+
+            if result.result and result.result.data_array:
+                # Convert result to dict
+                columns = [col.name for col in result.manifest.schema.columns]
+                values = result.result.data_array[0]
+                profile = dict(zip(columns, values))
+                print(f"📊 Found cached profile for {username} in lakehouse")
+                return profile
+
+            return {}
+
+        except Exception as e:
+            print(f"Error accessing Databricks lakehouse cache: {e}")
+            return {}
+
+    def _is_profile_fresh(self, profile: Dict[str, Any]) -> bool:
+        """Check if cached profile is less than 24 hours old."""
+        try:
+            if not profile.get("last_updated"):
+                return False
+
+            last_updated = datetime.fromisoformat(
+                profile["last_updated"].replace("Z", "+00:00")
+            )
+            age_hours = (
+                datetime.now(timezone.utc) - last_updated
+            ).total_seconds() / 3600
+
+            is_fresh = age_hours < 24
+            print(f"Profile age: {age_hours:.1f} hours, fresh: {is_fresh}")
+            return is_fresh
+
+        except Exception as e:
+            print(f"Error checking profile freshness: {e}")
+            return False
+
+    def _save_user_profile_to_lakehouse(self, profile: Dict[str, Any]):
+        """Save user profile to Databricks lakehouse using Unity Catalog."""
+        try:
+            import os
+
+            databricks_host = os.environ.get("DATABRICKS_HOST")
+            databricks_token = os.environ.get("DATABRICKS_TOKEN")
+
+            if not databricks_host or not databricks_token:
+                print("Databricks credentials not available, skipping cache save")
+                return
+
+            from databricks.sdk import WorkspaceClient
+
+            w = WorkspaceClient(host=databricks_host, token=databricks_token)
+
+            # Use MERGE INTO for upsert operation (Databricks best practice)
+            merge_query = f"""
+            MERGE INTO main.dr_b_prop.user_profiles AS target
+            USING (
+                SELECT 
+                    '{profile["login"]}' as username,
+                    {profile["account_age_days"]} as account_age_days,
+                    {profile["public_repos"]} as public_repos,
+                    {profile["followers"]} as followers,
+                    '{profile.get("bio", "").replace("'", "''")}' as bio,
+                    '{profile["last_updated"]}' as last_updated
+            ) AS source
+            ON target.username = source.username
+            WHEN MATCHED THEN
+                UPDATE SET 
+                    account_age_days = source.account_age_days,
+                    public_repos = source.public_repos,
+                    followers = source.followers,
+                    bio = source.bio,
+                    last_updated = source.last_updated
+            WHEN NOT MATCHED THEN
+                INSERT (username, account_age_days, public_repos, followers, bio, last_updated)
+                VALUES (source.username, source.account_age_days, source.public_repos, source.followers, source.bio, source.last_updated)
+            """
+
+            # Execute using SQL warehouse
+            w.statement_execution.execute_statement(
+                warehouse_id=os.environ.get("DATABRICKS_WAREHOUSE_ID"),
+                statement=merge_query,
+            )
+
+            print(f"💾 Saved profile for {profile['login']} to Databricks lakehouse")
+
+        except Exception as e:
+            print(f"Error saving to Databricks lakehouse: {e}")
 
     def conduct_advanced_research(
         self, context: ConversationContext, user_feedback: str
