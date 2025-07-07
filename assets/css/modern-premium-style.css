@@ -681,45 +681,46 @@ p {
 }
 
 .guide-content p {
-  font-size: var(--text-lg);
-  line-height: 1.7;
-  margin-bottom: var(--space-6);
+  font-size: var(--text-xl);
+  line-height: 1.8;
+  margin-bottom: var(--space-8);
   color: var(--color-gray-700);
 }
 
 .cta-box {
   background: var(--color-accent-light);
   border: 1px solid var(--color-accent);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  margin-top: var(--space-8);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  margin-top: var(--space-12);
 }
 
 .cta-box p {
   margin: 0;
   color: var(--color-accent-hover);
   font-weight: var(--font-weight-medium);
+  font-size: var(--text-lg);
 }
 
 /* Post Lists */
 .recent-papers {
-  margin: var(--space-24) 0;
+  margin: var(--space-48) 0;
 }
 
 .recent-papers h2 {
   color: var(--color-primary);
-  text-align: center;
-  margin-bottom: var(--space-16);
-  font-size: var(--text-3xl);
+  text-align: left;
+  margin-bottom: var(--space-20);
+  font-size: var(--text-4xl);
   font-weight: var(--font-weight-bold);
 }
 
 .post-list {
   list-style: none;
   padding: 0;
-  margin: var(--space-16) 0;
+  margin: var(--space-20) 0;
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-12);
 }
 
 .post-list li {
@@ -737,7 +738,7 @@ p {
 }
 
 .paper-preview {
-  padding: var(--space-12);
+  padding: var(--space-16);
   position: relative;
 }
 
@@ -760,7 +761,7 @@ p {
 }
 
 .paper-preview .post-link a {
-  font-size: var(--text-2xl);
+  font-size: var(--text-3xl);
   font-weight: var(--font-weight-semibold);
   color: var(--color-primary);
   text-decoration: none;
@@ -1339,10 +1340,10 @@ p {
   
   .page-hero {
     grid-template-columns: 1fr;
-    gap: var(--space-12);
+    gap: var(--space-16);
     text-align: center;
     min-height: auto;
-    margin: var(--space-16) 0;
+    margin: var(--space-20) 0;
   }
   
   .hero-content {
@@ -1368,8 +1369,8 @@ p {
   }
   
   .interaction-section {
-    padding: var(--space-12);
-    margin: var(--space-20) 0;
+    padding: var(--space-16);
+    margin: var(--space-24) 0;
   }
   
   .guide-content p {
