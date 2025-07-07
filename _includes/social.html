@@ -1,0 +1,27 @@
+<div class="social-links">
+  <ul class="social-media-list">
+    {% if site.twitter_username %}
+    <li>
+      <a href="https://twitter.com/{{ site.twitter_username }}" target="_blank" rel="noopener noreferrer">
+        <svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#twitter' | relative_url }}"></use></svg>
+        <span class="username">{{ site.twitter_username }}</span>
+      </a>
+    </li>
+    {% endif %}
+
+    {% if site.github_username %}
+    <li>
+      <a href="https://github.com/{{ site.github_username }}" target="_blank" rel="noopener noreferrer">
+        <svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#github' | relative_url }}"></use></svg>
+        <span class="username">{{ site.github_username }}</span>
+      </a>
+    </li>
+    {% endif %}
+    <li>
+      <a href="{{ '/feed.xml' | relative_url }}" target="_blank" rel="noopener noreferrer">
+        <svg class="svg-icon"><use xlink:href="{{ '/assets/minima-social-icons.svg#rss' | relative_url }}"></use></svg>
+        <span class="username">RSS Feed</span>
+      </a>
+    </li>
+  </ul>
+</div>

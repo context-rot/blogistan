@@ -83,18 +83,7 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrapper">
-      <div class="footer-content">
-        <p>&copy; {{ 'now' | date: '%Y' }} {{ site.title }}. 
-           Powered by the relentless march of entropy and Jekyll.
-        </p>
-        <p class="feedback-reminder">
-          {{ site.feedback_prompt | default: "Found something worth discussing? Select any text to provide feedback!" }}
-        </p>
-      </div>
-    </div>
-  </footer>
+  {% include footer.html %}
 
   <!-- Selection and comment functionality -->
   <script src="{{ '/assets/js/selection-comments.js' | relative_url }}"></script>
