@@ -23,13 +23,14 @@ jobs:
         
         # Get user's recent issues
         DATE_24H_AGO=$(date -d "24 hours ago" --iso-8601)
+        SEARCH_QUERY="repo:context-rot/blogistan is:issue author:$USER created:>$DATE_24H_AGO"
         RECENT_ISSUES=$(gh api graphql -f query='
-          query($user: String!, $date: String!) {
-            search(query: "repo:context-rot/blogistan is:issue author:\($user) created:>\($date)", type: ISSUE, first: 10) {
+          query($searchQuery: String!) {
+            search(query: $searchQuery, type: ISSUE, first: 10) {
               issueCount
             }
           }
-        ' -f user="$USER" -f date="$DATE_24H_AGO" --jq '.data.search.issueCount')
+        ' -f searchQuery="$SEARCH_QUERY" --jq '.data.search.issueCount')
         
         if [ "$RECENT_ISSUES" -gt 5 ]; then
           # Add rate-limited label and close issue
