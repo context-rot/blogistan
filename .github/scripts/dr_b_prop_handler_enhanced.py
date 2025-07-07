@@ -171,7 +171,7 @@ class GitHubIssueHandler:
                     "--provider",
                     "perplexity",
                     "--model",
-                    "llama-3.1-sonar-large-128k-online",
+                    "llama-3.1-sonar-large-128k-chat",
                     "--max-tokens",
                     "400",
                 ]

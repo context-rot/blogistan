@@ -534,7 +534,7 @@ class ContextualDrBProp:
 
             # Use correct model name and simplified request
             data = {
-                "model": "llama-3.1-sonar-small-128k-online",  # Changed to small model to avoid quota issues
+                "model": "llama-3.1-sonar-small-128k-chat",  # Valid Perplexity model name
                 "messages": [
                     {
                         "role": "system",
