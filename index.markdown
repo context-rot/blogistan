@@ -13,14 +13,14 @@ layout: default
   <div class="interaction-guide">
     <h3>🎯 How to Engage</h3>
     <p>
-      This isn't your typical blog — it's an <strong>interactive research environment</strong>. 
+      This isn't your typical blog. Or maybe it is. It's probably something worse — it's an <strong>interactive research environment</strong>. 
       Select any text in our papers to provide line-specific feedback, corrections, or insights. 
       Your contributions help improve our research and may influence future papers through our 
-      AI feedback integration system.
+      AI feedback integration system. ICL. RL. All the things.
     </p>
     <p class="cta">
       <strong>Go ahead, try it!</strong> Find something interesting, select it, and click the comment button. 
-      We dare you to find an error worth discussing. 🤓
+      Find or introduce errors, satire, or anything worth discussing. Or not discussing.
     </p>
   </div>
 </div>

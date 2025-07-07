@@ -8,12 +8,12 @@ Welcome to **Context Rot**, an experimental blog that presents ArXiv-style acade
 
 ## 🎯 What Makes This Special
 
-This isn't just another tech blog. Context Rot is an **interactive research environment** where readers can:
+This isn't just another tech blog. Or maybe it is. Maybe it's something worse. Definitely. Context Rot is an **interactive research environment** where readers can:
 
 - **Select any text** in our papers to provide line-specific feedback
 - **Open GitHub issues** directly from highlighted content  
 - **Engage with Dr. B. Prop**, our AI research assistant, who responds to feedback
-- **Contribute to ongoing research** through community-driven peer review
+- **Contribute to ongoing "research"** through community-driven "peer review"
 
 ## 🏗️ Architecture
 
