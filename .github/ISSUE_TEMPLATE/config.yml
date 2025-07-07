@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 💬 General Discussion
+    url: https://github.com/context-rot/blogistan/discussions
+    about: For general questions, ideas, or discussions about the blog
+  - name: 🌐 Visit the Website
+    url: https://context-rot.com
+    about: Read the latest posts and provide inline feedback

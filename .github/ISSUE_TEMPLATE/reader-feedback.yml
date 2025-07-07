@@ -1,0 +1,75 @@
+name: 📝 Reader Feedback
+description: Provide feedback, corrections, or insights on a blog post
+title: "Feedback on [POST TITLE] - [BRIEF DESCRIPTION]"
+labels: ["reader-feedback", "enhancement"]
+assignees:
+  - basitmustafa
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to provide feedback! Your insights help improve the quality and accuracy of our research.
+        
+        **Pro tip:** You can also select text directly on any blog post and click the comment button for line-specific feedback!
+
+  - type: input
+    id: post-title
+    attributes:
+      label: Blog Post Title
+      description: Which post is this feedback about?
+      placeholder: "e.g., A Framework for Markdown File Processing"
+    validations:
+      required: true
+
+  - type: textarea
+    id: selected-text
+    attributes:
+      label: Selected Text (if applicable)
+      description: If your feedback relates to a specific section, paste it here
+      placeholder: "Paste the relevant text here..."
+    validations:
+      required: false
+
+  - type: dropdown
+    id: feedback-type
+    attributes:
+      label: Type of Feedback
+      description: What kind of feedback are you providing?
+      options:
+        - Correction/Error Report
+        - Suggestion for Improvement
+        - Additional Context/Information
+        - Question for Clarification
+        - Praise/Positive Feedback
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: feedback-details
+    attributes:
+      label: Detailed Feedback
+      description: Please provide your feedback, suggestions, corrections, or insights
+      placeholder: "Describe your feedback in detail..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: supporting-info
+    attributes:
+      label: Supporting Information
+      description: Any links, references, or additional context that supports your feedback
+      placeholder: "Links, papers, documentation, etc..."
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Terms
+      description: By submitting this feedback, I agree that
+      options:
+        - label: This feedback is constructive and intended to improve the content
+          required: true
+        - label: I understand this is a public repository and my feedback will be visible
+          required: true

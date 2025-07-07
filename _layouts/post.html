@@ -1,0 +1,71 @@
+---
+layout: default
+---
+
+<article class="arxiv-paper">
+  <header class="paper-header">
+    <h1 class="paper-title">{{ page.title }}</h1>
+    
+    <div class="paper-meta">
+      <div class="authors">
+        {% if page.authors %}
+          {{ page.authors | join: ', ' }}
+        {% else %}
+          {{ site.author.name | default: "Dr. B. Prop" }}
+        {% endif %}
+      </div>
+      
+      <div class="affiliation">
+        {{ page.affiliation | default: "Context Decay Research Institute" }}
+      </div>
+      
+      <div class="paper-info">
+        <span class="arxiv-id">contextrot:{{ page.date | date: '%Y%m%d' }}.{{ page.slug }}</span>
+        <span class="date">{{ page.date | date: '%B %d, %Y' }}</span>
+      </div>
+      
+      {% if page.categories %}
+        <div class="categories">
+          <strong>Subject Classes:</strong> 
+          {% for category in page.categories %}
+            <span class="category">{{ category }}</span>{% unless forloop.last %}, {% endunless %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if page.abstract %}
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p>{{ page.abstract }}</p>
+  </section>
+  {% endif %}
+
+  <section class="paper-content" id="paper-content">
+    {{ content }}
+  </section>
+
+  <footer class="paper-footer">
+    <div class="paper-actions">
+      <a href="https://github.com/{{ site.repository }}/blob/main/_posts/{{ page.name }}" 
+         class="source-link" target="_blank" rel="noopener">
+         📄 View Source
+      </a>
+      
+      <a href="https://github.com/{{ site.repository }}/issues/new?title=Feedback%20on%20{{ page.title | uri_escape }}&body=I%20have%20feedback%20on%20the%20paper%20%22{{ page.title | uri_escape }}%22%3A%0A%0A%5BYour%20feedback%20here%5D%0A%0AReference%3A%20{{ page.url | absolute_url | uri_escape }}" 
+         class="feedback-link" target="_blank" rel="noopener">
+         💬 Provide Feedback
+      </a>
+    </div>
+    
+    <div class="feedback-help">
+      <p><strong>💡 Pro tip:</strong> Select any text in this paper to provide line-specific feedback!</p>
+    </div>
+  </footer>
+</article>
+
+<!-- Selection tooltip for comments -->
+<div id="selection-tooltip" class="selection-tooltip" style="display: none;">
+  <button id="comment-button" class="comment-btn">💬 Comment on this</button>
+</div>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | default: site.title }}</title>
+  <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
+  
+  <!-- ArXiv-style CSS -->
+  <link rel="stylesheet" href="{{ '/assets/css/arxiv-style.css' | relative_url }}">
+  
+  <!-- Selection and comment functionality -->
+  <link rel="stylesheet" href="{{ '/assets/css/selection-comments.css' | relative_url }}">
+  
+  <!-- SEO and feed -->
+  {% seo %}
+  <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }}" href="{{ '/feed.xml' | relative_url }}">
+  
+  <!-- Privacy-friendly analytics -->
+  <script async defer src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+  <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade" /></noscript>
+</head>
+
+<body class="arxiv-layout">
+  <header class="site-header">
+    <div class="wrapper">
+      <h1 class="site-title">
+        <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+      </h1>
+      <p class="site-subtitle">{{ site.description }}</p>
+    </div>
+  </header>
+
+  <main class="page-content">
+    <div class="wrapper">
+      {{ content }}
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper">
+      <div class="footer-content">
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ site.title }}. 
+           Powered by the relentless march of entropy and Jekyll.
+        </p>
+        <p class="feedback-reminder">
+          {{ site.feedback_prompt | default: "Found something worth discussing? Select any text to provide feedback!" }}
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Selection and comment functionality -->
+  <script src="{{ '/assets/js/selection-comments.js' | relative_url }}"></script>
+</body>
+</html>
