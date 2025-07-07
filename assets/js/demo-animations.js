@@ -52,10 +52,26 @@ class DemoAnimations {
           <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
             <path d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm3.5 6L7 10.5 4.5 8 5.91 6.59 7 7.68l3.59-3.59L12 5.5z"/>
           </svg>
-          <span>Try the commenting system!</span>
+          <span>Interactive Research Papers</span>
         </div>
-        <p>Select text anywhere on papers to provide feedback, corrections, or insights.</p>
-        <button class="demo-dismiss" onclick="this.closest('.demo-tooltip').remove()">Got it!</button>
+        <div class="demo-steps">
+          <div class="demo-step">
+            <span class="demo-step-number">1</span>
+            <span>Select any text in research papers</span>
+          </div>
+          <div class="demo-step">
+            <span class="demo-step-number">2</span>
+            <span>Leave feedback, corrections, or insights</span>
+          </div>
+          <div class="demo-step">
+            <span class="demo-step-number">3</span>
+            <span>Your comments train our AI to write better papers</span>
+          </div>
+        </div>
+        <div class="demo-rl-note">
+          <small>🤖 <strong>RL Loop:</strong> Community feedback → Model fine-tuning → Better research</small>
+        </div>
+        <button class="demo-dismiss" onclick="this.closest('.demo-tooltip').remove()">Start Reading →</button>
       </div>
     `;
     return tooltip;

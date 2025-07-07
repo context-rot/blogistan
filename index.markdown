@@ -19,26 +19,50 @@ layout: default
 <div class="interaction-section">
   <div class="guide-header">
     <img src="{{ '/assets/images/context-icon.svg' | relative_url }}" alt="Context Icon" class="guide-icon">
-    <h2>How to Play</h2>
+    <h2>How This Works</h2>
   </div>
   
   <div class="guide-content">
-    <p>
-      This isn't your typical blog. Or maybe it is. It's probably something worse. The AI I used to slop this together tried to tell me it's an <strong>interactive research environment</strong>. Uh. Yeah. "Research". Let's go with that. It's a relative term these days, anyway.
-    </p>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-icon">📖</div>
+        <div class="step-content">
+          <h3>1. Read Research Papers</h3>
+          <p>Browse our collection of AI research papers below. Each paper is a complete academic work you can read and interact with.</p>
+        </div>
+      </div>
+      
+      <div class="process-step">
+        <div class="step-icon">✨</div>
+        <div class="step-content">
+          <h3>2. Select & Comment</h3>
+          <p>When reading a paper, highlight any sentence or paragraph. A comment button appears—click it to add feedback, corrections, or insights.</p>
+        </div>
+      </div>
+      
+      <div class="process-step">
+        <div class="step-icon">🤖</div>
+        <div class="step-content">
+          <h3>3. Train the AI</h3>
+          <p>Your comments become training data. The AI learns from community feedback to write better research papers over time.</p>
+        </div>
+      </div>
+    </div>
     
-    <p>
-      So, the concept/hook/gig here is simple: Put on your sarcastic-pseudo-science hat, read some "papers", and react by 
-      selecting any text in our papers to provide line-specific feedback, corrections, or insights.
-    </p>
-    
-    <p>
-      Your contributions help improve our research and may influence future papers through our 
-      AI feedback integration system. ICL. RL. All the things. The AI used to write these gets fine-tuned, post-trained, optimized, all that stuff.
-    </p>
+    <div class="philosophy-note">
+      <p>
+        <strong>Our Philosophy:</strong> This isn't your typical blog. It's probably something worse. 
+        The AI I used to slop this together calls it an "interactive research environment." 
+        I call it "academic karaoke with robots."
+      </p>
+      <p>
+        We're building a feedback loop where human insight improves AI research output. 
+        Think of it as collaborative peer review, but with more existential dread and better typography.
+      </p>
+    </div>
     
     <div class="cta-box">
-      <p><strong>Go ahead, try it!</strong> Find something interesting, select it, and click the comment button. Find or introduce errors, satire, or anything worth discussing. Or not discussing.</p>
+      <p><strong>Ready to start?</strong> Click any paper below, then try selecting text to leave your first comment. The future of AI research thanks you. Or will blame you. Time will tell.</p>
     </div>
   </div>
 </div>
