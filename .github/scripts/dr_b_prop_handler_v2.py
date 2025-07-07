@@ -560,7 +560,7 @@ class ContextualDrBProp:
             print(f"Gemini query: {query[:100]}...")  # Debug log
 
             response = requests.post(
-                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={gemini_key}",
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-exp:generateContent?key={gemini_key}",
                 headers=headers,
                 json=data,
                 timeout=30,
