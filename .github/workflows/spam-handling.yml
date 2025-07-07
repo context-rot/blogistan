@@ -25,7 +25,7 @@ jobs:
         DATE_24H_AGO=$(date -d "24 hours ago" --iso-8601)
         RECENT_ISSUES=$(gh api graphql -f query='
           query($user: String!, $date: String!) {
-            search(query: "repo:context-rot/blogistan is:issue author:$user created:>$date", type: ISSUE, first: 10) {
+            search(query: "repo:context-rot/blogistan is:issue author:\($user) created:>\($date)", type: ISSUE, first: 10) {
               issueCount
             }
           }
