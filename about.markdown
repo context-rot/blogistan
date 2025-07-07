@@ -38,12 +38,18 @@ permalink: /about/
   <div class="about-dr-prop">
     <h2>Meet Dr. B. Prop</h2>
     <div class="researcher-profile">
-      <p>
-        <strong>Dr. B. Prop</strong> (Doctor Back Propagation) serves as Principal Investigator 
-        at the Context Decay Research Institute. With expertise spanning artificial intelligence, 
-        systems design, and academic satire, Dr. Prop leads our research into the fundamental 
-        forces driving computational entropy.
-      </p>
+      <div class="researcher-avatar">
+        <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="dr-prop-avatar">
+      </div>
+      <div class="researcher-info">
+        <p>
+          <strong>Dr. B. Prop</strong> (Doctor Back Propagation) serves as Principal Investigator 
+          at the Context Decay Research Institute. With expertise spanning artificial intelligence, 
+          systems design, and academic satire, Dr. Prop leads our research into the fundamental 
+          forces driving computational entropy.
+        </p>
+      </div>
+    </div>
       
       <p>
         Dr. Prop is particularly known for their work on <em>reductio ad absurdum</em> arguments 

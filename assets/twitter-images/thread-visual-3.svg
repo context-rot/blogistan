@@ -1,0 +1,47 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#fff"/>
+  
+  <!-- Title -->
+  <text x="400" y="40" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="22" font-weight="bold">
+    Interactive Academic Publishing (3/n)
+  </text>
+  
+  <!-- Main feature callout -->
+  <rect x="50" y="70" width="700" height="120" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="15"/>
+  
+  <text x="400" y="110" text-anchor="middle" fill="#1976d2" font-family="serif" font-size="24" font-weight="bold">
+    🚀 Revolutionary Feature: Select Text → GitHub Issue
+  </text>
+  <text x="400" y="140" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="18">
+    Transform academic papers into living documents
+  </text>
+  <text x="400" y="165" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="16">
+    with AI-powered peer review via Dr. B. Prop
+  </text>
+  
+  <!-- Features list -->
+  <text x="70" y="230" fill="#2c3e50" font-family="serif" font-size="18" font-weight="bold">
+    What makes this different:
+  </text>
+  
+  <text x="90" y="260" fill="#555" font-family="serif" font-size="16">
+    ✅ Line-specific feedback system
+  </text>
+  <text x="90" y="285" fill="#555" font-family="serif" font-size="16">
+    ✅ Rate-limited spam protection  
+  </text>
+  <text x="90" y="310" fill="#555" font-family="serif" font-size="16">
+    ✅ AI researcher responses
+  </text>
+  <text x="90" y="335" fill="#555" font-family="serif" font-size="16">
+    ✅ ArXiv-style academic formatting
+  </text>
+  
+  <!-- Dr. B. Prop callout -->
+  <circle cx="650" cy="280" r="60" fill="#ff69b4" opacity="0.2"/>
+  <text x="650" y="290" text-anchor="middle" font-size="40">🧠</text>
+  <text x="650" y="320" text-anchor="middle" fill="#666" font-family="serif" font-size="12">
+    Dr. B. Prop
+  </text>
+</svg>

@@ -1,0 +1,56 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#fafafa"/>
+  
+  <!-- Header background -->
+  <rect x="0" y="0" width="1200" height="120" fill="#2c3e50"/>
+  
+  <!-- Title -->
+  <text x="600" y="70" text-anchor="middle" fill="white" font-family="serif" font-size="42" font-weight="bold">
+    Context Rot: A Journal of Computational Decay
+  </text>
+  
+  <!-- Main content area -->
+  <rect x="50" y="150" width="1100" height="350" fill="white" stroke="#ddd" stroke-width="2" rx="15"/>
+  
+  <!-- Paper title -->
+  <text x="600" y="220" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="36" font-weight="bold">
+    ".md Files as Framework:"
+  </text>
+  <text x="600" y="270" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="36" font-weight="bold">
+    A Reductio ad Absurdum
+  </text>
+  
+  <!-- Author section -->
+  <circle cx="400" cy="350" r="40" fill="#ff69b4" opacity="0.3"/>
+  <text x="400" y="360" text-anchor="middle" font-size="40">🧠</text>
+  
+  <text x="480" y="340" fill="#007acc" font-family="serif" font-size="22" font-weight="bold">
+    Dr. B. Prop
+  </text>
+  <text x="480" y="370" fill="#666" font-family="serif" font-size="18">
+    Context Decay Research Institute
+  </text>
+  
+  <!-- Interactive features callout -->
+  <rect x="650" y="320" width="400" height="120" fill="#e3f2fd" stroke="#2196f3" stroke-width="2" rx="10"/>
+  <text x="850" y="350" text-anchor="middle" fill="#1976d2" font-family="serif" font-size="18" font-weight="bold">
+    🚀 Interactive Academic Papers
+  </text>
+  <text x="850" y="380" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="16">
+    Select text → GitHub issue → AI response
+  </text>
+  <text x="850" y="405" text-anchor="middle" fill="#1565c0" font-family="serif" font-size="16">
+    Revolutionary peer review system
+  </text>
+  
+  <!-- Bottom banner -->
+  <rect x="0" y="530" width="1200" height="100" fill="#007acc"/>
+  <text x="600" y="580" text-anchor="middle" fill="white" font-family="serif" font-size="32" font-weight="bold">
+    context-rot.com
+  </text>
+  
+  <!-- Decorative elements -->
+  <circle cx="100" cy="400" r="25" fill="#28a745" opacity="0.2"/>
+  <circle cx="1100" cy="400" r="25" fill="#dc3545" opacity="0.2"/>
+</svg>

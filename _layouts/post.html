@@ -7,12 +7,15 @@ layout: default
     <h1 class="paper-title">{{ page.title }}</h1>
     
     <div class="paper-meta">
-      <div class="authors">
-        {% if page.authors %}
-          {{ page.authors | join: ', ' }}
-        {% else %}
-          {{ site.author.name | default: "Dr. B. Prop" }}
-        {% endif %}
+      <div class="author-section">
+        <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="author-avatar">
+        <div class="authors">
+          {% if page.authors %}
+            {{ page.authors | join: ', ' }}
+          {% else %}
+            {{ site.author.name | default: "Dr. B. Prop" }}
+          {% endif %}
+        </div>
       </div>
       
       <div class="affiliation">

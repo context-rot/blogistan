@@ -7,6 +7,46 @@
   <title>{{ page.title | default: site.title }}</title>
   <meta name="description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 160 | escape }}">
   
+  <!-- Favicon and app icons -->
+  <link rel="icon" type="image/x-icon" href="{{ '/assets/favicon.ico' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/icons/favicon-16x16.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/icons/favicon-32x32.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="48x48" href="{{ '/assets/icons/favicon-48x48.png' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ '/assets/icons/apple-touch-icon.png' | relative_url }}">
+  <link rel="manifest" href="{{ '/site.webmanifest' | relative_url }}">
+  <meta name="theme-color" content="#2c3e50">
+  <meta name="msapplication-TileColor" content="#2c3e50">
+  <meta name="msapplication-TileImage" content="{{ '/assets/icons/favicon-128x128.png' | relative_url }}">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="{% if page.layout == 'post' %}article{% else %}website{% endif %}">
+  <meta property="og:title" content="{{ page.title | default: site.title }}">
+  <meta property="og:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 200 | escape }}">
+  <meta property="og:image" content="{{ '/assets/social-card.png' | absolute_url }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Context Rot: A Journal of Computational Decay">
+  <meta property="og:url" content="{{ page.url | absolute_url }}">
+  <meta property="og:site_name" content="{{ site.title }}">
+  {% if page.layout == 'post' %}
+  <meta property="article:author" content="{{ page.authors | default: 'Dr. B. Prop' | join: ', ' }}">
+  <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}">
+  <meta property="article:section" content="Computer Science">
+  {% endif %}
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@context_rot">
+  <meta name="twitter:title" content="{{ page.title | default: site.title }}">
+  <meta name="twitter:description" content="{{ page.excerpt | default: site.description | strip_html | normalize_whitespace | truncate: 200 | escape }}">
+  <meta name="twitter:image" content="{{ '/assets/social-card.png' | absolute_url }}">
+  <meta name="twitter:image:alt" content="Context Rot: A Journal of Computational Decay">
+  
+  <!-- Additional Meta Tags -->
+  <meta name="author" content="{{ page.authors | default: 'Dr. B. Prop' | join: ', ' }}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  
   <!-- ArXiv-style CSS -->
   <link rel="stylesheet" href="{{ '/assets/css/arxiv-style.css' | relative_url }}">
   
@@ -25,10 +65,15 @@
 <body class="arxiv-layout">
   <header class="site-header">
     <div class="wrapper">
-      <h1 class="site-title">
-        <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
-      </h1>
-      <p class="site-subtitle">{{ site.description }}</p>
+      <div class="site-header-content">
+        <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="site-avatar">
+        <div class="site-text">
+          <h1 class="site-title">
+            <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+          </h1>
+          <p class="site-subtitle">{{ site.description }}</p>
+        </div>
+      </div>
     </div>
   </header>
 

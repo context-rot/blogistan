@@ -1,0 +1,52 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f8f9fa"/>
+  
+  <!-- Title -->
+  <text x="400" y="50" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="24" font-weight="bold">
+    The Markdown Paradox (2/n)
+  </text>
+  
+  <!-- Flow diagram -->
+  <rect x="50" y="100" width="150" height="60" fill="#28a745" rx="10"/>
+  <text x="125" y="135" text-anchor="middle" fill="white" font-family="serif" font-size="14" font-weight="bold">
+    Simple .md
+  </text>
+  
+  <path d="M 220 130 L 280 130" stroke="#666" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <rect x="300" y="100" width="150" height="60" fill="#ffc107" rx="10"/>
+  <text x="375" y="135" text-anchor="middle" fill="black" font-family="serif" font-size="14" font-weight="bold">
+    Add Features
+  </text>
+  
+  <path d="M 470 130 L 530 130" stroke="#666" stroke-width="3" marker-end="url(#arrowhead)"/>
+  
+  <rect x="550" y="100" width="150" height="60" fill="#dc3545" rx="10"/>
+  <text x="625" y="135" text-anchor="middle" fill="white" font-family="serif" font-size="14" font-weight="bold">
+    Complex Framework
+  </text>
+  
+  <!-- Arrow definition -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  
+  <!-- Key insight -->
+  <text x="400" y="220" text-anchor="middle" fill="#2c3e50" font-family="serif" font-size="20" font-weight="bold">
+    "The pursuit of simplicity breeds complexity"
+  </text>
+  
+  <!-- Examples -->
+  <text x="50" y="280" fill="#666" font-family="serif" font-size="16">
+    • VitePress → 47 config options
+  </text>
+  <text x="50" y="310" fill="#666" font-family="serif" font-size="16">
+    • Docusaurus → 143 config fields  
+  </text>
+  <text x="50" y="340" fill="#666" font-family="serif" font-size="16">
+    • GitBook → Proprietary schema proliferation
+  </text>
+</svg>
