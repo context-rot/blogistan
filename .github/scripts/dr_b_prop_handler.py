@@ -49,13 +49,25 @@ class GitHubIssueHandler:
     def _gh_api(self, endpoint: str, method: str = "GET", data: Dict = None) -> Any:
         """Make GitHub API calls using gh CLI."""
         cmd = ["gh", "api", endpoint, "--method", method]
+        input_data = None
 
         if data:
             for key, value in data.items():
-                cmd.extend(["--field", f"{key}={value}"])
+                if isinstance(value, list):
+                    # For arrays, use --field key=@- and stdin
+                    cmd.extend(["--field", f"{key}=@-"])
+                    input_data = json.dumps(value)
+                else:
+                    cmd.extend(["--field", f"{key}={value}"])
 
         try:
-            result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+            result = subprocess.run(
+                cmd,
+                input=input_data,
+                capture_output=True,
+                text=True,
+                check=True,
+            )
             return json.loads(result.stdout) if result.stdout.strip() else None
         except subprocess.CalledProcessError as e:
             print(f"GitHub API error: {e.stderr}")
