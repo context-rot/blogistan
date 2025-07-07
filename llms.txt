@@ -1,0 +1,12 @@
+# llms.txt for Context Rot: A Journal of Computational Decay
+
+# General guidelines for all AI models
+User-agent: *
+Allow: /
+Crawl-delay: 10
+
+# Example: Allow all usage but request attribution
+Allow-all: /
+Request-attribution: "Content from Context Rot: A Journal of Computational Decay (context-rot.com)"
+
+# You can add more specific rules here as standards evolve or as needed.

@@ -45,8 +45,23 @@ layout: default
   </section>
   {% endif %}
 
-  <section class="paper-content" id="paper-content">
+  <section class="paper-content" id="paper-content" itemprop="articleBody">
     {{ content }}
+  </section>
+
+  <section class="related-posts">
+    <h2>Related Papers</h2>
+    <ul>
+      {% assign current_post_categories = page.categories %}
+      {% for post in site.posts %}
+        {% unless post.url == page.url %}
+          {% assign common_categories = current_post_categories | intersection: post.categories %}
+          {% if common_categories.size > 0 %}
+            <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+          {% endif %}
+        {% endunless %}
+      {% endfor %}
+    </ul>
   </section>
 
   <footer class="paper-footer">
