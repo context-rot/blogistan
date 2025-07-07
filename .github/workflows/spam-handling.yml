@@ -18,8 +18,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        USER="${{ github.event.issue.user.login }}"
-        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        USER='${{ github.event.issue.user.login }}'
+        ISSUE_NUMBER='${{ github.event.issue.number }}'
         
         # Get user's recent issues
         DATE_24H_AGO=$(date -d "24 hours ago" --iso-8601)
@@ -53,10 +53,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        ISSUE_TITLE="${{ github.event.issue.title }}"
-        ISSUE_BODY="${{ github.event.issue.body }}"
-        USER="${{ github.event.issue.user.login }}"
-        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        ISSUE_TITLE='${{ github.event.issue.title }}'
+        ISSUE_BODY='${{ github.event.issue.body }}'
+        USER='${{ github.event.issue.user.login }}'
+        ISSUE_NUMBER='${{ github.event.issue.number }}'
         
         # Advanced spam patterns
         SPAM_INDICATORS=0
