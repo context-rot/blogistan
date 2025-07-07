@@ -17,13 +17,14 @@ jobs:
     - name: Check for Rate Limiting
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        USER: ${{ github.event.issue.user.login }}
+        ISSUE_NUMBER: ${{ github.event.issue.number }}
       run: |
-        USER='${{ github.event.issue.user.login }}'
-        ISSUE_NUMBER='${{ github.event.issue.number }}'
         
         # Get user's recent issues
         DATE_24H_AGO=$(date -d "24 hours ago" --iso-8601)
-        SEARCH_QUERY="repo:context-rot/blogistan is:issue author:$USER created:>$DATE_24H_AGO"
+        SEARCH_QUERY="repo:$GITHUB_REPOSITORY is:issue author:$USER created:>$DATE_24H_AGO"
         RECENT_ISSUES=$(gh api graphql -f query='
           query($searchQuery: String!) {
             search(query: $searchQuery, type: ISSUE, first: 10) {
@@ -34,29 +35,30 @@ jobs:
         
         if [ "$RECENT_ISSUES" -gt 5 ]; then
           # Add rate-limited label and close issue
-          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+          gh api repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/labels \
             --method POST \
             --field labels='["rate-limited", "auto-closed"]'
             
-          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
+          gh api repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER \
             --method PATCH \
             --field state=closed \
             --field state_reason=not_planned
             
           # Post explanation comment
-          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+          gh api repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments \
             --method POST \
-            --field body="$(echo -e '🚦 **Rate Limit Exceeded**\n\nHi @'"$USER"',\n\nThanks for your enthusiasm in providing feedback! However, you'\''ve exceeded our rate limit of 5 issues per 24-hour period.\n\n**Why do we have rate limits?**\n- Prevents spam and ensures quality discussions\n- Allows Dr. B. Prop to provide thoughtful responses\n- Maintains a manageable volume for community engagement\n\n**What can you do?**\n- Wait 24 hours before submitting new feedback\n- Consolidate multiple points into a single, comprehensive issue\n- Use our [Discussions](https://github.com/'"${{ github.repository }}"'/discussions) for general questions\n\n**For urgent matters:** Contact us at editor@context-rot.com\n\nThis issue has been automatically closed but will be reviewed manually.\n\n---\n*🤖 Automated rate limiting system - part of our spam protection measures*')"
+            --field body="$(echo -e '🚦 **Rate Limit Exceeded**\n\nHi @'"$USER"',\n\nThanks for your enthusiasm in providing feedback! However, you'\''ve exceeded our rate limit of 5 issues per 24-hour period.\n\n**Why do we have rate limits?**\n- Prevents spam and ensures quality discussions\n- Allows Dr. B. Prop to provide thoughtful responses\n- Maintains a manageable volume for community engagement\n\n**What can you do?**\n- Wait 24 hours before submitting new feedback\n- Consolidate multiple points into a single, comprehensive issue\n- Use our [Discussions](https://github.com/'"$GITHUB_REPOSITORY"'/discussions) for general questions\n\n**For urgent matters:** Contact us at editor@context-rot.com\n\nThis issue has been automatically closed but will be reviewed manually.\n\n---\n*🤖 Automated rate limiting system - part of our spam protection measures*')"
         fi
         
     - name: Enhanced Spam Detection
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_REPOSITORY: ${{ github.repository }}
+        ISSUE_TITLE: ${{ github.event.issue.title }}
+        ISSUE_BODY: ${{ github.event.issue.body }}
+        USER: ${{ github.event.issue.user.login }}
+        ISSUE_NUMBER: ${{ github.event.issue.number }}
       run: |
-        ISSUE_TITLE='${{ github.event.issue.title }}'
-        ISSUE_BODY='${{ github.event.issue.body }}'
-        USER='${{ github.event.issue.user.login }}'
-        ISSUE_NUMBER='${{ github.event.issue.number }}'
         
         # Advanced spam patterns
         SPAM_INDICATORS=0
@@ -99,16 +101,16 @@ jobs:
         
         # If high spam score, mark as spam and close
         if [ "$SPAM_INDICATORS" -ge 5 ]; then
-          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+          gh api repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/labels \
             --method POST \
             --field labels='["spam", "auto-closed"]'
             
-          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER \
+          gh api repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER \
             --method PATCH \
             --field state=closed \
             --field state_reason=not_planned
             
-          gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
+          gh api repos/$GITHUB_REPOSITORY/issues/$ISSUE_NUMBER/comments \
             --method POST \
             --field body="$(echo -e '🚫 **Potential Spam Detected**\n\nThis issue has been automatically flagged as potential spam and closed.\n\n**Common reasons for auto-flagging:**\n- Excessive promotional content\n- Irrelevant external links\n- Contact information (emails/phones)\n- Generic spam patterns\n\n**If this is a false positive:**\n- Email us at editor@context-rot.com with issue #'"$ISSUE_NUMBER"'\n- We'\''ll review and reopen if appropriate\n- Help us improve by being more specific about your feedback\n\n**For legitimate feedback:**\n- Focus on the specific paper content\n- Be specific about the issue or suggestion\n- Avoid promotional language\n\n---\n*🤖 Automated spam detection system*')"
         fi

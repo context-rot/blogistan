@@ -35,6 +35,8 @@ jobs:
     - name: Install dependencies
       run: |
         npm install -g vibe-tools
+        pip install requests beautifulsoup4
+        pip install dspy==3.0.0b1
         
     - name: Spam Detection and Rate Limiting
       id: spam_check
@@ -42,10 +44,11 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+        PPLX_API_KEY: ${{ secrets.PPLX_API_KEY }}
         GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
-        chmod +x .github/scripts/dr_b_prop_handler.py
-        python3 .github/scripts/dr_b_prop_handler.py spam-detection
+        python3 .github/scripts/dr_b_prop_handler_v2.py spam-detection
         
   dr-b-prop-response:
     runs-on: ubuntu-latest
@@ -69,16 +72,19 @@ jobs:
     - name: Install dependencies
       run: |
         npm install -g vibe-tools
+        pip install requests beautifulsoup4
+        pip install dspy==3.0.0b1
         
     - name: Generate and Post Dr. B. Prop Response
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        PERPLEXITY_API_KEY: ${{ secrets.PERPLEXITY_API_KEY }}
+        PPLX_API_KEY: ${{ secrets.PPLX_API_KEY }}
         GITHUB_REPOSITORY: ${{ github.repository }}
       run: |
-        chmod +x .github/scripts/dr_b_prop_handler.py
-        python3 .github/scripts/dr_b_prop_handler.py response-generation
+        python3 .github/scripts/dr_b_prop_handler_v2.py response-generation
         
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
