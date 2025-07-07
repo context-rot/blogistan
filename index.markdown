@@ -17,10 +17,14 @@ layout: default
 
       </p>
       <p>
-      So, the concept/hook/gig here is simple. Put on your sarcastic-pseudo-science hat
-      Select any text in our papers to provide line-specific feedback, corrections, or insights. 
+      So, the concept/hook/gig here is simple. Put on your sarcastic-pseudo-science hat, read some "papers", and react by 
+      selecting any text in our papers to provide line-specific feedback, corrections, or insights. 
       Your contributions help improve our research and may influence future papers through our 
-      AI feedback integration system. ICL. RL. All the things.
+      AI feedback integration system. ICL. RL. All the things. The AI used to write these gets fine-tuned, post-trained, optimized, all that stuff. 
+
+    </p>
+    <p>
+I will build this in the open. Just getting started now. I'll OSS the stuff as I build it.
     </p>
     <p class="cta">
       <strong>Go ahead, try it!</strong> Find something interesting, select it, and click the comment button. 
