@@ -780,11 +780,7 @@ class ContextualDrBProp:
         if research.academic_references:
             hooks.append("Have you reviewed the recent literature on this methodology?")
 
-        # Line-specific hooks
-        if context.line_number:
-            hooks.append(
-                f"Curious about your thoughts on the theoretical framework around line {context.line_number}..."
-            )
+        # Remove generic line references - focus on actual content instead
 
         # Methodological hooks
         if any(word in user_feedback.lower() for word in ["method", "approach"]):
@@ -843,8 +839,9 @@ class ContextualDrBProp:
     def _summarize_conversation_context(self, context: ConversationContext) -> str:
         """Summarize conversation context for DSPy."""
         summary = f"Paper: {context.paper_title}\n"
-        if context.line_number:
-            summary += f"Focused on line {context.line_number}\n"
+        # Focus on actual selected text instead of line numbers
+        if context.selected_text:
+            summary += f"Selected text: {context.selected_text}\n"
 
         if context.conversation_history:
             summary += "Previous conversation:\n"
@@ -883,9 +880,9 @@ class ContextualDrBProp:
         if context.paper_title and context.paper_title not in response:
             response += f"\n\nRegarding '{context.paper_title}' specifically..."
 
-        # Add line reference if relevant
-        if context.line_number:
-            response += f"\n\nYour focus on line {context.line_number} raises particularly interesting questions..."
+        # Add reference to specific content instead of line numbers
+        if context.selected_text:
+            response += f"\n\nYour observation about '{context.selected_text}' raises particularly interesting questions..."
 
         # Add conversation hooks
         if snark_profile.conversational_hooks:
@@ -909,7 +906,7 @@ class ContextualDrBProp:
 CONTEXT:
 - Paper: {context.paper_title}
 - Paper URL: {context.paper_url}
-- Line focus: {context.line_number or "General discussion"}
+- Focus area: {context.selected_text or "General discussion"}
 - User: {context.user_profile.get('login', 'Anonymous')}
 - User expertise level: {self._assess_user_expertise(context.user_profile, user_feedback):.2f}
 
@@ -1269,7 +1266,7 @@ Make this a sophisticated academic discourse, not generic responses."""
             # Extract comprehensive context
             context = self.extract_conversation_context(title, body)
             print(
-                f"Context extracted: Paper='{context.paper_title}', Line={context.line_number}"
+                f"Context extracted: Paper='{context.paper_title}', Selected='{context.selected_text}'"
             )
             print(f"Selected text: '{context.selected_text}'")
             print(f"User feedback: '{context.user_feedback}'")
