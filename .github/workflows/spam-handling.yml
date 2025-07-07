@@ -22,13 +22,14 @@ jobs:
         ISSUE_NUMBER="${{ github.event.issue.number }}"
         
         # Get user's recent issues
+        DATE_24H_AGO=$(date -d "24 hours ago" --iso-8601)
         RECENT_ISSUES=$(gh api graphql -f query='
-          query($user: String!) {
-            search(query: "repo:context-rot/blogistan is:issue author:$user created:>$(date -d "24 hours ago" --iso-8601)", type: ISSUE, first: 10) {
+          query($user: String!, $date: String!) {
+            search(query: "repo:context-rot/blogistan is:issue author:$user created:>$date", type: ISSUE, first: 10) {
               issueCount
             }
           }
-        ' -f user="$USER" --jq '.data.search.issueCount')
+        ' -f user="$USER" -f date="$DATE_24H_AGO" --jq '.data.search.issueCount')
         
         if [ "$RECENT_ISSUES" -gt 5 ]; then
           # Add rate-limited label and close issue
@@ -44,28 +45,7 @@ jobs:
           # Post explanation comment
           gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
             --method POST \
-            --field body="🚦 **Rate Limit Exceeded**
-
-Hi @$USER,
-
-Thanks for your enthusiasm in providing feedback! However, you've exceeded our rate limit of 5 issues per 24-hour period.
-
-**Why do we have rate limits?**
-- Prevents spam and ensures quality discussions
-- Allows Dr. B. Prop to provide thoughtful responses
-- Maintains a manageable volume for community engagement
-
-**What can you do?**
-- Wait 24 hours before submitting new feedback
-- Consolidate multiple points into a single, comprehensive issue
-- Use our [Discussions](https://github.com/${{ github.repository }}/discussions) for general questions
-
-**For urgent matters:** Contact us at editor@context-rot.com
-
-This issue has been automatically closed but will be reviewed manually.
-
----
-*🤖 Automated rate limiting system - part of our spam protection measures*"
+            --field body="$(echo -e '🚦 **Rate Limit Exceeded**\n\nHi @'"$USER"',\n\nThanks for your enthusiasm in providing feedback! However, you'\''ve exceeded our rate limit of 5 issues per 24-hour period.\n\n**Why do we have rate limits?**\n- Prevents spam and ensures quality discussions\n- Allows Dr. B. Prop to provide thoughtful responses\n- Maintains a manageable volume for community engagement\n\n**What can you do?**\n- Wait 24 hours before submitting new feedback\n- Consolidate multiple points into a single, comprehensive issue\n- Use our [Discussions](https://github.com/'"${{ github.repository }}"'/discussions) for general questions\n\n**For urgent matters:** Contact us at editor@context-rot.com\n\nThis issue has been automatically closed but will be reviewed manually.\n\n---\n*🤖 Automated rate limiting system - part of our spam protection measures*')"
         fi
         
     - name: Enhanced Spam Detection
@@ -129,26 +109,6 @@ This issue has been automatically closed but will be reviewed manually.
             
           gh api repos/${{ github.repository }}/issues/$ISSUE_NUMBER/comments \
             --method POST \
-            --field body="🚫 **Potential Spam Detected**
-
-This issue has been automatically flagged as potential spam and closed.
-
-**Common reasons for auto-flagging:**
-- Excessive promotional content
-- Irrelevant external links
-- Contact information (emails/phones)
-- Generic spam patterns
-
-**If this is a false positive:**
-- Email us at editor@context-rot.com with issue #$ISSUE_NUMBER
-- We'll review and reopen if appropriate
-- Help us improve by being more specific about your feedback
-
-**For legitimate feedback:**
-- Focus on the specific paper content
-- Be specific about the issue or suggestion
-- Avoid promotional language
-
----
-*🤖 Automated spam detection system*"
+            --field body="$(echo -e '🚫 **Potential Spam Detected**\n\nThis issue has been automatically flagged as potential spam and closed.\n\n**Common reasons for auto-flagging:**\n- Excessive promotional content\n- Irrelevant external links\n- Contact information (emails/phones)\n- Generic spam patterns\n\n**If this is a false positive:**\n- Email us at editor@context-rot.com with issue #'"$ISSUE_NUMBER"'\n- We'\''ll review and reopen if appropriate\n- Help us improve by being more specific about your feedback\n\n**For legitimate feedback:**\n- Focus on the specific paper content\n- Be specific about the issue or suggestion\n- Avoid promotional language\n\n---\n*🤖 Automated spam detection system*')"
         fi
+
