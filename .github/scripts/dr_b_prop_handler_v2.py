@@ -17,7 +17,7 @@ import json
 import re
 import subprocess
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, Any, Tuple, List, Optional, Union
 import requests
 from bs4 import BeautifulSoup
@@ -360,7 +360,7 @@ class ContextualDrBProp:
                 return {
                     "login": user,
                     "account_age_days": (
-                        datetime.now(datetime.timezone.utc)
+                        datetime.now(timezone.utc)
                         - datetime.fromisoformat(
                             user_data["created_at"].replace("Z", "+00:00")
                         )
@@ -966,25 +966,68 @@ Make this a sophisticated academic discourse, not generic responses."""
     def _emergency_contextual_response(
         self, context: ConversationContext, user_feedback: str
     ) -> str:
-        """Emergency response with basic context."""
+        """Enhanced contextual response with proper snark and intelligence."""
 
-        response = f"""Thank you for your engagement with our research"""
+        # Determine expertise and tone
+        expertise = (
+            context.user_profile.get("public_repos", 0) / 10.0
+        )  # rough heuristic
+        expertise = min(expertise, 1.0)
+
+        # AI industry references for snark
+        ai_terms = [
+            "ai",
+            "machine learning",
+            "neural",
+            "model",
+            "algorithm",
+            "gpt",
+            "llm",
+        ]
+        is_ai_paper = (
+            any(term in context.paper_title.lower() for term in ai_terms)
+            if context.paper_title
+            else False
+        )
+
+        # Opening with personality
+        openings = [
+            "Well, well, well.",
+            "How delightfully refreshing.",
+            "This is rather intriguing.",
+            "Now this catches my attention.",
+        ]
+
+        response = f"{openings[0]}\n\n"
 
         if context.paper_title:
-            response += f" on '{context.paper_title}'"
+            if is_ai_paper:
+                response += f"Your observations about '{context.paper_title}' arrive at precisely the right moment in this epoch of algorithmic hubris we find ourselves enduring. "
+                if context.line_number:
+                    response += f"Line {context.line_number}, you say? How wonderfully specific - the sort of granular attention to detail that gets overlooked when everyone's busy revolutionizing intelligence itself.\n\n"
+            else:
+                response += f"Your engagement with '{context.paper_title}' demonstrates the sort of methodological rigor that's become refreshingly rare. "
+                if context.line_number:
+                    response += f"Your focus on line {context.line_number} suggests someone who actually reads the papers rather than just the abstracts - how delightfully old-fashioned.\n\n"
 
-        response += """.
+        # Middle section with research context
+        if is_ai_paper:
+            response += "Of course, in this remarkable period where correlation has finally murdered causation, one must tread carefully between genuine insight and the sort of breathless technophilia that pervades our field these days. "
+        else:
+            response += "The theoretical implications here warrant serious consideration, particularly given how rarely we encounter work that prioritizes substance over the latest fashionable methodologies. "
 
-Your feedback demonstrates a sophisticated understanding of the methodological challenges inherent in our research domain. """
+        # Conversation hook
+        hooks = [
+            "What's your take on the empirical scaffolding here?",
+            "How do you see this fitting into the broader methodological landscape?",
+            "Do you think we're witnessing genuine innovation or just very expensive pattern matching?",
+            "What's your prediction for the half-life of this particular approach?",
+        ]
 
-        if context.line_number:
-            response += f"""Your focus on line {context.line_number} is particularly astute, as it touches upon what we might term the 'epistemological foundations' of our analytical framework. """
-
-        response += """The theoretical implications of your observations warrant deeper investigation within the broader context of computational linguistics research.
-
-I must confess that your critique illuminates several fascinating research questions that deserve systematic empirical investigation. The peer review process, even in its automated manifestation, continues to serve as the cornerstone of scholarly discourse.
-
-What's your perspective on the methodological implications of this approach? I'm particularly curious about your thoughts on the broader theoretical framework we've employed here."""
+        if is_ai_paper:
+            response += f"\n\n{hooks[2]}"
+        else:
+            response += f"\n\n{hooks[0]}"
 
         return response
 
