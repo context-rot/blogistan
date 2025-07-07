@@ -2,47 +2,44 @@
 layout: default
 ---
 
-<div class="hero-section">
-  <img src="{{ '/assets/images/hero-banner.png' | relative_url }}" alt="Context Rot - Computational Decay Visualization" class="hero-image" loading="eager">
-  <div class="hero-overlay">
-    <div class="hero-content">
-      <h1 class="hero-title">Context Rot</h1>
-      <p class="hero-subtitle">A Journal of Computational Decay</p>
-    </div>
+<div class="page-hero">
+  <div class="hero-content">
+    <h1 class="page-title">Context Rot</h1>
+    <p class="page-subtitle">A Journal of Computational Decay</p>
+    <p class="page-description">
+      ArXiv-style preprints exploring the inevitable entropy of context in AI systems, 
+      presented with appropriate academic gravitas and tongue-in-cheek commentary.
+    </p>
+  </div>
+  <div class="hero-visual">
+    <img src="{{ '/assets/images/hero-banner.png' | relative_url }}" alt="Context Rot - Computational Decay Visualization" class="hero-image" loading="eager">
   </div>
 </div>
 
-<div class="home-intro">
-  <h2>Welcome to Context Rot</h2>
-  <p class="lead">
-    A journal of computational decay, featuring ArXiv-style preprints that explore 
-    the inevitable entropy of context in AI systems. Each paper combines rigorous 
-    analysis with appropriate academic irreverence.
-  </p>
+<div class="interaction-section">
+  <div class="guide-header">
+    <img src="{{ '/assets/images/context-icon.svg' | relative_url }}" alt="Context Icon" class="guide-icon">
+    <h2>How to Play</h2>
+  </div>
   
-  <div class="interaction-guide">
-    <div class="guide-header">
-      <img src="{{ '/assets/images/context-icon.svg' | relative_url }}" alt="Context Icon" class="guide-icon">
-      <h3>§ How to Play</h3>
-    </div>
+  <div class="guide-content">
     <p>
       This isn't your typical blog. Or maybe it is. It's probably something worse. The AI I used to slop this together tried to tell me it's an <strong>interactive research environment</strong>. Uh. Yeah. "Research". Let's go with that. It's a relative term these days, anyway.
-
-      </p>
-      <p>
-      So, the concept/hook/gig here is simple. Put on your sarcastic-pseudo-science hat, read some "papers", and react by 
-      selecting any text in our papers to provide line-specific feedback, corrections, or insights. 
-      Your contributions help improve our research and may influence future papers through our 
-      AI feedback integration system. ICL. RL. All the things. The AI used to write these gets fine-tuned, post-trained, optimized, all that stuff. 
-
     </p>
+    
     <p>
-I will build this in the open. Just getting started now. I'll OSS the stuff as I build it.
+      So, the concept/hook/gig here is simple: Put on your sarcastic-pseudo-science hat, read some "papers", and react by 
+      selecting any text in our papers to provide line-specific feedback, corrections, or insights.
     </p>
-    <p class="cta">
-      <strong>Go ahead, try it!</strong> Find something interesting, select it, and click the comment button. 
-      Find or introduce errors, satire, or anything worth discussing. Or not discussing.
+    
+    <p>
+      Your contributions help improve our research and may influence future papers through our 
+      AI feedback integration system. ICL. RL. All the things. The AI used to write these gets fine-tuned, post-trained, optimized, all that stuff.
     </p>
+    
+    <div class="cta-box">
+      <p><strong>Go ahead, try it!</strong> Find something interesting, select it, and click the comment button. Find or introduce errors, satire, or anything worth discussing. Or not discussing.</p>
+    </div>
   </div>
 </div>
 

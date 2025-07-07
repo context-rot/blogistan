@@ -96,13 +96,10 @@
   <header class="site-header">
     <div class="wrapper">
       <div class="site-header-content">
-        <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Dr. B. Prop" class="site-avatar">
-        <div class="site-text">
-          <h1 class="site-title">
-            <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
-          </h1>
-          <p class="site-subtitle">{{ site.description }}</p>
-        </div>
+        <a href="{{ '/' | relative_url }}" class="site-logo">
+          <img src="{{ '/assets/avatar_transparent.png' | relative_url }}" alt="Context Rot" class="site-avatar">
+          <span class="site-name">Context Rot</span>
+        </a>
       </div>
     </div>
   </header>
