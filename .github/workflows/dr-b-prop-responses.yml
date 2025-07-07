@@ -2,7 +2,7 @@ name: Dr. B. Prop - Automated Research Response
 
 on:
   issues:
-    types: [opened, labeled]
+    types: [labeled]
   issue_comment:
     types: [created]
 
@@ -13,7 +13,7 @@ permissions:
 jobs:
   spam-detection:
     runs-on: ubuntu-latest
-    if: contains(github.event.issue.labels.*.name, 'reader-feedback') && github.event_name == 'issues'
+    if: contains(github.event.issue.labels.*.name, 'reader-feedback') && github.event_name == 'issues' && github.event.action == 'labeled'
     outputs:
       should_respond: ${{ steps.spam_check.outputs.should_respond }}
       user_rate_limited: ${{ steps.spam_check.outputs.user_rate_limited }}
