@@ -432,15 +432,18 @@ class ContextualDrBProp:
         citations = []
 
         for query in research_queries[:3]:  # Limit to 3 queries
-            if self.perplexity_key:
+            gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get(
+                "GOOGLE_API_KEY"
+            )
+            if gemini_key:
                 try:
-                    # Use Perplexity for academic research
-                    result = self._query_perplexity(query)
+                    # Use Gemini for academic research
+                    result = self._query_gemini(query)
                     if result:
                         research_results.append(result)
                         citations.extend(self._extract_citations(result))
                 except Exception as e:
-                    print(f"Perplexity research error: {e}")
+                    print(f"Gemini research error: {e}")
 
             # Also use vibe-tools for additional research
             try:
@@ -520,63 +523,75 @@ class ContextualDrBProp:
 
         return found_topics or ["software engineering research"]
 
-    def _query_perplexity(self, query: str) -> str:
-        """Query Perplexity API for research."""
+    def _query_gemini(self, query: str) -> str:
+        """Query Gemini 2.0 Flash with web search for research."""
         try:
-            if not self.perplexity_key:
-                print("Perplexity API key not available")
+            gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get(
+                "GOOGLE_API_KEY"
+            )
+            if not gemini_key:
+                print("Gemini API key not available")
                 return ""
 
             headers = {
-                "Authorization": f"Bearer {self.perplexity_key}",
                 "Content-Type": "application/json",
             }
 
-            # Use correct model name and simplified request
+            # Use Gemini 2.0 Flash with web search enabled
             data = {
-                "model": "llama-3.1-sonar-small-128k-chat",  # Valid Perplexity model name
-                "messages": [
+                "contents": [
                     {
-                        "role": "system",
-                        "content": "You are a research assistant. Provide factual responses with sources.",
-                    },
-                    {"role": "user", "content": query},
+                        "parts": [
+                            {
+                                "text": f"Please research this topic and provide factual information with sources: {query}"
+                            }
+                        ]
+                    }
                 ],
-                "max_tokens": 400,  # Reduced to avoid quota issues
-                "temperature": 0.1,
+                "generationConfig": {
+                    "temperature": 0.1,
+                    "maxOutputTokens": 400,
+                    "topP": 0.8,
+                    "topK": 10,
+                },
+                "tools": [{"googleSearchRetrieval": {}}],
             }
 
-            print(f"Perplexity query: {query[:100]}...")  # Debug log
+            print(f"Gemini query: {query[:100]}...")  # Debug log
 
             response = requests.post(
-                "https://api.perplexity.ai/chat/completions",
+                f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={gemini_key}",
                 headers=headers,
                 json=data,
                 timeout=30,
             )
 
-            print(f"Perplexity response status: {response.status_code}")  # Debug log
+            print(f"Gemini response status: {response.status_code}")  # Debug log
 
             if response.status_code == 200:
                 result = response.json()
-                if result.get("choices") and len(result["choices"]) > 0:
-                    content = result["choices"][0]["message"]["content"]
-                    print(f"Perplexity success: {len(content)} chars")  # Debug log
-                    return content
-                else:
-                    print("Perplexity API returned empty choices")
-                    return ""
+                content = ""
+                if "candidates" in result and result["candidates"]:
+                    candidate = result["candidates"][0]
+                    if "content" in candidate and "parts" in candidate["content"]:
+                        parts = candidate["content"]["parts"]
+                        content = " ".join(
+                            [part.get("text", "") for part in parts if "text" in part]
+                        )
+
+                print(f"Gemini success: {len(content)} chars")  # Debug log
+                return content
             else:
-                print(f"Perplexity API error: {response.status_code}")
+                print(f"Gemini API error: {response.status_code}")
                 if response.text:
-                    print(f"Perplexity error response: {response.text}")
+                    print(f"Gemini error response: {response.text}")
                 return ""
 
         except requests.exceptions.Timeout:
-            print("Perplexity API timeout")
+            print("Gemini API timeout")
             return ""
         except Exception as e:
-            print(f"Perplexity query error: {e}")
+            print(f"Gemini query error: {e}")
             return ""
 
     def _query_vibe_tools_research(self, query: str) -> str:

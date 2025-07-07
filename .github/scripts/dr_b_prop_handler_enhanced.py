@@ -152,8 +152,11 @@ class GitHubIssueHandler:
             return None
 
     def deep_research_analysis(self, title: str, body: str) -> str:
-        """Conduct deep research using Perplexity API to gather academic context."""
-        if not self.perplexity_key:
+        """Conduct deep research using Gemini API to gather academic context."""
+        gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get(
+            "GOOGLE_API_KEY"
+        )
+        if not gemini_key:
             return ""
 
         try:
@@ -169,16 +172,17 @@ class GitHubIssueHandler:
                     "ask",
                     query,
                     "--provider",
-                    "perplexity",
+                    "gemini",
                     "--model",
-                    "llama-3.1-sonar-large-128k-chat",
+                    "gemini-2.0-flash-exp",
                     "--max-tokens",
                     "400",
+                    "--web",
                 ]
 
                 # Set environment for vibe-tools
                 env = os.environ.copy()
-                env["PERPLEXITY_API_KEY"] = self.perplexity_key
+                env["GEMINI_API_KEY"] = gemini_key
 
                 result = subprocess.run(
                     cmd, capture_output=True, text=True, timeout=45, env=env
