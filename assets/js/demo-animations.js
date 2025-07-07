@@ -232,15 +232,18 @@ class DemoAnimations {
       });
     });
 
-    // Card tilt effect
+    // Subtle card hover effects (no more disorienting tilt)
     const cards = document.querySelectorAll('.paper-preview, .modern-card');
     cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        this.cardTiltEffect(e, card);
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1)';
+        card.style.transform = 'translateY(-4px) scale(1.01)';
+        card.style.boxShadow = '0 20px 40px -12px rgba(0, 0, 0, 0.15), 0 8px 16px -8px rgba(0, 0, 0, 0.1)';
       });
       
-      card.addEventListener('mouseleave', (e) => {
-        card.style.transform = '';
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'translateY(0) scale(1)';
+        card.style.boxShadow = '';
       });
     });
 
@@ -253,6 +256,20 @@ class DemoAnimations {
       
       icon.addEventListener('animationend', () => {
         icon.style.animation = '';
+      });
+    });
+
+    // Category chip hover effects
+    const categories = document.querySelectorAll('.category');
+    categories.forEach(category => {
+      category.addEventListener('mouseenter', () => {
+        category.style.transform = 'translateY(-1px)';
+        category.style.boxShadow = '0 4px 8px rgba(0, 102, 204, 0.3)';
+      });
+      
+      category.addEventListener('mouseleave', () => {
+        category.style.transform = '';
+        category.style.boxShadow = '';
       });
     });
   }
@@ -273,19 +290,7 @@ class DemoAnimations {
     setTimeout(() => ripple.remove(), 600);
   }
 
-  cardTiltEffect(e, card) {
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = (y - centerY) / 20;
-    const rotateY = (centerX - x) / 20;
-    
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-  }
+  // Removed the disorienting cardTiltEffect method
 }
 
 // Initialize when DOM is ready
