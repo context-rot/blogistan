@@ -2,7 +2,7 @@ name: Spam and Rate Limit Handler
 
 on:
   issues:
-    types: [opened, labeled]
+    types: [labeled]
 
 permissions:
   issues: write
