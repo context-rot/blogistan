@@ -36,6 +36,8 @@ class ConversationContext:
     conversation_history: List[Dict[str, Any]]
     user_profile: Dict[str, Any]
     research_context: str
+    selected_text: str = ""
+    user_feedback: str = ""
 
 
 @dataclass
@@ -302,6 +304,24 @@ class ContextualDrBProp:
         if title_match:
             paper_title = title_match.group(1)
 
+        # Extract user's actual feedback content
+        user_feedback = ""
+        selected_text = ""
+
+        # Parse "Selected Text" section
+        selected_match = re.search(
+            r"## Selected Text\s*>\s*(.+?)(?=\n##|\n\n|$)", body, re.DOTALL
+        )
+        if selected_match:
+            selected_text = selected_match.group(1).strip()
+
+        # Parse "My Feedback" section
+        feedback_match = re.search(
+            r"## My Feedback\s*(.+?)(?=\n##|\n\n|$)", body, re.DOTALL
+        )
+        if feedback_match:
+            user_feedback = feedback_match.group(1).strip()
+
         # Fetch paper content
         paper_content = ""
         if paper_url:
@@ -313,7 +333,7 @@ class ContextualDrBProp:
         # Get user profile
         user_profile = self.get_user_profile()
 
-        return ConversationContext(
+        context = ConversationContext(
             paper_url=paper_url,
             paper_title=paper_title,
             paper_content=paper_content,
@@ -322,6 +342,12 @@ class ContextualDrBProp:
             user_profile=user_profile,
             research_context="",
         )
+
+        # Add the parsed feedback to the context
+        context.selected_text = selected_text
+        context.user_feedback = user_feedback
+
+        return context
 
     def get_conversation_history(self) -> List[Dict[str, Any]]:
         """Get previous conversation history from issue comments."""
@@ -966,68 +992,64 @@ Make this a sophisticated academic discourse, not generic responses."""
     def _emergency_contextual_response(
         self, context: ConversationContext, user_feedback: str
     ) -> str:
-        """Enhanced contextual response with proper snark and intelligence."""
+        """Enhanced contextual response that addresses user's actual feedback."""
 
-        # Determine expertise and tone
-        expertise = (
-            context.user_profile.get("public_repos", 0) / 10.0
-        )  # rough heuristic
-        expertise = min(expertise, 1.0)
+        # Use the parsed feedback content
+        actual_feedback = context.user_feedback or user_feedback
+        selected_text = context.selected_text
 
-        # AI industry references for snark
-        ai_terms = [
-            "ai",
-            "machine learning",
-            "neural",
-            "model",
-            "algorithm",
-            "gpt",
-            "llm",
-        ]
-        is_ai_paper = (
-            any(term in context.paper_title.lower() for term in ai_terms)
-            if context.paper_title
-            else False
+        # Analyze what the user is actually complaining about
+        feedback_lower = actual_feedback.lower()
+
+        # Detect specific types of complaints
+        is_email_complaint = any(
+            word in feedback_lower
+            for word in ["email", "contact", "doesn't work", "broken"]
+        )
+        is_humor_complaint = any(
+            word in feedback_lower
+            for word in ["funny", "snarky", "humor", "wit", "joke"]
+        )
+        is_technical_complaint = any(
+            word in feedback_lower
+            for word in ["error", "bug", "broken", "fix", "issue"]
         )
 
-        # Opening with personality
-        openings = [
-            "Well, well, well.",
-            "How delightfully refreshing.",
-            "This is rather intriguing.",
-            "Now this catches my attention.",
-        ]
+        # Opening with personality based on complaint type
+        if is_email_complaint:
+            response = "Ah, the eternal struggle of academic correspondence.\n\n"
+        elif is_humor_complaint:
+            response = "Oh, a comedy critic! How delightfully refreshing.\n\n"
+        elif is_technical_complaint:
+            response = "Well, well, well - someone who actually tests things.\n\n"
+        else:
+            response = "How intriguing.\n\n"
 
-        response = f"{openings[0]}\n\n"
-
-        if context.paper_title:
-            if is_ai_paper:
-                response += f"Your observations about '{context.paper_title}' arrive at precisely the right moment in this epoch of algorithmic hubris we find ourselves enduring. "
-                if context.line_number:
-                    response += f"Line {context.line_number}, you say? How wonderfully specific - the sort of granular attention to detail that gets overlooked when everyone's busy revolutionizing intelligence itself.\n\n"
+        # Address the specific complaint
+        if selected_text:
+            if is_email_complaint and "editor@" in selected_text:
+                response += f"You're quite right about '{selected_text}' - nothing quite says 'we're serious academics' like a defunct email address. I suppose I should update my contact information, though I'm rather fond of the mysterious air it lends to our correspondence.\n\n"
+                response += "As for the humor quotient, I'll take that as a challenge. After all, if we can't laugh at our own pretensions while drowning in the endless sea of academic bureaucracy, what's the point of having tenure?\n\n"
+                response += "Should I be directing my bon mots toward your particular area of expertise, or are you more of a generalist when it comes to scholarly snark?"
+            elif is_humor_complaint:
+                response += f"Your critique of my comedic sensibilities is duly noted. I suppose '{selected_text}' lacks the razor-sharp wit you were hoping for from someone who's spent years perfecting the art of academic passive-aggression.\n\n"
+                response += "Perhaps I've been too subtle in my mockery of the journal submission process and the various indignities we inflict upon ourselves in the name of 'research impact.' Would you prefer more direct assault on the absurdities of our profession?\n\n"
+                response += (
+                    "What level of cynicism would satisfy your discerning palate?"
+                )
             else:
-                response += f"Your engagement with '{context.paper_title}' demonstrates the sort of methodological rigor that's become refreshingly rare. "
-                if context.line_number:
-                    response += f"Your focus on line {context.line_number} suggests someone who actually reads the papers rather than just the abstracts - how delightfully old-fashioned.\n\n"
-
-        # Middle section with research context
-        if is_ai_paper:
-            response += "Of course, in this remarkable period where correlation has finally murdered causation, one must tread carefully between genuine insight and the sort of breathless technophilia that pervades our field these days. "
+                response += f"Your observation about '{selected_text}' suggests someone who pays attention to the details - a refreshing quality in our age of algorithmic skimming.\n\n"
+                response += f"The feedback '{actual_feedback}' raises interesting questions about the intersection of technical functionality and scholarly pretension.\n\n"
+                response += "What would you suggest as a more effective approach?"
         else:
-            response += "The theoretical implications here warrant serious consideration, particularly given how rarely we encounter work that prioritizes substance over the latest fashionable methodologies. "
+            # Fallback for cases without selected text
+            response += f"Your feedback - '{actual_feedback}' - cuts right to the heart of things, doesn't it?\n\n"
+            if is_email_complaint:
+                response += "Nothing quite undermines one's scholarly gravitas like broken infrastructure. I'll take this as a reminder that even the most sophisticated theoretical frameworks fall apart when the basic plumbing doesn't work.\n\n"
+            elif is_humor_complaint:
+                response += "I appreciate the direct assessment of my comedic abilities. It's rare to encounter someone willing to critique the entertainment value of academic discourse - usually people just fall asleep.\n\n"
 
-        # Conversation hook
-        hooks = [
-            "What's your take on the empirical scaffolding here?",
-            "How do you see this fitting into the broader methodological landscape?",
-            "Do you think we're witnessing genuine innovation or just very expensive pattern matching?",
-            "What's your prediction for the half-life of this particular approach?",
-        ]
-
-        if is_ai_paper:
-            response += f"\n\n{hooks[2]}"
-        else:
-            response += f"\n\n{hooks[0]}"
+            response += "What would you consider a more effective approach to this particular problem?"
 
         return response
 
@@ -1249,6 +1271,8 @@ Make this a sophisticated academic discourse, not generic responses."""
             print(
                 f"Context extracted: Paper='{context.paper_title}', Line={context.line_number}"
             )
+            print(f"Selected text: '{context.selected_text}'")
+            print(f"User feedback: '{context.user_feedback}'")
 
             # Conduct advanced research
             research = self.conduct_advanced_research(context, body)
