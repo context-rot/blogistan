@@ -148,9 +148,21 @@ class ContextualDrBProp:
         )
         self.repository = os.environ.get("GITHUB_REPOSITORY")
 
-        # Initialize DSPy 3.0 with available LM
+        # Initialize DSPy 3.0 with available LM - prioritize OpenRouter with GPT-4
         self.research_agent = None
-        if self.anthropic_key:
+        if self.openrouter_key:
+            try:
+                lm = dspy.LM(
+                    model="openai/gpt-4o-mini",
+                    api_key=self.openrouter_key,
+                    api_base="https://openrouter.ai/api/v1",
+                )
+                dspy.configure(lm=lm)
+                self.research_agent = AdvancedResearchAgent()
+                print("DSPy initialized with OpenRouter GPT-4")
+            except Exception as e:
+                print(f"DSPy OpenRouter initialization error: {e}")
+        elif self.anthropic_key:
             try:
                 lm = dspy.LM(
                     model="anthropic/claude-3-5-sonnet-20241022",
@@ -158,8 +170,9 @@ class ContextualDrBProp:
                 )
                 dspy.configure(lm=lm)
                 self.research_agent = AdvancedResearchAgent()
+                print("DSPy initialized with Anthropic Claude")
             except Exception as e:
-                print(f"DSPy initialization error: {e}")
+                print(f"DSPy Anthropic initialization error: {e}")
 
         # Get issue data from environment
         self.issue_data = self._get_issue_data()
@@ -347,7 +360,7 @@ class ContextualDrBProp:
                 return {
                     "login": user,
                     "account_age_days": (
-                        datetime.now()
+                        datetime.now(datetime.timezone.utc)
                         - datetime.fromisoformat(
                             user_data["created_at"].replace("Z", "+00:00")
                         )
@@ -1122,13 +1135,15 @@ What's your perspective on the methodological implications of this approach? I'm
             return False
 
     def add_label(self, issue_number: int, label: str) -> bool:
-        """Add label to issue."""
+        """Add label to issue using gh CLI."""
         try:
-            data = {"labels": [label]}
-            result = self._gh_api(
-                f"repos/{self.repository}/issues/{issue_number}/labels", "POST", data
+            result = subprocess.run(
+                ["gh", "issue", "edit", str(issue_number), "--add-label", label],
+                capture_output=True,
+                text=True,
+                check=True,
             )
-            return result is not None
+            return result.returncode == 0
         except Exception as e:
             print(f"Label adding error: {e}")
             return False
