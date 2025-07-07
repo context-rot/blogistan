@@ -1361,7 +1361,7 @@ Make this a sophisticated academic discourse, not generic responses."""
                 )
 
             # Post the multi-turn response
-            success = self.post_comment(issue_number, response_text)
+            success = self.post_enhanced_comment(issue_number, response_text)
             if success:
                 print("Multi-turn response posted successfully")
                 return True
