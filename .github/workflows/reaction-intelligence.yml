@@ -17,21 +17,18 @@ permissions:
 jobs:
   reaction-intelligence:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/base:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     if: contains(github.event.issue.labels.*.name, 'reader-feedback') || github.event_name == 'repository_dispatch'
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Install dependencies
-      run: |
-        pip install requests pandas databricks-sdk databricks-sql-connector
-        pip install beautifulsoup4 gitpython PyGithub
+    # Dependencies are pre-installed in base image - no setup needed!
         
     - name: Collect User Intelligence
       env:

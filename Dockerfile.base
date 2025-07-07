@@ -1,0 +1,125 @@
+# Multi-stage base image for GitHub Actions optimization
+# Reduces CI/CD time from ~30s to ~5s for dependency installation
+
+FROM ubuntu:24.04 as base
+LABEL maintainer="blogistan-ci"
+LABEL description="Optimized base image for blogistan GitHub Actions"
+
+# Prevent interactive prompts during installation
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+
+# Update package lists and install system dependencies
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    git \
+    ca-certificates \
+    gnupg \
+    lsb-release \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Python stage - install Python 3.11 and heavy ML dependencies
+FROM base as python-stage
+RUN apt-get update && apt-get install -y \
+    python3.11 \
+    python3.11-dev \
+    python3.11-venv \
+    python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create symlinks for python/pip
+RUN ln -sf /usr/bin/python3.11 /usr/bin/python && \
+    ln -sf /usr/bin/python3.11 /usr/bin/python3
+
+# Upgrade pip and install wheel for faster installations
+RUN pip install --upgrade pip wheel setuptools
+
+# Install heavy ML/AI dependencies first (these take the longest)
+RUN pip install --no-cache-dir \
+    pandas==2.2.3 \
+    numpy==2.3.1
+
+# Install Databricks stack (heavy compilation step)
+RUN pip install --no-cache-dir \
+    databricks-sdk==0.57.0 \
+    databricks-sql-connector==4.0.5
+
+# Install common Python dependencies used across workflows
+RUN pip install --no-cache-dir \
+    requests==2.32.4 \
+    beautifulsoup4==4.13.4 \
+    gitpython==3.1.44 \
+    PyGithub==2.6.1 \
+    dspy==3.0.0b1
+
+# Node.js stage - install Node.js 18 and global tools
+FROM python-stage as nodejs-stage
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
+    apt-get install -y nodejs && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install global npm packages used in workflows
+RUN npm install -g vibe-tools
+
+# Ruby stage - install Ruby 3.2 and Jekyll dependencies
+FROM nodejs-stage as ruby-stage
+RUN apt-get update && apt-get install -y \
+    ruby3.2 \
+    ruby3.2-dev \
+    bundler \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create symlinks for ruby/gem
+RUN ln -sf /usr/bin/ruby3.2 /usr/bin/ruby && \
+    ln -sf /usr/bin/gem3.2 /usr/bin/gem
+
+# Pre-install common Jekyll gems
+RUN gem install \
+    jekyll \
+    github-pages \
+    bundler \
+    bundle-audit
+
+# Security tools stage - install security scanning tools
+FROM ruby-stage as security-stage
+
+# Install TruffleHog OSS
+RUN curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/main/scripts/install.sh | sh -s -- -b /usr/local/bin
+
+# Install pre-commit framework
+RUN pip install --no-cache-dir pre-commit
+
+# Install additional security tools
+RUN apt-get update && apt-get install -y \
+    jq \
+    yq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Final optimized stage
+FROM security-stage as final
+
+# Set up environment variables for consistent paths
+ENV PYTHONPATH="/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages:$PYTHONPATH"
+ENV PATH="/opt/hostedtoolcache/Python/3.11.13/x64/bin:$PATH"
+
+# Create directories that GitHub Actions expects
+RUN mkdir -p /opt/hostedtoolcache/Python/3.11.13/x64 && \
+    mkdir -p /home/runner/work && \
+    mkdir -p /github/workspace
+
+# Set working directory
+WORKDIR /github/workspace
+
+# Copy and run comprehensive test suite
+COPY .github/scripts/test_base_image.py /tmp/test_base_image.py
+RUN python /tmp/test_base_image.py && rm /tmp/test_base_image.py
+
+# Display summary of installed packages for debugging
+RUN echo "=== Python packages ===" && pip list && \
+    echo "=== Node.js global packages ===" && npm list -g --depth=0 && \
+    echo "=== Ruby gems ===" && gem list
+
+# Set default command
+CMD ["/bin/bash"]

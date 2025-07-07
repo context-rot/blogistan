@@ -35,19 +35,19 @@ jobs:
   dependency-scan:
     name: Dependency vulnerability scan
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/base:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1.202.0
-        with:
-          ruby-version: '3.2'
-          bundler-cache: true
-          
-      - name: Run bundle audit
+      # Ruby and bundle-audit pre-installed in base image
+      - name: Install project dependencies and run audit
         run: |
-          gem install bundler-audit
+          bundle install --jobs 4 --retry 3
           bundle audit --update
           
   code-security-scan:

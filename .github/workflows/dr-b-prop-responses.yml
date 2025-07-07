@@ -13,6 +13,11 @@ permissions:
 jobs:
   spam-detection:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/base:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     if: contains(github.event.issue.labels.*.name, 'reader-feedback') && github.event_name == 'issues' && github.event.action == 'labeled'
     outputs:
       should_respond: ${{ steps.spam_check.outputs.should_respond }}
@@ -22,21 +27,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Setup Node.js  
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        
-    - name: Install dependencies
-      run: |
-        npm install -g vibe-tools
-        pip install requests beautifulsoup4
-        pip install dspy==3.0.0b1
+    # Dependencies pre-installed in base image
         
     - name: Spam Detection and Rate Limiting
       id: spam_check
@@ -52,6 +43,11 @@ jobs:
         
   dr-b-prop-response:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/base:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     needs: spam-detection
     if: needs.spam-detection.outputs.should_respond == 'true' && needs.spam-detection.outputs.user_rate_limited == 'false'
     
@@ -59,21 +55,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        
-    - name: Install dependencies
-      run: |
-        npm install -g vibe-tools
-        pip install requests beautifulsoup4
-        pip install dspy==3.0.0b1
+    # Dependencies pre-installed in base image
         
     - name: Generate and Post Dr. B. Prop Response
       env:
@@ -89,27 +71,18 @@ jobs:
   # Multi-turn conversation handler for follow-up comments
   comment-response:
     runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/${{ github.repository }}/base:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     if: github.event_name == 'issue_comment' && contains(github.event.issue.labels.*.name, 'reader-feedback') && github.event.comment.author_association != 'bot'
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
-        
-    - name: Setup Node.js  
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        
-    - name: Install dependencies
-      run: |
-        npm install -g vibe-tools
-        pip install requests beautifulsoup4
-        pip install dspy==3.0.0b1
+    # Dependencies pre-installed in base image
         
     - name: Generate Multi-turn Response
       env:
