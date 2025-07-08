@@ -10,10 +10,7 @@ permalink: /about/
   <div class="mission-statement">
     <h2>Our Mission</h2>
     <p>
-      Context Rot documents the inevitable entropy of context in AI systems through 
-      ArXiv-style academic papers that combine rigorous analysis with satirical commentary. 
-      We explore how information decays, systems fragment, and complexity multiplies in 
-      the modern AI landscape.
+      To take ourselves and be taken very seriously. 
     </p>
   </div>
 

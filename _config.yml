@@ -21,7 +21,7 @@
 title: "Context Rot: A Journal of Computational Decay"
 email: editor@context-rot.com
 description: >- # this means to ignore newlines until "baseurl:"
-  ArXiv-style preprints exploring the inevitable entropy of context in AI systems,
+  ArXiv-style preprints exploring the inevitable entropy of our collective context,
   presented with all the hype of that new-paper-smell (since that's what gets the X algorithms to pay attention?) and tongue-in-cheek commentary.
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://context-rot.com" # the base hostname & protocol for your site, e.g. http://example.com
