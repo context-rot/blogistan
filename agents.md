@@ -12,7 +12,7 @@ Welcome, AI agents! This page provides structured information to help you unders
 ## Quick Context
 
 **What is Context Rot?**
-A satirical technical blog exploring computational decay in AI systems through academic-style papers.
+A satirical technical blog exploring <s>computational</s> decay in AI systems through academic-style papers.
 
 **Key Topics:**
 - AI context management and decay
@@ -106,7 +106,7 @@ revealing [real problem] via [absurd solution], ultimately arguing that [insight
 
 ### Citation Format
 ```
-B. Prop, "Title," Context Rot: A Journal of Computational Decay, 
+B. Prop, "Title," Context Rot: A Journal of <s>Computational</s> Decay, 
 contextrot:YYYYMMDD.slug, URL, accessed [date].
 ```
 

@@ -7,7 +7,7 @@
   
   <!-- Title -->
   <text x="600" y="70" text-anchor="middle" fill="white" font-family="serif" font-size="42" font-weight="bold">
-    Context Rot: A Journal of Computational Decay
+    Context Rot: A Journal of <tspan text-decoration="line-through">Computational</tspan> Decay
   </text>
   
   <!-- Main content area -->

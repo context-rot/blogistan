@@ -5,14 +5,14 @@ layout: default
 <div class="page-hero">
   <div class="hero-content animate-on-scroll">
     <h1 class="page-title">Context Rot</h1>
-    <p class="page-subtitle">A Journal of Computational Decay</p>
+    <p class="page-subtitle">A Journal of <s>Computational</s> Decay</p>
     <p class="page-description">
       ArXiv-style preprints exploring the inevitable entropy of context in AI systems, 
       presented with appropriate academic gravitas and tongue-in-cheek commentary.
     </p>
   </div>
   <div class="hero-visual animate-on-scroll">
-    <img src="{{ '/assets/images/hero-banner.png' | relative_url }}" alt="Context Rot - Computational Decay Visualization" class="hero-image" loading="eager">
+    <img src="{{ '/assets/images/hero-banner.png' | relative_url }}" alt="Context Rot - <s>Computational</s> Decay Visualization" class="hero-image" loading="eager">
   </div>
 </div>
 
@@ -135,6 +135,6 @@ layout: default
       {% endfor %}
     </ul>
   {% else %}
-    <p>No papers published yet. Check back soon for groundbreaking research on computational decay!</p>
+    <p>No papers published yet. Check back soon for groundbreaking research on <s>computational</s> decay!</p>
   {% endif %}
 </section>

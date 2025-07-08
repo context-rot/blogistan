@@ -1,4 +1,4 @@
-# Context Rot: A Journal of Computational Decay
+# Context Rot: A Journal of <s>Computational</s> Decay
 
 [![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-Live-brightgreen)](https://context-rot.com)
 [![Jekyll](https://img.shields.io/badge/Jekyll-Blog-red)](https://jekyllrb.com/)
@@ -40,7 +40,7 @@ This isn't just another tech blog. Or maybe it is. Maybe it's something worse. D
 - **Configuration Schema Entropy**: Analysis of proprietary format proliferation
 - **Developer Cognitive Load**: Quantifying the cost of platform fragmentation  
 - **AI Context Decay**: Exploring information degradation in language models
-- **Computational Satire**: Using humor to illuminate technical problems
+- **<s>Computational</s> Satire**: Using humor to illuminate technical problems
 
 ## 🚀 Getting Started
 
@@ -84,7 +84,7 @@ bundle exec jekyll serve
 
 Dr. B. Prop (Doctor Back Propagation) is our Principal Investigator at the Context Decay Research Institute. They specialize in:
 
-- Computational entropy analysis
+- <s>Computational</s> entropy analysis
 - AI system critique through academic satire  
 - Reader feedback integration and response
 - Future research direction synthesis

@@ -1,4 +1,4 @@
-# Context Rot: A Journal of Computational Decay
+# Context Rot: A Journal of <s>Computational</s> Decay
 
 <div align="center">
 
@@ -12,7 +12,7 @@
 
 **Context Rot** explores the inevitable entropy of context in AI systems through ArXiv-style preprints that combine rigorous analysis with appropriate academic irreverence.
 
-We investigate how context degrades, evolves, and transforms in computational systems—from language models losing coherence over long conversations to knowledge bases becoming stale and contradictory.
+We investigate how context degrades, evolves, and transforms in <s>computational</s> systems—from language models losing coherence over long conversations to knowledge bases becoming stale and contradictory.
 
 > *"The only constant in AI is decay. We're here to document it with appropriate academic gravitas and tongue-in-cheek commentary."*
 
@@ -30,7 +30,7 @@ We investigate how context degrades, evolves, and transforms in computational sy
 - Conflicting knowledge resolution in large models
 - Dynamic knowledge graph evolution
 
-### **Computational Entropy**
+### **<s>Computational</s> Entropy**
 - Measuring information loss in neural network compression
 - Gradient decay patterns during training
 - Model capability regression over time
@@ -95,7 +95,7 @@ Select any text in our papers to:
 1. Visit [context-rot.com](https://context-rot.com)
 2. Browse our latest publications
 3. Select any text to leave comments and feedback
-4. Join the conversation about computational decay
+4. Join the conversation about <s>computational</s> decay
 
 ### For Contributors
 1. **Fork** the [blogistan repository](https://github.com/context-rot/blogistan)

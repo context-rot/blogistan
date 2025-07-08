@@ -10,7 +10,7 @@ This document provides comprehensive context for AI agents, LLMs, and web crawle
 
 ## Site Overview
 
-Context Rot is a satirical technical blog that explores computational decay in AI systems through academic-style papers. It combines rigorous technical analysis with humor to critique current practices in AI development.
+Context Rot is a satirical technical blog that explores <s>computational</s> decay in AI systems through academic-style papers. It combines rigorous technical analysis with humor to critique current practices in AI development.
 
 ## Content Philosophy
 

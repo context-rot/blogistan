@@ -4,7 +4,7 @@ title: "On the Proliferation of Proprietary Markdown Configuration Schemas: A Re
 date: 2025-07-07 10:42:42 -0700
 categories: ["cs.AI", "cs.SE", "cs.CY"]
 authors: ["Dr. B. Prop", "Context Decay Research Institute"]
-affiliation: "Context Decay Research Institute, Department of Computational Entropy"
+affiliation: "Context Decay Research Institute, Department of <s>Computational</s> Entropy"
 abstract: "We present a meta-canonical analysis of the MD_FILES framework, a deliberately constructed reductio ad absurdum argument exposing the 340% increase in Developer Cognitive Load (DCL) caused by proprietary Markdown configuration schema proliferation across AI agent platforms. Through quantitative analysis of ecosystem fragmentation, we demonstrate a 67% reduction in cross-platform compatibility, revealing the absurdity of artificial differentiation in configuration protocols. This work serves as both technical critique and satirical commentary on the current state of AI agent configuration management."
 ---
 

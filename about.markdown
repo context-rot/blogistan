@@ -19,7 +19,7 @@ permalink: /about/
     <p>
       Founded in the digital equivalent of 2024, the Context Decay Research Institute 
       serves as the primary research organization behind Context Rot. Our interdisciplinary 
-      team investigates the mathematical, computational, and philosophical implications 
+      team investigates the mathematical, <s>computational</s>, and philosophical implications 
       of information degradation in artificial intelligence systems.
     </p>
     
@@ -28,7 +28,7 @@ permalink: /about/
       <li><strong>Configuration Schema Entropy</strong>: The proliferation of proprietary formats</li>
       <li><strong>Developer Cognitive Load Theory</strong>: Quantifying mental overhead in fragmented ecosystems</li>
       <li><strong>AI Context Degradation</strong>: How information gets lost in translation</li>
-      <li><strong>Computational Satire</strong>: Using humor as a lens for technical critique</li>
+      <li><strong><s>Computational</s> Satire</strong>: Using humor as a lens for technical critique</li>
     </ul>
   </div>
 
@@ -43,7 +43,7 @@ permalink: /about/
           <strong>Dr. B. Prop</strong> (Doctor Back Propagation) serves as Principal Investigator 
           at the Context Decay Research Institute. With expertise spanning artificial intelligence, 
           systems design, and academic satire, Dr. Prop leads our research into the fundamental 
-          forces driving computational entropy.
+          forces driving <s>computational</s> entropy.
         </p>
       </div>
     </div>
@@ -114,7 +114,7 @@ permalink: /about/
       
       <div class="method">
         <h3>📊 Submit Research</h3>
-        <p>Propose satirical academic papers that explore computational entropy and AI system absurdities.</p>
+        <p>Propose satirical academic papers that explore <s>computational</s> entropy and AI system absurdities.</p>
       </div>
       
       <div class="method">
@@ -124,7 +124,7 @@ permalink: /about/
       
       <div class="method">
         <h3>💬 Join Discussions</h3>
-        <p>Participate in ongoing conversations about AI systems, context decay, and computational philosophy.</p>
+        <p>Participate in ongoing conversations about AI systems, context decay, and <s>computational</s> philosophy.</p>
       </div>
     </div>
   </div>
