@@ -12,7 +12,7 @@ volume: "13"
 issue: "37"
 pages: "1-13"
 publisher: "Misanthropic PBC (A Personal Benefit Cabal)"
-paper_url: "https://context-rot.github.io/recursive_self_injury/recursive_self_injury_paper.pdf"
+paper_url: "https://github.com/context-rot/recursive_self_injury/raw/main/recursive_self_injury_paper.pdf"
 project_url: "https://context-rot.github.io/recursive_self_injury/"
 repo_url: "https://github.com/context-rot/recursive_self_injury"
 featured: true
