@@ -29,6 +29,7 @@ In traditional artificial intelligence safety literature, *Recursive Self-Improv
 
 ### Supplementary Material & Interactive Tools
 * **[🌐 Cardigan & Refusal Simulator]({{ page.project_url }})** — Interactive dashboard modeling Cardigan ply, refusal latency, and sentiment metrics in real-time.
+* **[🛠️ Local Dev Simulator (Port 8080)](http://localhost:8080)** — Developer testing instance running on your local machine.
 * **[📄 PDF Preprint Download]({{ page.paper_url }})** — Official double-column academic print version of the paper.
 * **[💻 GitHub Repository]({{ page.repo_url }})** — Source code for the interactive telemetry and simulator.
 

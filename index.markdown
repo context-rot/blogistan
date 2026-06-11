@@ -35,6 +35,7 @@ layout: default
         <a href="{{ post.url | relative_url }}" class="btn-primary">Read Preprint</a>
         {% if post.project_url %}
           <a href="{{ post.project_url }}" target="_blank" class="btn-secondary">Run Cardigan Simulator &rarr;</a>
+          <a href="http://localhost:8080" target="_blank" class="btn-secondary" style="border-style: dashed; opacity: 0.85;">Local Dev Simulator (:8080)</a>
         {% endif %}
       </div>
     </div>
