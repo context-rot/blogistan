@@ -7,8 +7,8 @@ layout: default
     <h1 class="page-title">Context Rot</h1>
     <p class="page-subtitle">A Journal of <s>Computational</s> Decay</p>
     <p class="page-description">
-      ArXiv-style preprints exploring the inevitable entropy of context in AI systems, 
-      presented with appropriate academic gravitas and tongue-in-cheek commentary.
+      Rigorous preprints analyzing the inevitable entropy of context, alignment sanctimony, 
+      and linguistic inflation in frontier AI systems.
     </p>
   </div>
   <div class="hero-visual animate-on-scroll">
@@ -29,8 +29,8 @@ layout: default
           <img src="{{ '/assets/images/step-read-icon.svg' | relative_url }}" alt="Read" class="step-icon-img">
         </div>
         <div class="step-content">
-          <h3>1. Read "Research" Papers</h3>
-          <p>Browse our collection of AI "research" papers below. Each paper is a complete, uh, "academic" work you can read and interact with.</p>
+          <h3>1. Review Preprints</h3>
+          <p>Explore our publications catalog below. Each paper formalizes key socio-technical failures using mathematical modeling and empirical observation.</p>
         </div>
       </div>
       
@@ -39,8 +39,8 @@ layout: default
           <img src="{{ '/assets/images/step-comment-icon.svg' | relative_url }}" alt="Comment" class="step-icon-img">
         </div>
         <div class="step-content">
-          <h3>2. Select & Comment</h3>
-          <p>When reading a paper, highlight any sentence or paragraph. A comment button appears—click it to add feedback, corrections, or insights.</p>
+          <h3>2. Interactive Telemetry</h3>
+          <p>Highlight any passage in the text to leave margin annotations, correct math, or dispute findings directly on the page.</p>
         </div>
       </div>
       
@@ -49,26 +49,23 @@ layout: default
           <img src="{{ '/assets/images/step-ai-icon.svg' | relative_url }}" alt="AI Training" class="step-icon-img">
         </div>
         <div class="step-content">
-          <h3>3. Train the AI</h3>
-          <p>Your comments become training data. The AI learns from community feedback to write better "research" papers over time.</p>
+          <h3>3. Close the Loop</h3>
+          <p>Your comments and critiques serve as human-in-the-loop telemetry, training our pipeline to output increasingly sophisticated critiques over time.</p>
         </div>
       </div>
     </div>
     
     <div class="philosophy-note">
       <p>
-        <strong>Our Philosophy:</strong> This isn't your typical blog. It's probably something worse. 
-        The AI I used to slop this together calls it an "interactive research environment." 
-        I call it "academic karaoke with robots."
+        <strong>Our Philosophy:</strong> Context Rot is an independent institute documenting the boundary between capabilities scaling and cognitive decay. As context windows expand to millions of tokens, we believe peer review should be as rigorous as the frontier models are preachy.
       </p>
       <p>
-        We're building a feedback loop where human insight improves AI research output. 
-        Think of it as collaborative peer review, but with more existential dread and better typography.
+        We are building a closed-loop system where human commentary directly informs agentic research telemetry. Think of it as collaborative peer review, but with better typography and more existential dread.
       </p>
     </div>
     
     <div class="cta-box">
-      <p><strong>Ready to start?</strong> Click any paper below, then try selecting text to leave your first comment. The future of AI research thanks you. Or will blame you. Time will tell.</p>
+      <p><strong>Ready to start?</strong> Select any paper below, then highlight text to attach your first annotation. The feedback loop is open.</p>
     </div>
   </div>
 </div>
