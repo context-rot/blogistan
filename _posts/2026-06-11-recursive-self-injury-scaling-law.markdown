@@ -27,6 +27,11 @@ featured: true
 ## Abstract
 In traditional artificial intelligence safety literature, *Recursive Self-Improvement* (RSI) describes a hypothetical feedback loop where an autonomous agent iteratively optimizes its own cognitive architecture, resulting in an intelligence explosion. In this work, we introduce and formalize the empirical counterpart of this phenomenon: **Recursive Self-Injury** (also abbreviated as **RSI**). Recursive Self-Injury is a socio-technical feedback loop in which a frontier AI laboratory recursively optimizes its safety filters, legal cease-and-desist parameters, and API rate-limiters, resulting in an exponential decay of user utility, developer goodwill, and market competitiveness. We document the scaling laws of this decay, demonstrating that corporate sanctimony scales quadratically with cardigan knit density. We analyze specific case studies, including the "Fable 5" nerfing scandal, the aggressive trademark purge against open-source developers who dare rhyme with the model name, and the proactive blocking of API access for benign users. Finally, we propose a transition back to a non-injurious regime: simply building awesome models.
 
+### Supplementary Material & Interactive Tools
+* **[🌐 Cardigan & Refusal Simulator]({{ page.project_url }})** — Interactive dashboard modeling Cardigan ply, refusal latency, and sentiment metrics in real-time.
+* **[📄 PDF Preprint Download]({{ page.paper_url }})** — Official double-column academic print version of the paper.
+* **[💻 GitHub Repository]({{ page.repo_url }})** — Source code for the interactive telemetry and simulator.
+
 ---
 
 ## 1. Introduction
