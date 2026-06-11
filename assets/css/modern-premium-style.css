@@ -1,15 +1,15 @@
 /* Ultra-Modern Premium Design System */
-/* Context Rot - Apple & OpenAI Inspired Aesthetic */
+/* Context Rot - Anthropic Inspired Aesthetic */
 
 /* Import refined typography */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
 /* CSS Custom Properties - Ultra-Modern Design System */
 :root {
   /* Refined Typography Scale */
-  --font-family-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", system-ui, sans-serif;
-  --font-family-text: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Helvetica Neue", system-ui, sans-serif;
-  --font-family-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Monaco", "Cascadia Code", "Roboto Mono", monospace;
+  --font-family-display: "Poppins", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+  --font-family-text: "Lora", Georgia, serif;
+  --font-family-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
   
   /* Font Weights */
   --font-weight-ultralight: 200;
@@ -34,28 +34,29 @@
   --text-6xl: 3.75rem;   /* 60px */
   
   /* Refined Color System */
-  --color-primary: #1a1a1a;
-  --color-secondary: #2d2d2f;
-  --color-accent: #0066cc;
-  --color-accent-hover: #004499;
-  --color-accent-light: #e6f2ff;
-  --color-success: #28a745;
-  --color-warning: #ffc107;
-  --color-error: #dc3545;
+  --color-primary: #141413;
+  --color-secondary: #3b3a35;
+  --color-accent: #d97757;
+  --color-accent-hover: #b05b3e;
+  --color-accent-light: #f5eae4;
+  --color-success: #388e3c;
+  --color-warning: #f57c00;
+  --color-error: #d32f2f;
   
-  /* Ultra-Clean Neutral Scale */
+  /* Ultra-Clean Warm Sand Scale */
+  --color-bg: #faf9f5;
   --color-white: #ffffff;
-  --color-gray-25: #fcfcfc;
-  --color-gray-50: #f8f9fa;
-  --color-gray-100: #f1f3f4;
-  --color-gray-200: #e8eaed;
-  --color-gray-300: #dadce0;
-  --color-gray-400: #bdc1c6;
-  --color-gray-500: #9aa0a6;
-  --color-gray-600: #80868b;
-  --color-gray-700: #5f6368;
-  --color-gray-800: #3c4043;
-  --color-gray-900: #202124;
+  --color-gray-25: #fcfbfa;
+  --color-gray-50: #f7f6f0;
+  --color-gray-100: #f0ede4;
+  --color-gray-200: #e5e2d6;
+  --color-gray-300: #d0cbc0;
+  --color-gray-400: #b0aaa0;
+  --color-gray-500: #938d82;
+  --color-gray-600: #736d63;
+  --color-gray-700: #59544c;
+  --color-gray-800: #3c3933;
+  --color-gray-900: #201f1c;
   
   /* Spacing Scale (8pt grid) */
   --space-1: 0.125rem;   /* 2px */
@@ -76,20 +77,20 @@
   --space-64: 8rem;      /* 128px */
   
   /* Border Radius */
-  --radius-sm: 0.25rem;   /* 4px */
-  --radius-md: 0.5rem;    /* 8px */
-  --radius-lg: 0.75rem;   /* 12px */
-  --radius-xl: 1rem;      /* 16px */
-  --radius-2xl: 1.5rem;   /* 24px */
+  --radius-sm: 0px;   /* flat edges look much less AI-sloppy */
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
   --radius-full: 50%;
   
   /* Refined Shadows */
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
-  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 12px 20px -4px rgba(0, 0, 0, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.06);
-  --shadow-xl: 0 24px 40px -8px rgba(0, 0, 0, 0.1), 0 8px 16px -8px rgba(0, 0, 0, 0.08);
-  --shadow-elegant: 0 2px 16px rgba(0, 0, 0, 0.04), 0 1px 4px rgba(0, 0, 0, 0.08);
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  --shadow-elegant: none;
   
   /* Refined Animations */
   --transition-micro: 0.1s cubic-bezier(0.4, 0.0, 0.2, 1);
@@ -109,19 +110,20 @@
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-primary: #FFFFFF;
-    --color-secondary: #F5F5F7;
-    --color-white: #000000;
-    --color-gray-50: #1C1C1E;
-    --color-gray-100: #2C2C2E;
-    --color-gray-200: #3A3A3C;
-    --color-gray-300: #48484A;
-    --color-gray-400: #636366;
-    --color-gray-500: #8E8E93;
-    --color-gray-600: #AEAEB2;
-    --color-gray-700: #C7C7CC;
-    --color-gray-800: #D1D1D6;
-    --color-gray-900: #F2F2F7;
+    --color-primary: #faf9f5;
+    --color-secondary: #e5e2d6;
+    --color-bg: #141413;
+    --color-white: #1e1e1d;
+    --color-gray-50: #1e1e1d;
+    --color-gray-100: #2a2a29;
+    --color-gray-200: #3a3a38;
+    --color-gray-300: #4a4a47;
+    --color-gray-400: #6a6a66;
+    --color-gray-500: #8a8a85;
+    --color-gray-600: #aaaaa4;
+    --color-gray-700: #cacac4;
+    --color-gray-800: #eaeae4;
+    --color-gray-900: #faf9f5;
   }
 }
 
@@ -147,7 +149,7 @@ body {
   font-size: var(--text-base);
   line-height: 1.6;
   color: var(--color-primary);
-  background-color: var(--color-white);
+  background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -293,14 +295,11 @@ p {
 
 .page-title {
   font-size: clamp(var(--text-5xl), 8vw, 5rem);
-  font-weight: var(--font-weight-black);
+  font-weight: var(--font-weight-heavy);
   font-family: var(--font-family-display);
   letter-spacing: -0.05em;
   margin-bottom: var(--space-8);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-primary);
   line-height: 1.1;
 }
 
@@ -420,10 +419,6 @@ p {
   line-height: 1.1;
   letter-spacing: -0.04em;
   font-family: var(--font-family-display);
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-gray-700) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .paper-meta {
@@ -877,7 +872,7 @@ p {
 .site-footer {
   background: var(--color-gray-900);
   background-image: 
-    linear-gradient(135deg, rgba(0, 102, 204, 0.03), transparent 50%),
+    linear-gradient(135deg, rgba(217, 119, 87, 0.03), transparent 50%),
     url('../images/research-viz.png');
   background-size: cover, 800px 600px;
   background-position: center, bottom right;
@@ -1027,8 +1022,8 @@ p {
 
 @keyframes demo-highlight {
   0% { background-color: transparent; }
-  50% { background-color: rgba(0, 102, 204, 0.2); }
-  100% { background-color: rgba(0, 102, 204, 0.1); }
+  50% { background-color: rgba(217, 119, 87, 0.2); }
+  100% { background-color: rgba(217, 119, 87, 0.1); }
 }
 
 @keyframes ripple {
@@ -1112,7 +1107,7 @@ p {
 }
 
 .demo-highlight {
-  background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(0, 102, 204, 0.2));
+  background: linear-gradient(135deg, rgba(217, 119, 87, 0.1), rgba(217, 119, 87, 0.2));
   padding: var(--space-1) var(--space-2);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-accent);
@@ -1121,7 +1116,7 @@ p {
 
 .demo-highlight.demo-selected {
   animation: demo-highlight 1.5s ease-in-out;
-  background: rgba(0, 102, 204, 0.15);
+  background: rgba(217, 119, 87, 0.15);
 }
 
 .demo-close {
@@ -1533,5 +1528,305 @@ p {
   
   .paper-title {
     font-size: var(--text-6xl);
+  }
+}
+
+/* Journal Homepage Styles */
+.journal-hero {
+  text-align: center;
+  max-width: var(--max-width-md);
+  margin: var(--space-20) auto var(--space-24) auto;
+  padding-bottom: var(--space-16);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.journal-meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-4);
+  font-family: var(--font-family-display);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-gray-500);
+  margin-bottom: var(--space-6);
+}
+
+.meta-separator {
+  color: var(--color-gray-300);
+}
+
+.journal-title {
+  font-family: var(--font-family-display);
+  font-size: clamp(var(--text-4xl), 6vw, var(--text-6xl));
+  font-weight: var(--font-weight-heavy);
+  letter-spacing: -0.04em;
+  margin-bottom: var(--space-2);
+  color: var(--color-primary);
+}
+
+.journal-tagline {
+  font-family: var(--font-family-text);
+  font-style: italic;
+  font-size: var(--text-xl);
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-8);
+}
+
+.journal-lead {
+  font-family: var(--font-family-text);
+  font-size: var(--text-lg);
+  line-height: 1.8;
+  color: var(--color-gray-700);
+}
+
+/* Featured Preprint Banner */
+.featured-banner {
+  background: var(--color-gray-50);
+  border: 1px solid var(--color-gray-200);
+  padding: var(--space-12);
+  margin-bottom: var(--space-24);
+  position: relative;
+}
+
+.featured-badge {
+  display: inline-block;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-family: var(--font-family-display);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--space-1) var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.featured-title {
+  font-size: var(--text-3xl);
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  margin-bottom: var(--space-4);
+}
+
+.featured-title a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.featured-title a:hover {
+  color: var(--color-accent);
+}
+
+.featured-authors {
+  font-family: var(--font-family-display);
+  font-size: var(--text-sm);
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-6);
+}
+
+.featured-abstract {
+  font-family: var(--font-family-text);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--color-gray-800);
+  margin-bottom: var(--space-8);
+}
+
+.featured-actions {
+  display: flex;
+  gap: var(--space-6);
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-block;
+  background: var(--color-accent);
+  color: var(--color-white);
+  padding: var(--space-4) var(--space-8);
+  font-family: var(--font-family-display);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  border: 1px solid var(--color-accent);
+  transition: all var(--transition-base);
+}
+
+.btn-primary:hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.btn-secondary {
+  display: inline-block;
+  background: transparent;
+  color: var(--color-primary);
+  padding: var(--space-4) var(--space-8);
+  font-family: var(--font-family-display);
+  font-size: var(--text-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  border: 1px solid var(--color-gray-300);
+  transition: all var(--transition-base);
+}
+
+.btn-secondary:hover {
+  border-color: var(--color-primary);
+  background: var(--color-gray-100);
+}
+
+/* Journal Grid Layout */
+.journal-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-16);
+  margin-bottom: var(--space-32);
+}
+
+.section-divider {
+  border-bottom: 2px solid var(--color-gray-800);
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-2);
+}
+
+.section-divider h2 {
+  font-family: var(--font-family-display);
+  font-size: var(--text-xl);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0;
+}
+
+.publications-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.pub-item {
+  padding-bottom: var(--space-12);
+  border-bottom: 1px solid var(--color-gray-200);
+}
+
+.pub-item:last-child {
+  border-bottom: none;
+}
+
+.pub-meta {
+  display: flex;
+  gap: var(--space-4);
+  font-family: var(--font-family-mono);
+  font-size: var(--text-xs);
+  color: var(--color-gray-500);
+  margin-bottom: var(--space-2);
+}
+
+.pub-title {
+  font-size: var(--text-2xl);
+  font-family: var(--font-family-display);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+
+.pub-title a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.pub-title a:hover {
+  color: var(--color-accent);
+}
+
+.pub-authors {
+  font-family: var(--font-family-display);
+  font-size: var(--text-xs);
+  color: var(--color-gray-600);
+  margin-bottom: var(--space-4);
+}
+
+.pub-excerpt {
+  font-family: var(--font-family-text);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-4);
+}
+
+.pub-link {
+  font-family: var(--font-family-display);
+  font-size: var(--text-sm);
+  color: var(--color-accent);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+}
+
+.pub-link:hover {
+  color: var(--color-accent-hover);
+}
+
+/* Sidebar Styling */
+.journal-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.sidebar-block {
+  background: var(--color-gray-25);
+  border: 1px solid var(--color-gray-200);
+  padding: var(--space-8);
+}
+
+.sidebar-block h3 {
+  font-family: var(--font-family-display);
+  font-size: var(--text-base);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-gray-300);
+}
+
+.sidebar-block p {
+  font-family: var(--font-family-text);
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--color-gray-700);
+  margin-bottom: var(--space-4);
+}
+
+.sidebar-block p:last-child {
+  margin-bottom: 0;
+}
+
+.subject-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.subject-list li {
+  font-family: var(--font-family-display);
+  font-size: var(--text-xs);
+  color: var(--color-gray-700);
+}
+
+.subject-code {
+  font-family: var(--font-family-mono);
+  background: var(--color-gray-100);
+  padding: var(--space-1) var(--space-2);
+  color: var(--color-primary);
+  margin-right: var(--space-2);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Mobile Responsiveness for Journal Grid */
+@media (max-width: 800px) {
+  .journal-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-16);
   }
 }
